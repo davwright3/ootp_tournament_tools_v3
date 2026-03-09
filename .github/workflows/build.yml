@@ -1,0 +1,185 @@
+name: Build, Package and Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers a release when we push with a version tag
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install customtkinter==5.2.2 darkdetect==0.8.0
+          pip install pyinstaller
+
+      - name: "Preflight: verify apps/pitcher_card.py is present and importable"
+        shell: pwsh
+        run: |
+          git ls-files apps | Sort-Object | Select-String 'pitcher_card.py'
+          python -c "import sys, importlib.util; sys.path.insert(0,'.'); assert importlib.util.find_spec('apps.pitcher_card') is not None, 'Spec not found'; import apps.pitcher_card; print('OK: apps.pitcher_card import')"
+
+      - name: "Preflight: verify apps/batter_slideshow.py is present and importable"
+        shell: pwsh
+        run: |
+          git ls-files apps | Sort-Object | Select-String 'batter_slideshow.py'
+          python -c "import sys, importlib.util; sys.path.insert(0,'.'); assert importlib.util.find_spec('apps.batter_slideshow') is not None, 'Spec not found'; import apps.batter_slideshow; print('OK: apps.batter_slideshow import')"
+      
+
+      - name: Build executable with PyInstaller
+        run: |
+          pyinstaller --clean --log-level=DEBUG main.spec --clean
+
+      - name: "Inspect PyInstaller Analysis TOC for apps.pitcher_card"
+        shell: pwsh
+        run: |
+          Get-ChildItem build -Recurse -Filter "*Analysis*.toc" | ForEach-Object {
+            Write-Host "=== Inspecting $($_.FullName) ==="
+            Select-String -Path $_.FullName -Pattern "apps.pitcher_card" -SimpleMatch
+          }
+
+
+      - name: Show PyInstaller dist tree
+        shell: pwsh
+        run: |
+          Write-Host "Dist contents:"
+          Get-ChildItem -Recurse -Depth 2 dist | Select-Object FullName
+
+      - name: Install Inno Setup
+        run: |
+          choco install innosetup --yes
+
+      - name: Run Inno Setup Compiler
+        shell: pwsh
+        run: |
+          iscc installer/installer.iss
+
+      - name: Rename Windows Installer
+        shell: pwsh
+        run: |
+          $version="${{ github.ref_name }}"
+          New-Item -ItemType Directory -Force -Path release | Out-Null
+          Copy-Item "installer\Output\*.exe" "release/AU_Tournament_Utilities-$version-windows-x64.exe"
+
+      - name: List Output Files
+        run: dir installer/Output
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          files: release/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-macos-arm64:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build Executable With PyInstaller
+        run: |
+          pyinstaller main.spec --clean
+
+      - name: Create ZIP of Built App
+        run: |
+          cd dist
+          zip -r main-macos.zip ./*
+
+      - name: Rename macOS Artifact
+        run: |
+          version="${{ github.ref_name }}"
+          mkdir -p release
+          mv dist/main-macos.zip "release/AU-Tournament-Utilities-${version}-macos-universal.zip"
+
+      - name: List Release Files
+        run: ls -la release
+
+      - name: Create macOS Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          files: release/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  build-macos-intel:
+    runs-on: macos-13
+    env:
+      ARCHFLAGS: "-arch x86_64"
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build Executable With Pyinstaller (Intel)
+        run: |
+          pyinstaller --clean main.spec
+
+      - name: Create ZIP of Built App (Intel)
+        run: |
+          cd dist
+          zip -r main-macos-intel.zip ./*
+
+      - name: Rename maxOS Artifact (Intel)
+        run: |
+          version="${{ github.ref_name }}"
+          mkdir -p release
+          mv dist/main-macos-intel.zip "release/AU-Tournament-Utilities-${version}-macos-intel.zip"
+
+      - name: List Release Files
+        run: ls -la release
+
+      - name: Create macOS Release (append)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release $PP github.ref_name }}
+          files: release/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
