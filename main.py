@@ -46,7 +46,7 @@ class MainApp(tk.Tk):
     def __init__(self):
         """Initialize the class."""
         super().__init__()
-        self.title("OOTP Tournament Utils v2")
+        self.title("OOTP Tournament Utils v3")
         self.geometry("1920x1080")
         self.minsize(400, 300)
         self.configure(bg="lightgray")
