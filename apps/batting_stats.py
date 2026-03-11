@@ -100,7 +100,7 @@ class BattingStatsApp(tk.Toplevel):
 
         item = 0
         print(data_store.get_tournament_type())
-        if data_store.get_tournament_type() == 'daily':
+        if data_store.get_tournament_type() == 'daily' or data_store.get_tournament_type() == 'quick':
             self.days_cutoff_frame = DataCutoffByDaysFrame(
                 inner_frame,
             )
@@ -189,6 +189,7 @@ class BattingStatsApp(tk.Toplevel):
         search_term = self.search_frame.get_search_term()
         split_variants_select = self.split_variants_frame.get_variant_split()
         num_cutoff_days = self.days_cutoff_frame.get_cutoff_days()
+
         
         if self.selected_team_only_frame.get_selected_team_bool():
             selected_team = self.selected_team
@@ -207,7 +208,8 @@ class BattingStatsApp(tk.Toplevel):
             selected_search_term=search_term,
             variant_split_select=split_variants_select,
             team_select=selected_team,
-            cutoff_days=num_cutoff_days
+            cutoff_days=num_cutoff_days,
+            tournament_type= data_store.get_tournament_type()
         )
         self.dataframe_frame.set_dataframe(stats_df)
 

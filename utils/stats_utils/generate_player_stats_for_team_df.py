@@ -23,14 +23,14 @@ def generate_player_stats_for_team_df(team_name=None):
     card_list_2 = card_list.copy()
 
     df1 = df1[['CID', 'VLvl', 'PA', 'AB', 'H', '1B', '2B', '3B',
-               'HR', 'TB', 'SO', 'HP', 'BB', 'IBB', 'SF', 'SB',
+               'HR', 'TB', 'K', 'HP', 'BB', 'IBB', 'SF', 'SB',
                'CS', 'WAR', 'RC', 'TC', 'A', 'PO', 'E', 'ZR',
                'SBA', 'RTO']].groupby(['CID', 'VLvl'], as_index=False).sum()
 
-    df2 = df2[['CID', 'VLvl', 'IPC', 'G.1', 'GS.1', 'BF', 'AB.1', 'ER', 'K',
-               'BB.1', 'IBB.1', 'HA', '1B.1', '2B.1', '3B.1', 'HR.1', 'SV',
-               'SVO', 'SD', 'MD', 'HP.1', 'SH.1', 'SF.1', 'QS', 'IR', 'IRS',
-               'GB', 'FB', 'WAR.1', 'Trny']].groupby(['CID', 'VLvl'],
+    df2 = df2[['CID', 'VLvl', 'IPC', 'G_1', 'GS_1', 'BF', 'AB_1', 'ER', 'K_1',
+               'BB_1', 'IBB_1', 'HA', '1B_1', '2B_1', '3B_1', 'HR_1', 'SV',
+               'SVO', 'SD', 'MD', 'HP_1', 'SH_1', 'SF_1', 'QS', 'IR', 'IRS',
+               'GB', 'FB', 'WAR_1', 'Trny']].groupby(['CID', 'VLvl'],
                                                      as_index=False).sum()
     df1 = df1[df1['PA'] > 0]
     df2 = df2[df2['IPC'] > 0]

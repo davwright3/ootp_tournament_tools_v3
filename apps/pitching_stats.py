@@ -120,7 +120,7 @@ class PitchStatsApp(tk.Toplevel):
         inner_frame.rowconfigure(5, weight=0)
 
         row = 0
-        if data_store.get_tournament_type() == 'daily':
+        if data_store.get_tournament_type() == 'daily' or data_store.get_tournament_type() == 'quick':
             self.date_cutoff_frame = DataCutoffByDaysFrame(
                 inner_frame,
             )
@@ -207,7 +207,11 @@ class PitchStatsApp(tk.Toplevel):
         cull_team_var_select = self.cull_teams_frame.get_cull_teams_limit()
         search_term = self.search_frame.get_search_term()
         variant_split_select = self.split_variants_frame.get_variant_split()
-        selected_cutoff_days = self.date_cutoff_frame.get_cutoff_days()
+
+        try:
+            selected_cutoff_days = self.date_cutoff_frame.get_cutoff_days()
+        except Exception as e:
+            selected_cutoff_days = None
         if self.selected_team_only_checkbox_frame.get_selected_team_bool():
             selected_team = self.selected_team
         else:
@@ -228,6 +232,7 @@ class PitchStatsApp(tk.Toplevel):
             selected_variant_split=variant_split_select,
             team_select=selected_team,
             cutoff_days=selected_cutoff_days,
+            tournament_type=data_store.get_tournament_type(),
         )
         self.stats_frame.set_dataframe(stats)
 

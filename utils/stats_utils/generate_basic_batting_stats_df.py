@@ -28,6 +28,7 @@ def generate_basic_batting_stats_df(
         card_id_select: int = None,
         team_select: str = None,
         cutoff_days: int = None,
+        tournament_type: str = None,
 ):
     """
     Calculates basic batting stats and returns a dataframe with the
@@ -48,6 +49,7 @@ def generate_basic_batting_stats_df(
     :param card_id_select: the id of the card, int
     :param team_select: the name of the team, str
     :param cutoff_days: the number of days to cut off the batting stats, int
+    :param tournament_type: the tournament type, str
     :return: Dataframe
     """
     df = cull_teams(
@@ -56,16 +58,31 @@ def generate_basic_batting_stats_df(
     df1 = df.copy()
 
     if cutoff_days is not None:
-        try:
-            cutoff = datetime.now() - timedelta(days=cutoff_days)
-            df1['Trny'] = pd.to_datetime(df1['Trny'] + ' 2026', format='%d %b %Y')
-            df1 = df1[df1['Trny'] >= cutoff]
+        if tournament_type == 'daily':
+            try:
+                cutoff = datetime.now() - timedelta(days=cutoff_days)
+                df1['Trny'] = pd.to_datetime(df1['Trny'] + ' 2026', format='%d %b %Y')
+                df1 = df1[df1['Trny'] >= cutoff]
 
-            if df1.empty:
-                print("Not enough data, using full dataset")
-                df1 = df
-        except TypeError:
-            return
+                if df1.empty:
+                    print("Not enough data, using full dataset")
+                    df1 = df
+            except TypeError:
+                return
+        if tournament_type == 'quick':
+            print('Getting quick tourney stats')
+            try:
+                # Get tournament list
+                # Get last XX values
+                # Update the data frame
+                tourney_list_full = df1['Trny'].unique().tolist()
+                tourney_list_full.sort(reverse=True)
+                print(tourney_list_full)
+                tourney_list_included = tourney_list_full[:cutoff_days]
+                print(tourney_list_included)
+                df1 = df1[df1['Trny'].isin(tourney_list_included)]
+            except TypeError:
+                return
     del df
 
     if team_select is not None:
@@ -76,11 +93,11 @@ def generate_basic_batting_stats_df(
 
     if variant_split_select:
         df1 = df1[['CID', 'VLvl', 'PA', 'AB', 'H', '1B', '2B', '3B', 'HR',
-                   'TB', 'SO', 'HP', 'BB', 'IBB', 'SF', 'SB', 'CS', 'WAR',
+                   'TB', 'K', 'HP', 'BB', 'IBB', 'SF', 'SB', 'CS', 'WAR',
                    'RC', 'TC', 'A', 'PO', 'E', 'ZR', 'SBA',
                    'RTO']].groupby(['CID', 'VLvl'], as_index=False).sum()
     else:
-        df1 = df1[['CID', 'PA', 'AB', 'H', '1B', '2B', '3B', 'HR', 'TB', 'SO',
+        df1 = df1[['CID', 'PA', 'AB', 'H', '1B', '2B', '3B', 'HR', 'TB', 'K',
                    'HP', 'BB', 'IBB', 'SF', 'SB', 'CS', 'WAR', 'RC', 'TC', 'A',
                    'PO', 'E', 'ZR', 'SBA',
                    'RTO']].groupby(['CID'], as_index=False).sum()

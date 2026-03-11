@@ -13,30 +13,30 @@ def calculate_pitching_stats(df1, min_ip_sel=200):
                           0.00)
 
     df1['FIP'] = np.where(df1['IPC'] != 0,
-                          ((((13 * df1['HR.1']) +
-                             (3 * (df1['BB.1'] + df1['HP.1'])) -
-                             (2 * df1['K'])) / df1['IPC']) +
+                          ((((13 * df1['HR_1']) +
+                             (3 * (df1['BB_1'] + df1['HP_1'])) -
+                             (2 * df1['K_1'])) / df1['IPC']) +
                            fip_constant).round(2), 0.00)
 
     df1['WHIP'] = np.where(df1['IPC'] != 0,
-                           ((df1['BB.1'] + df1['HA']) /
+                           ((df1['BB_1'] + df1['HA']) /
                             df1['IPC']).round(3), 0.00)
 
     df1['K%'] = np.where(df1['BF'] != 0,
-                         (df1['K'] / df1['BF']).round(3),
+                         (df1['K_1'] / df1['BF']).round(3),
                          .000)
 
     df1['BB%'] = np.where(df1['BF'] != 0,
-                          (df1['BB.1'] / df1['BF']).round(3), .000)
+                          (df1['BB_1'] / df1['BF']).round(3), .000)
 
     df1['K-BB'] = (df1['K%'] - df1['BB%']).round(3)
 
     df1['HR%'] = np.where(df1['BF'] != 0,
-                          (df1['HR.1'] / df1['BF']).round(3),
+                          (df1['HR_1'] / df1['BF']).round(3),
                           .000)
 
     df1['HR/9'] = np.where(df1['IPC'] != 0,
-                           ((df1['HR.1'] / df1['IPC']) * 9).round(3), 0.0)
+                           ((df1['HR_1'] / df1['IPC']) * 9).round(3), 0.0)
 
     df1['SV%'] = np.where(df1['SVO'] != 0,
                           (df1['SV'] / df1['SVO']).round(3), .000)
@@ -51,20 +51,20 @@ def calculate_pitching_stats(df1, min_ip_sel=200):
                           (df1['GB'] / (df1['GB'] + df1['FB'])).round(3), 0.00)
 
     df1['WAR/200'] = np.where(df1['IPC'] != 0,
-                              ((df1['WAR.1'] / df1['IPC']) * 200).round(1),
+                              ((df1['WAR_1'] / df1['IPC']) * 200).round(1),
                               0.0)
 
-    df1['IP/G'] = np.where(df1['G.1'] != 0,
-                           (df1['IPC'] / df1['G.1']).round(2), 0.0)
+    df1['IP/G'] = np.where(df1['G_1'] != 0,
+                           (df1['IPC'] / df1['G_1']).round(2), 0.0)
 
     df1['QS%'] = np.where(
-        df1['GS.1'] == 0,
+        df1['GS_1'] == 0,
         .000,
-        (df1['QS'] / df1['GS.1']).round(2)
+        (df1['QS'] / df1['GS_1']).round(2)
     )
 
-    df1['oBABIP'] = ((df1['HA'] - df1['HR.1']) /
-                     (df1['AB.1'] - df1['K'] - df1['HR.1'] + df1['SF.1'])
+    df1['oBABIP'] = ((df1['HA'] - df1['HR_1']) /
+                     (df1['AB_1'] - df1['K_1'] - df1['HR_1'] + df1['SF_1'])
                      ).round(3)
 
     df1['IPC'] = df1['IPC'].round(2)

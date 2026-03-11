@@ -28,19 +28,34 @@ def generate_basic_pitching_stats(
         card_id=None,
         team_select=None,
         cutoff_days=None,
+        tournament_type: str=None
 ):
     df = cull_teams(
         data_store.get_data().copy(),
         run_cutoff=cull_team_limit_select)
     stats_df = df.copy()
 
+
     if cutoff_days is not None:
-        cutoff = datetime.now() - timedelta(days=cutoff_days)
-        stats_df['Trny'] = pd.to_datetime(stats_df['Trny'] + ' 2026', format='%d %b %Y')
-        stats_df = stats_df[stats_df['Trny'] >= cutoff]
-        if stats_df.empty:
-            print("Not enough seven day data, using full dataset")
-            stats_df = df.copy()
+        if tournament_type == 'daily':
+            cutoff = datetime.now() - timedelta(days=cutoff_days)
+            stats_df['Trny'] = pd.to_datetime(stats_df['Trny'] + ' 2026', format='%d %b %Y')
+            stats_df = stats_df[stats_df['Trny'] >= cutoff]
+            if stats_df.empty:
+                stats_df = df.copy()
+        if tournament_type == 'quick':
+            try:
+                # Get tournament list
+                # Get last XX values
+                # Update the data frame
+                tourney_list_full = stats_df['Trny'].unique().tolist()
+                tourney_list_full.sort(reverse=True)
+                print(tourney_list_full)
+                tourney_list_included = tourney_list_full[:cutoff_days]
+                print(tourney_list_included)
+                stats_df = stats_df[stats_df['Trny'].isin(tourney_list_included)]
+            except TypeError:
+                return
 
     if card_id is not None:
         stats_df = stats_df[stats_df['CID'] == card_id]
@@ -52,18 +67,18 @@ def generate_basic_pitching_stats(
     stats_df1 = stats_df.copy()
     del stats_df
     if selected_variant_split:
-        stats_df1 = stats_df1[['CID', 'VLvl', 'IPC', 'G.1', 'GS.1', 'BF',
-                               'AB.1', 'ER', 'K', 'BB.1', 'IBB.1', 'HA',
-                               '1B.1', '2B.1', '3B.1', 'HR.1', 'SV', 'SVO',
-                               'SD', 'MD', 'HP.1', 'SH.1', 'SF.1', 'QS', 'IR',
-                               'IRS', 'GB', 'FB', 'WAR.1']].groupby(['CID', 'VLvl'],
+        stats_df1 = stats_df1[['CID', 'VLvl', 'IPC', 'G_1', 'GS_1', 'BF',
+                               'AB_1', 'ER', 'K_1', 'BB_1', 'IBB_1', 'HA',
+                               '1B_1', '2B_1', '3B_1', 'HR_1', 'SV', 'SVO',
+                               'SD', 'MD', 'HP_1', 'SH_1', 'SF_1', 'QS', 'IR',
+                               'IRS', 'GB', 'FB', 'WAR_1']].groupby(['CID', 'VLvl'],
                                                 as_index=False).sum()
     else:
-        stats_df1 = stats_df1[['CID', 'IPC', 'G.1', 'GS.1', 'BF', 'AB.1', 'ER',
-                               'K', 'BB.1', 'IBB.1', 'HA', '1B.1', '2B.1',
-                               '3B.1', 'HR.1', 'SV', 'SVO', 'SD', 'MD', 'HP.1',
-                               'SH.1', 'SF.1', 'QS', 'IR', 'IRS', 'GB', 'FB',
-                               'WAR.1']].groupby(['CID'],
+        stats_df1 = stats_df1[['CID', 'IPC', 'G_1', 'GS_1', 'BF', 'AB_1', 'ER',
+                               'K_1', 'BB_1', 'IBB_1', 'HA', '1B_1', '2B_1',
+                               '3B_1', 'HR_1', 'SV', 'SVO', 'SD', 'MD', 'HP_1',
+                               'SH_1', 'SF_1', 'QS', 'IR', 'IRS', 'GB', 'FB',
+                               'WAR_1']].groupby(['CID'],
                                                          as_index=False).sum()
 
     card_list = card_list_store.get_card_list().copy()

@@ -12,8 +12,8 @@ def cull_teams(df, run_cutoff=8):
 
     df1 = df.copy()
     # Create a new dataframe which will create a list of teams that are okay.
-    df1 = df1.groupby(['ORG', 'Trny'], as_index=False)[['GS.1', 'R']].sum()
-    df1['R/G'] = (df1['R'] / df1['GS.1']).round(2)
+    df1 = df1.groupby(['ORG', 'Trny'], as_index=False)[['GS_1', 'R']].sum()
+    df1['R/G'] = (df1['R'] / df1['GS_1']).round(2)
     teams_ok = df1.loc[df1['R/G'] < run_cutoff, ['ORG', 'Trny']]
 
     # Merge by ignoring the rows to drop

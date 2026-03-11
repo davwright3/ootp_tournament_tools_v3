@@ -55,6 +55,7 @@ def generate_ratings_df(
     if search_term:
         card_df = card_df[card_df['Title'].str.contains(search_term, case=False, na=False)]
 
+
     card_df['B'] = card_df['Bats'].apply(
         lambda x: 'R' if x == 1 else 'L' if x == 2 else 'S')
     card_df['T'] = card_df['Throws'].apply(lambda x: 'R' if x == 1 else 'L')
@@ -72,8 +73,13 @@ def generate_ratings_df(
     card_df = card_df[(card_df['Year'] >= min_year) &
                       (card_df['Year'] <= max_year)]
 
+
+
     if selected_position is not None:
         card_df = card_df[card_df[selected_position] != 0]
+
+
+
 
     ratings_df = calc_ratings(
         card_df,

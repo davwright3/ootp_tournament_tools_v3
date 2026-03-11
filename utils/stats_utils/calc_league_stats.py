@@ -19,14 +19,14 @@ def calc_league_stats():
     lg_tb = df['TB'].sum()
     lg_sb = df['SB'].sum()
     lg_cs = df['CS'].sum()
-    lg_so = df['SO'].sum()
+    lg_so = df['K'].sum()
     lg_bb = df['BB'].sum()
     lg_sf = df['SF'].sum()
     lg_ibb = df['IBB'].sum()
     lg_hp = df['HP'].sum()
 
     # Pitching stats
-    lg_gs = df['GS.1'].sum()
+    lg_gs = df['GS_1'].sum()
     lg_ip = df['IPC'].sum()
     lg_er = df['ER'].sum()
     lg_ir = df['IR'].sum()

@@ -10,7 +10,6 @@ def calc_ratings(
         baserunning_weights=None,
         run_env_weights=None,
 ):
-
     #Set weights from run environment
     if run_env_weights:
         bat_vl_mask = df['B'].isin(['R', 'S'])

@@ -41,7 +41,7 @@ class CardListStore:
             raise FileNotFoundError(
                 f'File {filepath} not found.'
             )
-        df = pd.read_csv(filepath)
+        df = pd.read_csv(filepath, index_col=False)
         self._card_list_dataframe = df
         return df
 

@@ -48,7 +48,7 @@ def calc_batting_stats(df, min_pa=0):
     )
 
     df1['Krate'] = (
-        ((df1['SO'] / df1['PA']) * 600).round(1)
+        ((df1['K'] / df1['PA']) * 600).round(1)
     )
 
     df1['BBrate'] = (
