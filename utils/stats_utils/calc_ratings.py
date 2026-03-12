@@ -26,9 +26,9 @@ def calc_ratings(
         df['Gap vL'] = np.where(
             bat_vl_mask,
             round(df['Gap vL'] * run_env_weights['avg_rhb'] * run_env_weights[
-                'doubles'], 1),
+                'doubles_lhb'] * run_env_weights['triples_lhb'], 1),
             round(df['Gap vL'] * run_env_weights['avg_lhb'] * run_env_weights[
-                'doubles'], 1),
+                'doubles_rhb'] * run_env_weights['triples_lhb'], 1),
         )
         bat_vr_mask = df['B'].isin(['L', 'S'])
         df['BABIP vR'] = np.where(
@@ -43,8 +43,8 @@ def calc_ratings(
         )
         df['Gap vR'] = np.where(
             bat_vr_mask,
-            round(df['Gap vR'] * run_env_weights['avg_lhb'] * run_env_weights['doubles'], 1),
-            round(df['Gap vR'] * run_env_weights['avg_rhb'] * run_env_weights['doubles'], 1)
+            round(df['Gap vR'] * run_env_weights['avg_lhb'] * run_env_weights['doubles_lhb'] * run_env_weights['triples_lhb'], 1),
+            round(df['Gap vR'] * run_env_weights['avg_rhb'] * run_env_weights['doubles_rhb'] * run_env_weights['triples_rhb'], 1)
         )
 
     # Batter ratings

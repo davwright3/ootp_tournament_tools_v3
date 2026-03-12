@@ -77,6 +77,5 @@ def get_run_environment(selected_year=2010):
 
 
 def get_park_factors():
-    stadium_df = stadium_factors_store.get_park_factors()
-
+    stadium_df = stadium_factors_store.get_park_factors().copy()
     return stadium_df

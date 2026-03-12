@@ -1,6 +1,7 @@
 """App for comparing ratings of selected players."""
 import tkinter as tk
-
+import pandas as pd
+from apps.batter_card import BatterCard
 from utils.view_utils.card_type_select_frame import CardTypeSelectFrame
 from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
@@ -23,11 +24,12 @@ from utils.view_utils.run_env_frame import RunEnvironmentFrame
 from utils.view_utils.search_frame import SearchFrame
 
 class RatingsComparisonApp(tk.Toplevel):
-    def __init__(self):
+    def __init__(self, selected_team=None):
         super().__init__()
 
         self.title("Ratings Comparison")
         self.geometry("1920x1080")
+        self.selected_team = selected_team
 
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=0)
@@ -48,7 +50,7 @@ class RatingsComparisonApp(tk.Toplevel):
         self.main_frame.columnconfigure(1, weight=0)
         self.main_frame.rowconfigure(0, weight=1)
 
-        self.dataview_frame = DataFrameTableFrame(self.main_frame)
+        self.dataview_frame = DataFrameTableFrame(self.main_frame, on_row_double_click=self.open_batter_card)
         self.dataview_frame.grid(column=0, row=0, sticky='nsew')
 
         self.run_env_frame = RunEnvironmentFrame(self.main_frame)
@@ -181,5 +183,10 @@ class RatingsComparisonApp(tk.Toplevel):
         )
         self.dataview_frame.set_dataframe(ratings_df)
         del ratings_df
+
+    def open_batter_card(self, row: pd.Series):
+        cid = int(row.get('CID')) if 'CID' in row else None
+        team_select = self.selected_team
+        BatterCard(cid, team_select)
 
 

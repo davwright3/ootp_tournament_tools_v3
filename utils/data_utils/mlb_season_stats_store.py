@@ -21,7 +21,7 @@ class MLBSeasonStatsStore:
     def _load_stats_dataframe(self):
         """Load stats dataframe if it exists."""
         file_path = get_resource_path(os.path.join(
-            'au_ootp_tournament_utilities_v2/image_assets',
+            'ootp_tournament_tools_v3/image_assets',
             'all_mlb_season_stats.csv')
         )
 

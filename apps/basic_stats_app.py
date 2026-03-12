@@ -153,7 +153,7 @@ class BasicStatsApp(tk.Toplevel):
         self.ratings_comparison_app_select_button = tk.Button(
             self.app_select_frame,
             text="Ratings Comparison",
-            command=open_ratings_comparison
+            command=self.open_ratings_comparison
         )
         self.ratings_comparison_app_select_button.grid(row=1, column=0, sticky="nsew")
 
@@ -204,8 +204,9 @@ class BasicStatsApp(tk.Toplevel):
         team_select = self.team_select_entry.get_selected_team()
         DataVisualizationApp(selected_team=team_select)
 
-def open_ratings_comparison():
-    RatingsComparisonApp()
+    def open_ratings_comparison(self):
+        team_select = self.team_select_entry.get_selected_team()
+        RatingsComparisonApp(selected_team=team_select)
 
 def open_batter_slideshow():
     BatterSlideshowApp()
