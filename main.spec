@@ -8,7 +8,7 @@ a = Analysis(
     pathex=['.'],
     binaries=[],
     datas=[
-       ('image_assets', 'au_ootp_tournament_utilities_v2\\image_assets'),
+       ('image_assets', 'ootp_tournament_tools_v3\\image_assets'),
        ('settings_default.ini', '.'),
        ('README.md', '.')],
     hiddenimports=hidden,
