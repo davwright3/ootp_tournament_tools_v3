@@ -19,7 +19,7 @@ def generate_basic_team_stats_df(
                'HP', 'BB', 'IBB', 'SF', 'SB', 'RC', 'ZR', 'PO', 'A', 'E', 'CS',
                'WAR', 'IPC', 'G_1', 'GS_1', 'W', 'L', 'BF', 'AB_1', 'R_1', 'ER', 'K_1',
                'BB_1', 'IBB_1', 'HA', '1B_1', '2B_1', '3B_1', 'HR_1', 'SV',
-               'SVO', 'SD', 'MD', 'HP_1', 'SH_1', 'SF.1', 'QS', 'IR', 'IRS',
+               'SVO', 'SD', 'MD', 'HP_1', 'SH_1', 'SF_1', 'QS', 'IR', 'IRS',
                'GB', 'FB', 'WAR_1', 'Trny']].groupby(['ORG'],
                                                      as_index=False).sum()
     df1['Win%'] = (df1['W'] / (df1['W'] + df1['L'])).round(3)

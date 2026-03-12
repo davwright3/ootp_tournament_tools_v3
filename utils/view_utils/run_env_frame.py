@@ -11,6 +11,7 @@ class RunEnvironmentFrame(tk.Frame):
 
         self.selected_year = tk.StringVar(value='2010')
         self.selected_stadium = tk.StringVar(value='Heinsohn Ballpark 2025')
+        self.search_stadium = tk.StringVar(value='')
 
         self.stadiums = get_park_factors()
 
@@ -46,9 +47,18 @@ class RunEnvironmentFrame(tk.Frame):
                 print("Error setting run environment")
                 return
 
-        def get_park_list():
+        def get_park_list(event=None, search_name=None):
             stadium_list = list(self.stadiums['name_and_year'])
+            search_term = self.search_stadium.get().lower()
+            if search_term and search_term != '':
+                new_list = stadium_list.copy()
+                filtered = [item for item in new_list if search_term in item.lower()]
+                stadium_list = filtered
+            #TODO Filter stadium list if a search term is given
+            # if search_name:
+            #     stadium_list = stadium_list.
             return stadium_list
+
 
         def set_park_factors():
             try:
@@ -63,6 +73,17 @@ class RunEnvironmentFrame(tk.Frame):
                 self.triples_var.set(row.iloc[0]['3B'])
             except Exception:
                 print("Failed to set park factors")
+
+        def update_stadium_dropdown(event=None):
+            try:
+                park_list = get_park_list()
+                self.stadium_dropdown.configure(values=park_list)
+            except Exception as e:
+                return
+
+        def set_park_factors_callback(choice):
+            set_park_factors()
+
 
         column = 0
         self.rerun_environment_button = tk.Button(self, text='RERUN', command=update_run_environment)
@@ -142,16 +163,19 @@ class RunEnvironmentFrame(tk.Frame):
         set_park_factors()
 
         column = 0
+        self.search_entry = tk.Entry(self, font=fonts.basic_font, textvariable=self.search_stadium)
+        self.search_entry.grid(column=column, row=1, sticky='nsew')
+        column += 1
+        self.search_entry.bind("<KeyRelease>", update_stadium_dropdown)
+
         self.stadium_dropdown = ctk.CTkOptionMenu(
             self,
             values=get_park_list(),
             variable=self.selected_stadium,
+            command=set_park_factors_callback
+
         )
         self.stadium_dropdown.grid(column=column, row=1, sticky='nsew')
-        column += 1
-
-        self.set_park_factors_button = tk.Button(self, text='Set Park Factors', command=set_park_factors)
-        self.set_park_factors_button.grid(column=column, row=1, sticky='nsew')
         column += 1
 
         self.avg_lhb_label = tk.Label(self, text='Avg LHB: ', font=fonts.basic_font)
@@ -200,6 +224,8 @@ class RunEnvironmentFrame(tk.Frame):
 
         self.triples_stat_label = tk.Label(self, textvariable=self.triples_var, font=fonts.basic_font)
         self.triples_stat_label.grid(column=column, row=1, sticky='nsew')
+
+
 
     def get_run_environment_factors(self):
         try:

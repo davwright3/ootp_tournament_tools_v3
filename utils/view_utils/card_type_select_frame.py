@@ -20,7 +20,7 @@ class CardTypeSelectFrame(tk.Frame):
         self.rowconfigure(2, weight=1)
 
         card_types = ['Live', 'NEL', 'Rookie', 'Legend', 'AS', 'FL',
-                      'Snapshot', 'Unsung', 'Hardware']
+                      'Snapshot', 'Unsung', 'Hardware', 'Veteran']
         self.selected_card_types = []
 
         def update_selected_card_types():

@@ -31,7 +31,7 @@ class TeamSelectFrame(tk.Frame):
         def on_enter_pressed(event):
             self.update_list()
 
-        self.entry.bind('<Return>', on_enter_pressed)
+        self.entry.bind('<KeyRelease>', on_enter_pressed)
 
     def update_list(self):
         try:

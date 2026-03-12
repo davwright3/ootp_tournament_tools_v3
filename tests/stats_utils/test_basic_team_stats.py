@@ -33,7 +33,7 @@ def test_team_stats_core_columns_and_filter(monkeypatch, patched_team_data_store
     )
     print(df)
 
-    expected_cols = {'ORG', 'GS.1', 'W', 'L', 'Win%', 'OPS', 'ERA'}
+    expected_cols = {'ORG', 'GS_1', 'W', 'L', 'Win%', 'OPS', 'ERA'}
     assert expected_cols.issubset(df.columns), f"Missing columns: {expected_cols - set(df.columns)}"
 
     assert len(df) == 2
