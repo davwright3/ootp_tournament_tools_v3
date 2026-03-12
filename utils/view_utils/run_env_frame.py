@@ -65,10 +65,10 @@ class RunEnvironmentFrame(tk.Frame):
                 selected_stadium = self.selected_stadium.get()
                 condition = self.stadiums['name_and_year'] == selected_stadium
                 row = self.stadiums.loc[condition]
-                self.avg_lhb_var.set(row.iloc[0]['Avg LHB'])
-                self.avg_rhb_var.set(row.iloc[0]['Avg RHB'])
-                self.hr_lhb_var.set(row.iloc[0]['HR LHB'])
-                self.hr_rhb_var.set(row.iloc[0]['HR RHB'])
+                self.avg_lhb_var.set(row.iloc[0]['BA LH'])
+                self.avg_rhb_var.set(row.iloc[0]['BA RH'])
+                self.hr_lhb_var.set(row.iloc[0]['HR LH'])
+                self.hr_rhb_var.set(row.iloc[0]['HR RH'])
                 self.doubles_var.set(row.iloc[0]['2B'])
                 self.triples_var.set(row.iloc[0]['3B'])
             except Exception:

@@ -17,14 +17,15 @@ class StadiumFactorsStore:
         """Load stats dataframe if it exists."""
         file_path = get_resource_path(os.path.join(
             'au_ootp_tournament_utilities_v2/image_assets',
-            'pt_26_ballparks.csv')
+            'pt_ballparks.txt')
         )
 
         try:
             self._park_factors_dataframe = pd.read_csv(file_path)
+            print("Parks Dataframe loaded")
             self._park_factors_dataframe['name_and_year'] = (
-                    self._park_factors_dataframe['Ballpark'].astype(str) + ' ' +
-                    self._park_factors_dataframe['Year'].astype(str))
+                    self._park_factors_dataframe['park name'].astype(str) + ' ' +
+                    self._park_factors_dataframe['year'].astype(str))
         except FileNotFoundError:
             print("Parks file not found")
 
