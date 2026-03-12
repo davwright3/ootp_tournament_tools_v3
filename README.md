@@ -1,31 +1,29 @@
-# AU OOTP Tournament Tools v2
+# AU OOTP Tournament Tools v3
 
 ## Welcome to the new version of the OOTP Tournament Utility
+
+### The app has been updated to work with OOTP Perfect Team 27.  This verision WILL NOT work with PT 26.  The old version is still available here:  https://github.com/davwright3/ootp_tournament_tools_v2 
 
 This version builds on the lessons learned from the original utility tool
 which can be found here: [GithubLink](https://github.com/davwright3/au_ootp_tournament_utilities)
 
 Please visit this link if you have any feature requests: [Feature Requests](https://docs.google.com/forms/d/1I01oUCsnH41OVFDkNjZeQurVAMr5zBd8103BPOorBUw/edit)
 
-## Current Version 0.6.0
+## Current Version 0.1.1
 
 ### Updated: 
 
-6 Jan 2026
+- v0.1.1
 
-Final release for OOTP Perfect Team 26 Edition
+  - Fixes pathing issue for stadium and league stat factors
 
-- Adds batting and pitching ranking slideshows
+- v0.1.0
 
-  - Batters currently ranked on a custom formula using wOBA and baserunning/fielding ratings
-  - Pitchers ranked on strikeout percentage minus walk and home run percentage formula
+  - Initial release for PT 27 compatibility.  Adjusts calculations and code to account for OOTPD's updated header names in their stat exports and card file.
+  - Adds stadium factors from OOTP Baseball pt_stadiums.txt, increases rating comparison viability by adding 2B/3B splits on the park factors.
+  - Adds filter functionality for stadium selection on the ratings comparison tool.
 
-- Adds ability to customize basic views going back for a set number of days
-
-- Added framework for data visualization
-
-  - Includes custom frames and matplotlib methods for plotting using single and double inputs
-  - Data visualization is planned to be added with first update to OOTP Perfect Team 27 in late March/early April
+    - Also updates the team select filter on the basic stats app to no longer require pressing enter key to filter team names.
 
 
 ## Installation
@@ -138,23 +136,6 @@ Final release for OOTP Perfect Team 26 Edition
 
 <span style="color:violet">ALL DATES ARE TENTATIVE</span>
 
-- <span style="color:red">3 October</span>: Initial Public Beta Release (v0.2.0)
-
-  - File Processing
-  - Basic Batting and Pitching Stats
-
-    - Tools for selecting which stats to see, min/max player ratings and plate appearances, batting side, position, etc.
-
-- <span style="color:red">17 October</span>: Basic Team Stats and Ratings Comparison Tool (v0.3.0)
-
-  - Team win/loss and statistics totals with team selection and highlighting
-  - Comparison tool for cards with user selected weighting 
-  
-- <span style="color:red">31 October</span>: Player Cards (v0.3.0)
-
-  - Player trends over time, overall stats, and stats by selected team
-  - Player ratings viewer and other information
-
 - <span style="color:red">Future</span>: 
 
   - Tournament wide stats trends over time
@@ -248,3 +229,20 @@ New Features:
 - For developers:
 
   - Linting is complete for all base scripts using Flake8 and updated to PEP 8.  This should make it easier for developers to make their updates from the source code.
+
+
+6 Jan 2026
+
+Final release for OOTP Perfect Team 26 Edition
+
+- Adds batting and pitching ranking slideshows
+
+  - Batters currently ranked on a custom formula using wOBA and baserunning/fielding ratings
+  - Pitchers ranked on strikeout percentage minus walk and home run percentage formula
+
+- Adds ability to customize basic views going back for a set number of days
+
+- Added framework for data visualization
+
+  - Includes custom frames and matplotlib methods for plotting using single and double inputs
+  - Data visualization is planned to be added with first update to OOTP Perfect Team 27 in late March/early April
