@@ -1,13 +1,13 @@
 ; --- installer/installer.iss ---
 
 [Setup]
-AppName=AU Tournament Utilities v2
+AppName=AU Tournament Tool v3
 AppVersion=0.0.1
 AppPublisher=AngeredUnicorn
-DefaultDirName={pf}\AU_Tournament_Utils_v2
-DefaultGroupName=AU Tournament Utilities v2
+DefaultDirName={pf}\AU_Tournament_Tool_v3
+DefaultGroupName=AU Tournament Tool v3
 OutputDir=Output
-OutputBaseFilename=AU_Tournament_v2_Setup
+OutputBaseFilename=AU_Tournament_Tool_v3_Setup
 ArchitecturesInstallIn64BitMode=x64
 Compression=lzma
 SolidCompression=yes
