@@ -19,10 +19,10 @@ Source: "..\dist\main.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\AU Tournament Utilities v2"; Filename: "{app}\main.exe"
-Name: "{commondesktop}\AU Tournament Utilities v2"; Filename: "{app}\main.exe"; Tasks: desktopicon
+Name: "{commondesktop}\AU Tournament Utilities v3"; Filename: "{app}\main.exe"; Tasks: desktopicon
 
 [Tasks]
 Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"
 
 [Run]
-Filename: "{app}\main.exe"; Description: "Launch AU Tournament Utilities v2"; Flags: nowait postinstall skipifsilent; Check: FileExists(ExpandConstant('{app}\main.exe'))
+Filename: "{app}\main.exe"; Description: "Launch AU Tournament Utilities v3"; Flags: nowait postinstall skipifsilent; Check: FileExists(ExpandConstant('{app}\main.exe'))
