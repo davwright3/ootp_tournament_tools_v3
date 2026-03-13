@@ -33,7 +33,7 @@ def create_file_from_template(parent):
         loaded_settings['InitialTargetDirs']['starting_target_folder']
     )
     template_path = get_resource_path(
-        os.path.join('au_ootp_tournament_utilities_v2/image_assets',
+        os.path.join('ootp_tournament_tools_v3/image_assets',
                      'data_template.csv'
                      )
     )
