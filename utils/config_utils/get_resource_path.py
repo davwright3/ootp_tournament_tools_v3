@@ -6,6 +6,7 @@ adjusting resource path as necessary.
 """
 import sys
 import os
+from pathlib import Path
 
 
 def get_resource_path(relative_path):
@@ -28,6 +29,17 @@ def get_resource_path(relative_path):
             base_path = sys._MEIPASS
         except AttributeError:
             base_path = os.path.dirname(sys.executable)
+
+        full_path = os.path.join(base_path, relative_path)
+        if not os.path.exists(full_path):
+            # Strip the top level package directory
+            parts = Path(relative_path).parts
+            if len(parts) > 1:
+                stripped = os.path.join(*parts[1:])
+                fallback = os.path.join(base_path, stripped)
+                if os.path.exists(fallback):
+                    return fallback
+
     else:
         # Running in development mode.
         base_path = os.path.abspath(
