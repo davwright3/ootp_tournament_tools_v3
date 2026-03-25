@@ -1,5 +1,6 @@
 """Script for returning calculated basic batting stats."""
 import numpy as np
+from utils.data_utils.data_store import data_store
 
 
 def calc_batting_stats(df, min_pa=0):

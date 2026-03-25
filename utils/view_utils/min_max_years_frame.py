@@ -8,7 +8,7 @@ class MinMaxYearsFrame(tk.Frame):
         super().__init__(parent, relief='groove', bd=3)
 
         self.min_year = tk.StringVar(value='1871')
-        self.max_year = tk.StringVar(value='2025')
+        self.max_year = tk.StringVar(value='2026')
 
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)

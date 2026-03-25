@@ -6,7 +6,7 @@ from utils.data_utils.card_list_store import card_list_store
 
 
 def generate_batter_slide_df(position_select=None, selected_cutoff_days=7):
-    stats_df = generate_basic_batting_stats_df(min_pa=300,
+    stats_df = generate_basic_batting_stats_df(min_pa=400,
                                                position_select=position_select,
                                                cutoff_days=selected_cutoff_days, variant_split_select=True)
     ratings_df = generate_batter_ratings_df(position_select=position_select)
@@ -20,7 +20,7 @@ def generate_batter_slide_df(position_select=None, selected_cutoff_days=7):
     full_df['CatchValue'] = full_df['CatcherAbil'] + full_df['CatcherFrame'] + \
                           full_df['Catcher Arm']
     full_df['BaserunningVal'] = full_df['Speed'] + full_df['Steal Rate'] + \
-                                full_df['Stealing']
+                                full_df['Stealing'] + full_df['Baserunning']
 
     # Get max values for player values
     woba_max = full_df['wOBA'].max()
@@ -29,7 +29,7 @@ def generate_batter_slide_df(position_select=None, selected_cutoff_days=7):
     of_max = max(full_df['OFValue'].max(), 1)
     baserunning_max = full_df['BaserunningVal'].max()
 
-    full_df['woba_score'] = round(((full_df['wOBA'] * 10) ** 3) / ((woba_max * 10) ** 2), 2)
+    full_df['woba_score'] = round(((full_df['wOBA'] * 10) ** 3) / ((woba_max * 10) ** 3), 2)
     full_df['catch_score'] = round((full_df['CatchValue'] ** 2) / (catch_max ** 2), 2)
     full_df['infield_score'] = round((full_df['InfValue'] ** 2) / (infield_max ** 2), 2)
     full_df['outfield_score'] = round((full_df['OFValue'] ** 2) / (of_max ** 2), 2)
