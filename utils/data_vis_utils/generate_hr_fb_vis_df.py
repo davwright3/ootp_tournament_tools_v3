@@ -10,13 +10,13 @@ def generate_hr_bip_vis():
     cards = cards.rename(
         columns={'Card ID': 'CID', '//Card Title': 'Title', 'Power': 'POW',
                  'Power vL': 'vL', 'Power vR': 'vR'})
-    data = data_store.get_data()[['CID', 'PA', 'HR', 'SO', 'BB',
+    data = data_store.get_data()[['CID', 'PA', 'HR', 'K', 'BB',
                                   'IBB', 'HP']].copy()
     data = data.groupby(['CID']).sum()
     data = data[data['PA'] > 1000]
 
     data['BIP'] = (
-            data['PA'] - data['SO'] - data['BB'] - data['HR'] -
+            data['PA'] - data['K'] - data['BB'] - data['HR'] -
             data['HP'] - data['IBB'])
     data['HR/BIP'] = (data['HR'] / data['BIP']).round(3)
 

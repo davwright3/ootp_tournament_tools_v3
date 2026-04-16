@@ -11,7 +11,7 @@ def generate_babip_vis_df():
                                   'BABIP vL': 'vL', 'BABIP vR': 'vR'})
 
     data = data_store.get_data()[
-        ['CID', 'PA', 'AB', 'H', 'HR', 'SO', 'SF']].copy()
+        ['CID', 'PA', 'AB', 'H', 'HR', 'K', 'SF']].copy()
     data = data.groupby(['CID']).sum()
     data = data[data['PA'] >= 1000]
 
@@ -19,7 +19,7 @@ def generate_babip_vis_df():
                 .reset_index(drop=True))
     merge_df['BABIP_calc'] = (
             (merge_df['H'] - merge_df['HR']) /
-            (merge_df['AB'] - merge_df['SO'] - merge_df['HR'] +
+            (merge_df['AB'] - merge_df['K'] - merge_df['HR'] +
              merge_df['SF'])).round(3)
     final_df = merge_df[['BABIP', 'BABIP_calc', 'Title', 'PA', 'vL',
                          'vR', 'BattedBallType']]

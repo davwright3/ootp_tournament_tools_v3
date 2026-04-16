@@ -9,12 +9,12 @@ def generate_bip_rate_df():
     cards = cards.rename(columns={'Card ID': 'CID', '//Card Title': 'Title'})
 
     data = data_store.get_data()[
-        ['CID', 'PA', 'HR', 'SO', 'BB', 'IBB', 'HP']].copy()
+        ['CID', 'PA', 'HR', 'K', 'BB', 'IBB', 'HP']].copy()
     data = data.groupby(['CID']).sum()
     data = data[data['PA'] >= 600]
     # Get total balls in play
     data['BIP'] = (
-            ((data['PA'] - data['SO'] - data['BB'] -
+            ((data['PA'] - data['K'] - data['BB'] -
               data['HP'] - data['IBB']) / data['PA']) * 600).round(0)
 
     data = pd.merge(cards, data, how='left', on=['CID'])
