@@ -120,6 +120,8 @@ def generate_basic_batting_stats_df(
     # If stat list is not empty
     if stat_list:
         return_list = ['CID']
+        if variant_split_select:
+            return_list += ['VLvl']
         return_list.extend(stat_list)
         player_stats = player_stats[return_list]
 
@@ -130,6 +132,7 @@ def generate_basic_batting_stats_df(
     else:
         return_list = ['CID', 'Title', 'Val']
         eligible_player_set = eligible_player_set[return_list]
+
 
     stats_df = pd.merge(
         eligible_player_set,

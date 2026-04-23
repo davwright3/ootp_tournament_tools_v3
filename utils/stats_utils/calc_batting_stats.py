@@ -89,9 +89,14 @@ def calc_batting_stats(df, min_pa=0):
                        'SBpct', 'WARrate', 'ZRrate', 'Fld%']]
         df2 = df2[df2['PA'] >= min_pa]
     else:
-        df2 = df1[['ORG', 'PA', 'AVG', 'OBP', 'SLG', 'OPS', 'wOBA',
-                   'RCrate', 'HRrate', 'Krate', 'BBrate', 'SBrate', 'SBpct',
-                   'WARrate', 'ZRrate', 'Fld%']]
+        if 'VLvl' in df1.columns:
+            df2 = df1[['ORG', 'VLvl', 'PA', 'AVG', 'OBP', 'SLG', 'OPS', 'wOBA',
+                       'RCrate', 'HRrate', 'Krate', 'BBrate', 'SBrate', 'SBpct',
+                       'WARrate', 'ZRrate', 'Fld%']]
+        else:
+            df2 = df1[['ORG', 'PA', 'AVG', 'OBP', 'SLG', 'OPS', 'wOBA',
+                       'RCrate', 'HRrate', 'Krate', 'BBrate', 'SBrate', 'SBpct',
+                       'WARrate', 'ZRrate', 'Fld%']]
 
     del df1
     return df2

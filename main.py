@@ -22,6 +22,7 @@ from utils.view_utils.message_panel import MessagePanel
 from utils.log_utils.tk_handler import TkTextHandler
 from apps.file_processing_app import FileProcessingApp
 from apps.basic_stats_app import BasicStatsApp
+from apps.modeling import PerfectTeamModeling
 
 root = logging.getLogger()
 root.setLevel(logging.INFO)
@@ -214,6 +215,25 @@ class MainApp(tk.Tk):
             column=main_column % 3,
             sticky="nsew"
         )
+        main_row += 1
+        main_column += 1
+
+        if not getattr(sys, 'frozen', False):
+            self.basic_modeling_button = tk.Button(
+                self.buttons_frame,
+                text="Modeling",
+                command=open_modeling_app,
+                padx=5,
+                pady=5,
+            )
+            self.basic_modeling_button.grid(
+                row=int(main_row / 3),
+                column=main_column % 3,
+                sticky="nsew"
+            )
+        main_row += 1
+        main_column += 1
+
         main_row += 1
         main_column += 1
 
@@ -413,6 +433,9 @@ def open_basic_stats_app():
     logging.info("Opening basic stats app..")
     BasicStatsApp()
 
+def open_modeling_app():
+    logging.info("Opening modeling app..")
+    PerfectTeamModeling()
 
 if __name__ == "__main__":
     app = MainApp()

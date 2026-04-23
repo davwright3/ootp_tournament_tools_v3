@@ -11,6 +11,7 @@ def select_load_stats_data_file(parent, loaded_file_var, file_loaded_bool):
     Select the file to be loaded into DataFrame.
     :param parent: Parent window, tkTkToplevel
     :param loaded_file_var: Variable for displaying selected file, tkStringVar
+    :param file_loaded_bool: Variable for displaying if file was loaded, tkBooleanVar
     """
     logger = logging.getLogger('apps.basic_stats_app.data_utils')
     logger.info('Loading DataFrame')
