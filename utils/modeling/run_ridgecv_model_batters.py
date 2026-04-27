@@ -20,7 +20,8 @@ def run_ridgecv_model(
         model_headers,
         alpha_params,
         cv_params,
-        use_batted_ball_type=False
+        use_batted_ball_type=False,
+        trny_name=None
 ):
     """
     Method for running and saving RidgeCV model.
@@ -116,6 +117,6 @@ def run_ridgecv_model(
     joblib.dump(right_model, right_model_target)
     joblib.dump(right_scalar, right_scaler_target)
 
-    update_model_tracker(model_calc_name, 'ridgecv')
+    update_model_tracker(model_calc_name, 'ridgecv', trny_name)
 
 

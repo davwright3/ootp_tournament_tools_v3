@@ -8,7 +8,7 @@ import customtkinter as ctk
 
 class CardTypeSelectFrame(tk.Frame):
     def __init__(self, parent):
-        super().__init__(parent)
+        super().__init__(parent, relief='groove', bd=3)
 
         # Configure rows and columns
         self.columnconfigure(0, weight=1)
