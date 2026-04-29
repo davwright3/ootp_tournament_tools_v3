@@ -13,6 +13,8 @@ from utils.view_utils.card_type_select_frame import CardTypeSelectFrame
 from utils.view_utils.batting_side_select_frame import BattingSideSelectFrame
 from utils.config_utils.load_save_settings import get_setting
 from utils.modeling.fit_current_batting_models import fit_current_models
+from utils.view_utils.dataframe_table_frame import DataFrameTableFrame
+from utils.view_utils.run_custom_player_model_frame import CustomPlayerModelFrame
 import json
 from datetime import datetime
 from pathlib import Path
@@ -26,7 +28,8 @@ class ModelDisplayFrame(tk.Frame):
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=0)
         self.columnconfigure(2, weight=0)
-        self.rowconfigure(0, weight=1)
+        self.rowconfigure(0, weight=0)
+        self.rowconfigure(1, weight=1)
 
         self.babip_model_info = tk.StringVar(value='No Info Available')
         self.strikeout_model_info = tk.StringVar(value='No Info Available')
@@ -35,8 +38,8 @@ class ModelDisplayFrame(tk.Frame):
         self.xbh_model_info = tk.StringVar(value='No Info Available')
 
         # Main frame for viewing data
-        self.view_model_results_frame = tk.Frame(self)
-        self.view_model_results_frame.grid(row=0, column=0, sticky="nsew")
+        self.view_model_results_frame = DataFrameTableFrame(self)
+        self.view_model_results_frame.grid(row=0, column=0, sticky="nsew", rowspan=2)
 
         # Frame for options
         self.options_frame = tk.Frame(self)
@@ -115,6 +118,12 @@ class ModelDisplayFrame(tk.Frame):
 
         self.xbh_model_info_label = tk.Label(self.model_info_frame, textvariable=self.xbh_model_info)
         self.xbh_model_info_label.grid(row=model_info_frame_row, column=0, sticky="nsew")
+        # End model info frame
+
+        # Custom model frame
+        self.custom_model_frame = CustomPlayerModelFrame(self)
+        self.custom_model_frame.grid(row=1, column=1, columnspan=2, sticky="nsew")
+
 
 
         self.update_model_info_display()
@@ -127,7 +136,7 @@ class ModelDisplayFrame(tk.Frame):
         selected_batter_side = self.batting_side_select_frame.get_selected_side()
         selected_card_type = self.card_type_select_frame.get_selected_card_types()
 
-        fit_current_models(
+        model_df = fit_current_models(
             min_value=min_rating,
             max_value=max_rating,
             min_year=selected_min_year,
@@ -137,6 +146,8 @@ class ModelDisplayFrame(tk.Frame):
             batter_side_select=selected_batter_side,
             card_type_select=selected_card_type,
         )
+
+        self.view_model_results_frame.set_dataframe(model_df)
 
     def update_model_info_display(self):
         target_folder = get_setting('InitialTargetDirs', 'starting_target_folder')

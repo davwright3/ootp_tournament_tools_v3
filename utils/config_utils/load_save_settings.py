@@ -94,5 +94,8 @@ def reload_settings() -> None:
     global _settings
     _settings = _load_settings()
 
+def get_target_data_folder():
+    return get_setting('InitialTargetDirs', 'starting_target_folder')
+
 
 settings = _settings
