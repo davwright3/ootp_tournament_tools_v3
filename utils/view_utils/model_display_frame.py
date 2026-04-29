@@ -4,14 +4,15 @@ To be used with the model app.
 """
 import tkinter as tk
 
-from utils.modeling.fit_current_models import fit_current_models
+from utils.modeling.fit_current_batting_models import fit_current_models
 from utils.view_utils.position_select_frame import PositionSelectFrame
+from utils.view_utils.search_frame import SearchFrame
 from utils.view_utils.min_max_rating_frame import MinMaxFrame
 from utils.view_utils.min_max_years_frame import MinMaxYearsFrame
 from utils.view_utils.card_type_select_frame import CardTypeSelectFrame
 from utils.view_utils.batting_side_select_frame import BattingSideSelectFrame
 from utils.config_utils.load_save_settings import get_setting
-from utils.modeling.fit_current_models import fit_current_models
+from utils.modeling.fit_current_batting_models import fit_current_models
 import json
 from datetime import datetime
 from pathlib import Path
@@ -44,6 +45,10 @@ class ModelDisplayFrame(tk.Frame):
         options_frame_row = 0
         self.run_model_button = tk.Button(self.options_frame, text="Run Model", command=self.run_model)
         self.run_model_button.grid(row=options_frame_row, column=0, sticky="nsew")
+        options_frame_row += 1
+
+        self.player_search_input = SearchFrame(self.options_frame)
+        self.player_search_input.grid(row=options_frame_row, column=0, sticky="nsew")
         options_frame_row += 1
 
         self.min_max_value_frame = MinMaxFrame(self.options_frame)
@@ -117,6 +122,7 @@ class ModelDisplayFrame(tk.Frame):
     def run_model(self):
         min_rating, max_rating = self.min_max_value_frame.get_min_max_rating()
         selected_min_year, selected_max_year = self.min_max_years_frame.get_min_max_years()
+        selected_search_name = self.player_search_input.get_search_term()
         selected_position = self.position_select_frame.get_position_select()
         selected_batter_side = self.batting_side_select_frame.get_selected_side()
         selected_card_type = self.card_type_select_frame.get_selected_card_types()
@@ -126,6 +132,7 @@ class ModelDisplayFrame(tk.Frame):
             max_value=max_rating,
             min_year=selected_min_year,
             max_year=selected_max_year,
+            name_search=selected_search_name,
             position_select=selected_position,
             batter_side_select=selected_batter_side,
             card_type_select=selected_card_type,

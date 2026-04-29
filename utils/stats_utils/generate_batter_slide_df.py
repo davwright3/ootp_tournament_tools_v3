@@ -6,7 +6,7 @@ from utils.data_utils.card_list_store import card_list_store
 
 
 def generate_batter_slide_df(position_select=None, selected_cutoff_days=7):
-    stats_df = generate_basic_batting_stats_df(min_pa=400,
+    stats_df = generate_basic_batting_stats_df(min_pa=600,
                                                position_select=position_select,
                                                cutoff_days=selected_cutoff_days, variant_split_select=True)
     ratings_df = generate_batter_ratings_df(position_select=position_select)
