@@ -31,11 +31,18 @@ class ModelDisplayFrame(tk.Frame):
         self.rowconfigure(0, weight=0)
         self.rowconfigure(1, weight=1)
 
+
         self.babip_model_info = tk.StringVar(value='No Info Available')
+        self.babip_model_scores_info = tk.StringVar(value='No Info Available')
         self.strikeout_model_info = tk.StringVar(value='No Info Available')
+        self.strikeout_model_scores_info = tk.StringVar(value='No Info Available')
         self.walk_model_info = tk.StringVar(value='No Info Available')
+        self.walk_model_scores_info = tk.StringVar(value='No Info Available')
         self.homerun_model_info = tk.StringVar(value='No Info Available')
+        self.homerun_model_scores_info = tk.StringVar(value='No Info Available')
         self.xbh_model_info = tk.StringVar(value='No Info Available')
+        self.xbh_model_scores_info = tk.StringVar(value='No Info Available')
+
 
         # Main frame for viewing data
         self.view_model_results_frame = DataFrameTableFrame(self)
@@ -80,44 +87,45 @@ class ModelDisplayFrame(tk.Frame):
 
         model_info_frame_row = 0
 
-        self.babip_model_info_name = tk.Label(self.model_info_frame, text="BABIP Model")
+        self.babip_model_info_name = tk.Label(self.model_info_frame, textvariable=self.babip_model_info)
         self.babip_model_info_name.grid(row=model_info_frame_row, column=0, sticky="nsew")
         model_info_frame_row += 1
 
-        self.babip_model_info_label = tk.Label(self.model_info_frame, textvariable=self.babip_model_info)
+        self.babip_model_info_label = tk.Label(self.model_info_frame, textvariable=self.babip_model_scores_info)
         self.babip_model_info_label.grid(row=model_info_frame_row, column=0, sticky="nsew")
         model_info_frame_row += 1
 
-        self.strikeout_model_info_name = tk.Label(self.model_info_frame, text="Strikeout Model")
+        self.strikeout_model_info_name = tk.Label(self.model_info_frame, textvariable=self.strikeout_model_info)
         self.strikeout_model_info_name.grid(row=model_info_frame_row, column=0, sticky="nsew")
         model_info_frame_row += 1
 
-        self.strikeout_model_info_label = tk.Label(self.model_info_frame, textvariable=self.strikeout_model_info)
+        self.strikeout_model_info_label = tk.Label(self.model_info_frame, textvariable=self.strikeout_model_scores_info)
         self.strikeout_model_info_label.grid(row=model_info_frame_row, column=0, sticky="nsew")
         model_info_frame_row += 1
 
-        self.walk_model_info_name = tk.Label(self.model_info_frame, text="Walk Model")
+        self.walk_model_info_name = tk.Label(self.model_info_frame, textvariable=self.walk_model_info)
         self.walk_model_info_name.grid(row=model_info_frame_row, column=0, sticky="nsew")
         model_info_frame_row += 1
 
-        self.walk_model_info_label = tk.Label(self.model_info_frame, textvariable=self.walk_model_info)
+        self.walk_model_info_label = tk.Label(self.model_info_frame, textvariable=self.walk_model_scores_info)
         self.walk_model_info_label.grid(row=model_info_frame_row, column=0, sticky="nsew")
         model_info_frame_row += 1
 
-        self.homerun_model_info_name = tk.Label(self.model_info_frame, text="Home Run Model")
+        self.homerun_model_info_name = tk.Label(self.model_info_frame, textvariable=self.homerun_model_info)
         self.homerun_model_info_name.grid(row=model_info_frame_row, column=0, sticky="nsew")
         model_info_frame_row += 1
 
-        self.homerun_model_info_label = tk.Label(self.model_info_frame, textvariable=self.homerun_model_info)
+        self.homerun_model_info_label = tk.Label(self.model_info_frame, textvariable=self.homerun_model_scores_info)
         self.homerun_model_info_label.grid(row=model_info_frame_row, column=0, sticky="nsew")
         model_info_frame_row += 1
 
-        self.xbh_model_info_name = tk.Label(self.model_info_frame, text="XBH Model")
+        self.xbh_model_info_name = tk.Label(self.model_info_frame, textvariable=self.xbh_model_info)
         self.xbh_model_info_name.grid(row=model_info_frame_row, column=0, sticky="nsew")
         model_info_frame_row += 1
 
-        self.xbh_model_info_label = tk.Label(self.model_info_frame, textvariable=self.xbh_model_info)
+        self.xbh_model_info_label = tk.Label(self.model_info_frame, textvariable=self.xbh_model_scores_info)
         self.xbh_model_info_label.grid(row=model_info_frame_row, column=0, sticky="nsew")
+        model_info_frame_row += 1
         # End model info frame
 
         # Custom model frame
@@ -157,40 +165,55 @@ class ModelDisplayFrame(tk.Frame):
 
         babip_model_trny = model_data['current_babip_tourney_name']
         babip_model_type = model_data['current_babip']
+        babip_model_left_score = model_data['current_left_babip_score']
+        babip_model_right_score = model_data['current_right_babip_score']
         babip_model_date_info = datetime.fromisoformat(model_data['current_babip_runtime'])
-        babip_model_datetime = babip_model_date_info.strftime("%m/%d/%Y %H:%M:%S")
+        babip_model_datetime = babip_model_date_info.strftime("%m/%d %H:%M")
 
-        babip_model_data = f'{babip_model_trny} {babip_model_type} : {babip_model_datetime}'
+        babip_model_data = f'BABIP: {babip_model_trny} {babip_model_type}'
         self.babip_model_info.set(babip_model_data)
+        self.babip_model_scores_info.set(f'{babip_model_datetime } L: {babip_model_left_score}, R: {babip_model_right_score}')
 
         strikeout_model_trny = model_data['current_strikeouts_tourney_name']
         strikeout_model_type = model_data['current_strikeouts']
+        strikeout_model_left_score = model_data['current_left_strikeouts_score']
+        strikeout_model_right_score = model_data['current_right_strikeouts_score']
         strikeout_model_date_info = datetime.fromisoformat(model_data['current_strikeouts_runtime'])
-        strikeout_model_datetime = strikeout_model_date_info.strftime("%m/%d/%Y %H:%M:%S")
+        strikeout_model_datetime = strikeout_model_date_info.strftime("%m/%d/ %H:%M")
 
-        strikeout_model_data = f'{strikeout_model_trny} {strikeout_model_type} : {strikeout_model_datetime}'
+        strikeout_model_data = f'Ks: {strikeout_model_trny} {strikeout_model_type}'
         self.strikeout_model_info.set(strikeout_model_data)
+        self.strikeout_model_scores_info.set(f'{strikeout_model_datetime} L: {strikeout_model_left_score}, R: {strikeout_model_right_score}')
 
         walk_model_trny = model_data['current_walks_tourney_name']
         walk_model_type = model_data['current_walks']
+        walk_model_left_score = model_data['current_left_walks_score']
+        walk_model_right_score = model_data['current_right_walks_score']
         walk_model_date_info = datetime.fromisoformat(model_data['current_walks_runtime'])
-        walk_model_datetime = walk_model_date_info.strftime("%m/%d/%Y %H:%M:%S")
+        walk_model_datetime = walk_model_date_info.strftime("%m/%d %H:%M")
 
-        walk_model_data = f'{walk_model_trny} {walk_model_type} : {walk_model_datetime}'
+        walk_model_data = f'BB: {walk_model_trny} {walk_model_type}'
         self.walk_model_info.set(walk_model_data)
+        self.walk_model_scores_info.set(f'{walk_model_datetime} L: {walk_model_left_score}, R: {walk_model_right_score}')
 
         homerun_model_trny = model_data['current_homeruns_tourney_name']
         homerun_model_type = model_data['current_homeruns']
+        homerun_model_left_score = model_data['current_left_homeruns_score']
+        homerun_model_right_score = model_data['current_right_homeruns_score']
         home_model_date_info = datetime.fromisoformat(model_data['current_homeruns_runtime'])
-        home_model_datetime = home_model_date_info.strftime("%m/%d/%Y %H:%M:%S")
+        home_model_datetime = home_model_date_info.strftime("%m/%d %H:%M")
 
-        homerun_model_data = f'{homerun_model_trny} {homerun_model_type} : {home_model_datetime}'
+        homerun_model_data = f'HR: {homerun_model_trny} {homerun_model_type}'
         self.homerun_model_info.set(homerun_model_data)
+        self.homerun_model_scores_info.set(f'{home_model_datetime} L: {homerun_model_left_score}, R: {homerun_model_right_score}')
 
         xbh_model_trny = model_data['current_xbh_tourney_name']
         xbh_model_type = model_data['current_xbh']
+        xbh_model_left_score = model_data['current_left_xbh_score']
+        xbh_model_right_score = model_data['current_right_xbh_score']
         xbh_model_date_info = datetime.fromisoformat(model_data['current_xbh_runtime'])
-        xbh_model_datetime = xbh_model_date_info.strftime("%m/%d/%Y %H:%M:%S")
+        xbh_model_datetime = xbh_model_date_info.strftime("%m/%d %H:%M:")
 
-        xbh_model_data = f'{xbh_model_trny} {xbh_model_type} : {xbh_model_datetime}'
+        xbh_model_data = f'XBH: {xbh_model_trny} {xbh_model_type}'
         self.xbh_model_info.set(xbh_model_data)
+        self.xbh_model_scores_info.set(f'{xbh_model_datetime} L: {xbh_model_left_score}, R: {xbh_model_right_score}')

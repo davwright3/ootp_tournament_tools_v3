@@ -13,6 +13,9 @@ def run_model_calcs(df, function_name):
         df = generate_hr_df(df)
     elif function_name == 'xbh':
         df = generate_xbh_df(df)
+    elif function_name == 'p_strikeouts':
+        df = generate_pit_strikeouts_df(df)
+
 
     return df
 
@@ -38,4 +41,8 @@ def generate_hr_df(df):
 def generate_xbh_df(df):
     df['XBH'] = df['2B'] + df['3B']
     df['XBH Calc'] = round(df['XBH'] / df['H'], 4)
+    return df
+
+def generate_pit_strikeouts_df(df):
+    df['P_Strikeouts_Calc'] = round(df['K_1'] / df['BF'], 4)
     return df

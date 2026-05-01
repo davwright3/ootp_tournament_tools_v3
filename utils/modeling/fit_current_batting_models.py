@@ -1,6 +1,7 @@
 """Utility for fitting currently stored models for display."""
 from utils.modeling.fit_batters_model import fit_batters_model
 from utils.data_utils.card_list_store import card_list_store
+import pandas as pd
 
 def fit_current_models(
         min_value=40,
@@ -12,7 +13,6 @@ def fit_current_models(
         batter_side_select=None,
         card_type_select=None,
 ):
-    print("Fitting current models...")
     cards = card_list_store.get_card_list().copy()
     cards = cards[cards['Card Value'].between(min_value, max_value)]
     cards = cards[cards['Year'].between(min_year, max_year)]
@@ -35,21 +35,29 @@ def fit_current_models(
     if card_type_select is not None:
         cards = cards[cards['Card Type'].isin(card_type_select)]
 
+    cards['CD'] = cards['CatcherAbil'] + cards['CatcherFrame'] + cards['Catcher Arm']
+    cards['IFD'] = cards['Infield Range'] + cards['Infield Error'] + cards['Infield Arm'] + cards['DP']
+    cards['OFD'] = cards['OF Range'] + cards['OF Error'] + cards['OF Arm']
+
     cards = cards[['Card ID', '//Card Title', 'Card Value', 'Year', 'Bats',
                    'Card Type', 'BABIP', 'BABIP vL', 'BABIP vR', 'Avoid Ks',
                    'Avoid K vL', 'Avoid K vR', 'Power', 'Power vL', 'Power vR',
                    'Gap', 'Gap vL', 'Gap vR', 'Eye', 'Eye vL', 'Eye vR',
-                   'BattedBallType', 'Speed', 'Baserunning']]
+                   'BattedBallType', 'Speed', 'Baserunning', 'Steal Rate',
+                   'Stealing', 'CD', 'IFD', 'OFD']]
+    cards['BattedBallType'] = cards['BattedBallType'].map(
+        {0: 'N', 1: 'GB', 2: 'FB', 3: 'LD'})
+    cards = pd.get_dummies(cards, columns=['BattedBallType'], drop_first=False)
 
-    cards = fit_batters_model(cards, 'babip', 'BABIP_pred', ['BABIP', 'BABIP vL', 'BABIP vR', 'Speed'])
+    cards = fit_batters_model(cards, 'babip', 'BABIP_pred')
     cards['BABIP_pred'] = cards['BABIP_pred'].clip(lower=0)
-    cards = fit_batters_model(cards, 'strikeouts', 'K_pred', ['Avoid Ks', 'Avoid K vL', 'Avoid K vR'])
+    cards = fit_batters_model(cards, 'strikeouts', 'K_pred')
     cards['K_pred'] = cards['K_pred'].clip(lower=0)
-    cards = fit_batters_model(cards, 'walks', 'BB_pred', ['Eye', 'Eye vL', 'Eye vR'])
+    cards = fit_batters_model(cards, 'walks', 'BB_pred')
     cards['BB_pred'] = cards['BB_pred'].clip(lower=0)
-    cards = fit_batters_model(cards, 'homeruns', 'HR_pred', ['Power', 'Power vL', 'Power vR'])
+    cards = fit_batters_model(cards, 'homeruns', 'HR_pred')
     cards['HR_pred'] = cards['HR_pred'].clip(lower=0)
-    cards = fit_batters_model(cards, 'xbh', 'XBH_pred', ['Gap', 'Gap vL', 'Gap vR', 'Baserunning', 'Speed'])
+    cards = fit_batters_model(cards, 'xbh', 'XBH_pred')
     cards['XBH_pred'] = cards['XBH_pred'].clip(lower=0)
 
     cards['K/600'] = round(cards['K_pred'] * 600, 2)
@@ -68,8 +76,7 @@ def fit_current_models(
     cards['OPS'] = round(cards['OBP'] + cards['SLG'], 3)
     cards['wOBA'] = round(((cards['BB/600'] * .701) + (4 * .722) + (cards['1B/600'] * .895) + (cards['2B/600'] * 1.270) + (cards['3B/600'] * 1.608) + (cards['HR/600'] * 2.072)) / (600 - 12), 3)
 
-    final_df = cards[['//Card Title', 'Card Value', '1B/600', '2B/600', '3B/600', 'HR/600', 'AVG', 'OBP', 'SLG', 'OPS', 'wOBA']]
-    print(cards.head())
+    final_df = cards[['//Card Title', 'Card Value', 'HR/600', 'AVG', 'OBP', 'SLG', 'OPS', 'wOBA', 'K/600', 'BB/600', 'CD', 'IFD', 'OFD']]
     return final_df
 
 

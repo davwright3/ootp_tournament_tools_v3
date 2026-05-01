@@ -22,7 +22,8 @@ from utils.view_utils.message_panel import MessagePanel
 from utils.log_utils.tk_handler import TkTextHandler
 from apps.file_processing_app import FileProcessingApp
 from apps.basic_stats_app import BasicStatsApp
-from apps.modeling import PerfectTeamModeling
+from apps.modeling_home import ModelingHome
+from apps.batter_modeling import BatterModeling
 
 root = logging.getLogger()
 root.setLevel(logging.INFO)
@@ -435,7 +436,7 @@ def open_basic_stats_app():
 
 def open_modeling_app():
     logging.info("Opening modeling app..")
-    PerfectTeamModeling()
+    ModelingHome()
 
 if __name__ == "__main__":
     app = MainApp()

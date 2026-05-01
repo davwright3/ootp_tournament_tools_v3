@@ -6,7 +6,9 @@ from utils.config_utils.load_save_settings import get_setting
 def update_model_tracker(
         model_name,
         model_type,
-        trny_name
+        trny_name,
+        left_model_score,
+        right_model_score,
 ):
     target_folder = f'{get_setting("InitialTargetDirs", "starting_target_folder")}/models'
 
@@ -23,6 +25,8 @@ def update_model_tracker(
 
     model_data[f'current_{model_name}'] = model_type
     model_data[f'current_{model_name}_runtime'] = datetime.datetime.now().isoformat()
+    model_data[f'current_left_{model_name}_score'] = left_model_score
+    model_data[f'current_right_{model_name}_score'] = right_model_score
     if trny_name is not None:
         model_data[f'current_{model_name}_tourney_name'] = trny_name
     else:

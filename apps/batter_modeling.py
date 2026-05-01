@@ -12,9 +12,11 @@ from utils.data_utils.select_load_stats_data_file import select_load_stats_data_
 from utils.data_utils.card_list_store import card_list_store
 from utils.view_utils.model_display_frame import ModelDisplayFrame
 from pathlib import Path
+from utils.view_utils.batter_model_ratings_select_frame import BatterModelRatingsSelectFrame
+from utils.view_utils.model_params_frame import ModelParametersFrame
 
 
-class PerfectTeamModeling(tk.Toplevel):
+class BatterModeling(tk.Toplevel):
     def __init__(self):
         super().__init__()
 
@@ -27,6 +29,13 @@ class PerfectTeamModeling(tk.Toplevel):
 
         card_list_store.load_card_list()
 
+        batter_ratings_list = ['BABIP', 'BABIP vL', 'BABIP vR', 'Avoid Ks',
+                               'Avoid K vL', 'Avoid K vR', 'Gap', 'Gap vL',
+                               'Gap vR', 'Power', 'Power vL', 'Power vR',
+                               'Eye', 'Eye vL', 'Eye vR', 'BattedBallType',
+                               'Speed', 'Baserunning', 'Steal Rate', 'Stealing'
+                               ]
+
         def set_active_buttons(frame):
             buttons = []
             for widget in frame.winfo_children():
@@ -38,6 +47,7 @@ class PerfectTeamModeling(tk.Toplevel):
                     button.configure(state=tk.NORMAL)
                 else:
                     button.configure(state=tk.DISABLED)
+
 
         def set_tourney_name(tourney_path):
             self.tourney_name.set(Path(tourney_path).stem)
@@ -82,6 +92,9 @@ class PerfectTeamModeling(tk.Toplevel):
         main_frame_row += 1
 
         # Set up the run model frame and buttons
+        self.run_model_frame.rowconfigure(0, weight=0)
+        self.run_model_frame.rowconfigure(1, weight=0)
+
         run_model_frame_row = 0
 
         self.file_select_button = tk.Button(
@@ -112,7 +125,8 @@ class PerfectTeamModeling(tk.Toplevel):
         self.run_model_buttons_frame.grid(
             row=run_model_frame_row,
             column=0,
-            sticky="nsew"
+            sticky="nsew",
+            columnspan=2,
         )
 
         # Modeling buttons
@@ -127,51 +141,83 @@ class PerfectTeamModeling(tk.Toplevel):
 
         self.model_babip_button = tk.Button(
             self.run_model_buttons_frame,
-            text='Run BABIP Model',
-            command=self.run_babip_model
+            text='Bat BABIP Model',
+            command=lambda: self.run_bat_model(
+                default_ratings=['BABIP', 'BABIP vL', 'BABIP vR'],
+                stat_columns=['CID', 'PA', 'AB', 'H', 'HR', 'K', 'SF'],
+                model_name='babip',
+                target_name='BABIP Calc',
+            )
         )
         self.model_babip_button.grid(row=run_model_frame_row, column=model_button_frame_column, sticky="nsew")
         model_button_frame_column += 1
 
         self.model_strikeouts_button = tk.Button(
             self.run_model_buttons_frame,
-            text='Run Strikeout Model',
-            command=self.run_strikeout_model
+            text='Bat Strikeout Model',
+            command=lambda: self.run_bat_model(
+                default_ratings=['Avoid Ks', 'Avoid K vL', 'Avoid K vR'],
+                stat_columns=['CID', 'PA', 'K'],
+                model_name='strikeouts',
+                target_name='Strikeout Calc',
+            )
         )
         self.model_strikeouts_button.grid(row=run_model_frame_row, column=model_button_frame_column, sticky="nsew")
         model_button_frame_column += 1
 
         self.model_walks_button = tk.Button(
             self.run_model_buttons_frame,
-            text='Run Walks Model',
-            command=self.run_walks_model
+            text='Bat Walks Model',
+            command=lambda: self.run_bat_model(
+                default_ratings=['Eye', 'Eye vL', 'Eye vR'],
+                stat_columns=['CID', 'PA', 'BB'],
+                model_name='walks',
+                target_name='Walk Calc',
+            )
         )
         self.model_walks_button.grid(row=run_model_frame_row, column=model_button_frame_column, sticky="nsew")
         model_button_frame_column += 1
 
         self.model_home_runs_button = tk.Button(
             self.run_model_buttons_frame,
-            text='Run HR Model',
-            command=self.run_homeruns_model
+            text='Bat HR Model',
+            command=lambda: self.run_bat_model(
+                default_ratings=['Power', 'Power vL', 'Power vR'],
+                stat_columns=['CID', 'PA', 'AB', 'K', 'BB', 'HP', 'IBB',
+                                 'HR'],
+                model_name='homeruns',
+                target_name='HR Calc',
+            )
         )
         self.model_home_runs_button.grid(row=run_model_frame_row, column=model_button_frame_column, sticky="nsew")
         model_button_frame_column += 1
 
         self.model_xbh_button = tk.Button(
             self.run_model_buttons_frame,
-            text='Run XBH Model',
-            command=self.run_xbh_model
+            text='Bat XBH Model',
+            command=lambda: self.run_bat_model(
+                default_ratings=['Gap', 'Gap vL', 'Gap vR'],
+                stat_columns=['CID', 'PA', 'H', '2B', '3B'],
+                model_name='xbh',
+                target_name='XBH Calc',
+            )
         )
         self.model_xbh_button.grid(row=run_model_frame_row, column=model_button_frame_column, sticky="nsew")
         model_button_frame_column += 1
 
-        self.all_models_button = tk.Button(
-            self.run_model_buttons_frame,
-            text='Run All Models',
-            command=self.run_all_ridge_models
+        self.ratings_select_frame = BatterModelRatingsSelectFrame(
+            self.run_model_buttons_frame)
+        self.ratings_select_frame.grid(
+            row=run_model_frame_row,
+            column=model_button_frame_column,
+            sticky="nsew",
+            rowspan=2
         )
-        self.all_models_button.grid(row=run_model_frame_row, column=model_button_frame_column, sticky="nsew")
         model_button_frame_column += 1
+
+        self.model_params_frame = ModelParametersFrame(self.run_model_buttons_frame)
+        self.model_params_frame.grid(row=run_model_frame_row, column=model_button_frame_column,)
+
         run_model_frame_row += 1
 
         # End run model frame
@@ -179,88 +225,50 @@ class PerfectTeamModeling(tk.Toplevel):
 
         set_active_buttons(self.run_model_buttons_frame)
 
-    def run_babip_model(self):
+    def run_bat_model(
+            self,
+            default_ratings,
+            stat_columns,
+            model_name,
+            target_name,
+    ):
+        selected_ratings = self.ratings_select_frame.get_selected_ratings()
+        if len(selected_ratings) == 0:
+            selected_ratings = default_ratings
+        use_bbt = self.ratings_select_frame.get_use_bbt()
+        alphas, cv_set, set_test_size = self.model_params_frame.get_params()
+        columns = ['Card ID', '//Card Title', 'Bats', 'BattedBallType']
+        columns.extend(selected_ratings)
+        print(f'Columns: {columns}')
+        print(columns)
+
         run_ridgecv_model(
-            passed_stat_columns=['CID', 'PA', 'AB', 'H', 'HR', 'K', 'SF'],
-            passed_card_columns=['Card ID', '//Card Title', 'BABIP',
-                                 'BABIP vL',
-                                 'BABIP vR', 'Speed', 'BattedBallType',
-                                 'Bats'],
-            model_calc_name='babip',
-            target_name='BABIP Calc',
-            model_headers=['BABIP', 'BABIP vL', 'BABIP vR', 'Speed'],
-            alpha_params=[0.1, 1, 10, 100],
-            cv_params=3,
+            passed_stat_columns=stat_columns,
+            passed_card_columns=columns,
+            model_calc_name=model_name,
+            target_name=target_name,
+            model_headers=selected_ratings,
+            alpha_params=alphas,
+            cv_params=cv_set,
+            test_size=set_test_size,
+            player_type='bat',
+            use_batted_ball_type=use_bbt,
             trny_name=self.tourney_name.get()
         ),
         self.view_model_frame.update_model_info_display()
 
-    def run_strikeout_model(self):
-        run_ridgecv_model(
-            passed_stat_columns=['CID', 'PA', 'K'],
-            passed_card_columns=['Card ID', '//Card Title', 'Avoid Ks',
-                                 'Avoid K vL', 'Avoid K vR', 'Eye', 'Eye vL',
-                                 'Eye vR', 'BattedBallType', 'Bats'],
-            model_calc_name='strikeouts',
-            target_name='Strikeout Calc',
-            model_headers=['Avoid Ks', 'Avoid K vL', 'Avoid K vR'],
-            alpha_params=[0.1, 1, 10, 100],
-            cv_params=3,
-            trny_name=self.tourney_name.get()
-        ),
-        self.view_model_frame.update_model_info_display()
-
-    def run_walks_model(self):
-        run_ridgecv_model(
-            passed_stat_columns=['CID', 'PA', 'BB'],
-            passed_card_columns=['Card ID', '//Card Title', 'Avoid Ks',
-                                 'Avoid K vL', 'Avoid K vR', 'Eye', 'Eye vL',
-                                 'Eye vR', 'BattedBallType', 'Bats'],
-            model_calc_name='walks',
-            target_name='Walk Calc',
-            model_headers=['Eye', 'Eye vL', 'Eye vR'],
-            alpha_params=[0.1, 1, 10, 100],
-            cv_params=3,
-            trny_name=self.tourney_name.get()
-        ),
-        self.view_model_frame.update_model_info_display()
-
-    def run_homeruns_model(self):
-        run_ridgecv_model(
-            passed_stat_columns=['CID', 'PA', 'AB', 'K', 'BB', 'HP', 'IBB',
-                                 'HR'],
-            passed_card_columns=['Card ID', '//Card Title', 'Power',
-                                 'Power vL',
-                                 'Power vR', 'BattedBallType', 'Bats'],
-            model_calc_name='homeruns',
-            target_name='HR Calc',
-            model_headers=['Power', 'Power vL', 'Power vR'],
-            alpha_params=[0.1, 1, 10, 100],
-            cv_params=3,
-            trny_name=self.tourney_name.get()
-        ),
-        self.view_model_frame.update_model_info_display()
-
-    def run_xbh_model(self):
-        run_ridgecv_model(
-            passed_stat_columns=['CID', 'PA', 'H', '2B', '3B'],
-            passed_card_columns=['Card ID', '//Card Title', 'Gap', 'Gap vL',
-                                 'Gap vR',
-                                 'Baserunning', 'Speed', 'Bats'],
-            model_calc_name='xbh',
-            target_name='XBH Calc',
-            model_headers=['Gap', 'Gap vL', 'Gap vR', 'Baserunning', 'Speed'],
-            alpha_params=[0.1, 1, 10, 100],
-            cv_params=3,
-            trny_name=self.tourney_name.get()
-        ),
-        self.view_model_frame.update_model_info_display()
-
-    def run_all_ridge_models(self):
-        self.run_babip_model(),
-        self.run_strikeout_model(),
-        self.run_walks_model(),
-        self.run_homeruns_model(),
-        self.run_xbh_model(),
-        self.view_model_frame.update_model_info_display()
-
+    # Migrate to pitcher modeling
+    # def run_pit_strikeout_model(self):
+    #     run_ridgecv_model(
+    #         passed_stat_columns=['CID', 'IP', 'BF', 'K_1'],
+    #         passed_card_columns=['Card ID', '//Card Title', 'BABIP', 'Stuff',
+    #                              'Stuff vL', 'Stuff vR', 'Throws'],
+    #         model_calc_name='p_strikeouts',
+    #         target_name='P_Strikeouts_Calc',
+    #         model_headers=['Stuff', 'Stuff vL', 'Stuff vR'],
+    #         alpha_params=[0.1, 1, 10, 100],
+    #         cv_params=3,
+    #         player_type='pit',
+    #         trny_name=self.tourney_name.get()
+    #     ),
+    #     self.view_model_frame.update_model_info_display()
