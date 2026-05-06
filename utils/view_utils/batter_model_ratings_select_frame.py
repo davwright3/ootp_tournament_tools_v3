@@ -21,7 +21,7 @@ class BatterModelRatingsSelectFrame(tk.Frame):
         self.selected_ratings = []
         self.use_batted_ball_type = tk.BooleanVar(value=False)
 
-        def set_active_stats():
+        def set_active_ratings():
             self.selected_ratings.clear()
             for child in self.winfo_children():
                 if isinstance(child, CTkCheckBox):
@@ -40,7 +40,7 @@ class BatterModelRatingsSelectFrame(tk.Frame):
                 text=rating,
                 onvalue=rating,
                 offvalue='off',
-                command=set_active_stats
+                command=set_active_ratings
             )
             checkbox.grid(row=item // 6 + 1, column=item % 6, padx=1, pady=1)
             item += 1

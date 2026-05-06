@@ -46,7 +46,7 @@ class CustomPlayerModelFrame(tk.Frame):
 
 
         self.label = tk.Label(self, text="Custom Player Model")
-        self.label.grid(row=0, column=0, sticky='nsew')
+        self.label.grid(row=0, column=0, columnspan=4, sticky='nsew')
 
         self.avoidk_label = tk.Label(self, text="Avoidk")
         self.avoidk_label.grid(row=2, column=0, sticky='nsew')

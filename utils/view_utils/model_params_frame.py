@@ -95,4 +95,4 @@ class ModelParametersFrame(tk.Frame):
                 test_size = 0.2
 
 
-            return alphas, cv, test_size
+            return alphas, cv, test_size, self.selected_model.get()

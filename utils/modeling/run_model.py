@@ -23,6 +23,7 @@ def run_ridgecv_model(
         cv_params,
         test_size,
         player_type,
+        model_type=None,
         use_batted_ball_type=False,
         trny_name=None,
 ):
@@ -41,6 +42,7 @@ def run_ridgecv_model(
     use_batted_ball_type = use_batted_ball_type
     # Get the loaded data file
     data = data_store.get_data().copy()
+    card_list_store.load_card_list()
     cards = card_list_store.get_card_list().copy()
 
     stat_columns = passed_stat_columns
@@ -90,7 +92,7 @@ def run_ridgecv_model(
         selected_headers = model_headers
         print(f'Selected Headers: {selected_headers}')
 
-    # Run the left model
+    # Split and scale the data
     x_model_left = model_df_left[selected_headers]
     y_model_left = model_df_left[target_name]
 
@@ -99,18 +101,6 @@ def run_ridgecv_model(
     x_train_left_scaled = left_scalar.fit_transform(x_train_left)
     x_test_left_scaled = left_scalar.transform(x_test_left)
 
-    left_model = RidgeCV(alphas=alpha_params, cv=cv_params)
-    left_model.fit(x_train_left_scaled, y_train_left)
-
-    y_pred_left = left_model.predict(x_test_left_scaled)
-    left_model_score = round(left_model.score(x_test_left_scaled, y_test_left), 3)
-
-    left_model_coeffs = left_model.coef_.flatten()
-    for name, importance in zip(x_model_left.columns, left_model_coeffs):
-        print(f'{name}: {importance}')
-    print('Left model score: ', left_model_score)
-
-    # Run right model
     x_model_right = model_df_right[selected_headers]
     y_model_right = model_df_right[target_name]
 
@@ -119,8 +109,29 @@ def run_ridgecv_model(
     x_train_right_scaled = right_scalar.fit_transform(x_train_right)
     x_test_right_scaled = right_scalar.transform(x_test_right)
 
-    right_model = RidgeCV(alphas=alpha_params, cv=cv_params)
-    right_model.fit(x_train_right_scaled, y_train_right)
+    # Run the models
+    if model_type == 'RidgeCV':
+        left_model = RidgeCV(alphas=alpha_params, cv=cv_params)
+        left_model.fit(x_train_left_scaled, y_train_left)
+
+        right_model = RidgeCV(alphas=alpha_params, cv=cv_params)
+        right_model.fit(x_train_right_scaled, y_train_right)
+    else:
+        left_model = RidgeCV(alphas=alpha_params, cv=cv_params)
+        left_model.fit(x_train_left_scaled, y_train_left)
+
+        right_model = RidgeCV(alphas=alpha_params, cv=cv_params)
+        right_model.fit(x_train_right_scaled, y_train_right)
+
+    y_pred_left = left_model.predict(x_test_left_scaled)
+    left_model_score = round(left_model.score(x_test_left_scaled, y_test_left), 3)
+
+    left_model_coeffs = left_model.coef_.flatten()
+    for name, importance in zip(x_model_left.columns, left_model_coeffs):
+        print(f'{name}: {importance}')
+    print('Left model score: ', left_model_score)
+    # Run right model
+
 
     y_pred_right = right_model.predict(x_test_right_scaled)
     right_model_score = round(right_model.score(x_test_right_scaled, y_test_right), 4)

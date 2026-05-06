@@ -3,7 +3,7 @@ from utils.modeling.fit_batters_model import fit_batters_model
 from utils.data_utils.card_list_store import card_list_store
 import pandas as pd
 
-def fit_current_models(
+def fit_current_batting_models(
         min_value=40,
         max_value=105,
         min_year=1860,
@@ -12,6 +12,7 @@ def fit_current_models(
         position_select=None,
         batter_side_select=None,
         card_type_select=None,
+        collection_only=False
 ):
     cards = card_list_store.get_card_list().copy()
     cards = cards[cards['Card Value'].between(min_value, max_value)]
@@ -19,6 +20,9 @@ def fit_current_models(
 
     if name_search is not None:
         cards = cards[cards['//Card Title'].str.contains(name_search, case=False, na=False)]
+
+    if collection_only:
+        cards = cards[cards['owned'] != 0]
 
     if position_select is not None:
         cards = cards[cards[position_select] == 1]

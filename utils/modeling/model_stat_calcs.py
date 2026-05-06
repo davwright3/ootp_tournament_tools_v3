@@ -44,5 +44,5 @@ def generate_xbh_df(df):
     return df
 
 def generate_pit_strikeouts_df(df):
-    df['P_Strikeouts_Calc'] = round(df['K_1'] / df['BF'], 4)
+    df['P_K_Calc'] = round(df['K_1'] / df['BF'], 4)
     return df

@@ -4,7 +4,7 @@ To be used with the model app.
 """
 import tkinter as tk
 
-from utils.modeling.fit_current_batting_models import fit_current_models
+from utils.modeling.fit_current_batting_models import fit_current_batting_models
 from utils.view_utils.position_select_frame import PositionSelectFrame
 from utils.view_utils.search_frame import SearchFrame
 from utils.view_utils.min_max_rating_frame import MinMaxFrame
@@ -12,9 +12,11 @@ from utils.view_utils.min_max_years_frame import MinMaxYearsFrame
 from utils.view_utils.card_type_select_frame import CardTypeSelectFrame
 from utils.view_utils.batting_side_select_frame import BattingSideSelectFrame
 from utils.config_utils.load_save_settings import get_setting
-from utils.modeling.fit_current_batting_models import fit_current_models
+from utils.modeling.fit_current_batting_models import fit_current_batting_models
 from utils.view_utils.dataframe_table_frame import DataFrameTableFrame
 from utils.view_utils.run_custom_player_model_frame import CustomPlayerModelFrame
+from utils.view_utils.scrollable_frame import ScrollableFrame
+from utils.view_utils.select_in_collection_frame import SelectInCollectionFrame
 import json
 from datetime import datetime
 from pathlib import Path
@@ -28,8 +30,8 @@ class ModelDisplayFrame(tk.Frame):
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=0)
         self.columnconfigure(2, weight=0)
-        self.rowconfigure(0, weight=0)
-        self.rowconfigure(1, weight=1)
+        self.rowconfigure(0, weight=1)
+
 
 
         self.babip_model_info = tk.StringVar(value='No Info Available')
@@ -46,44 +48,56 @@ class ModelDisplayFrame(tk.Frame):
 
         # Main frame for viewing data
         self.view_model_results_frame = DataFrameTableFrame(self)
-        self.view_model_results_frame.grid(row=0, column=0, sticky="nsew", rowspan=2)
+        self.view_model_results_frame.grid(row=0, column=0, sticky="nsew")
 
         # Frame for options
-        self.options_frame = tk.Frame(self)
+        self.options_frame = ScrollableFrame(
+            self,
+            yscroll=True,
+            xscroll=False,
+            auto_width=True,
+        )
         self.options_frame.grid(row=0, column=1, sticky="nsew")
 
+        inner_frame = self.options_frame.inner
+
         options_frame_row = 0
-        self.run_model_button = tk.Button(self.options_frame, text="Run Model", command=self.run_model)
+        self.run_model_button = tk.Button(inner_frame, text="Run Model", command=self.run_model)
         self.run_model_button.grid(row=options_frame_row, column=0, sticky="nsew")
         options_frame_row += 1
 
-        self.player_search_input = SearchFrame(self.options_frame)
+        self.player_search_input = SearchFrame(inner_frame)
         self.player_search_input.grid(row=options_frame_row, column=0, sticky="nsew")
         options_frame_row += 1
 
-        self.min_max_value_frame = MinMaxFrame(self.options_frame)
+        self.min_max_value_frame = MinMaxFrame(inner_frame)
         self.min_max_value_frame.grid(row=options_frame_row, column=0, sticky="nsew")
         options_frame_row += 1
 
-        self.min_max_years_frame = MinMaxYearsFrame(self.options_frame)
+        self.min_max_years_frame = MinMaxYearsFrame(inner_frame)
         self.min_max_years_frame.grid(row=options_frame_row, column=0, sticky="nsew")
         options_frame_row += 1
 
-        self.position_select_frame = PositionSelectFrame(self.options_frame)
+        self.position_select_frame = PositionSelectFrame(inner_frame)
         self.position_select_frame.grid(row=options_frame_row, column=0, sticky="nsew")
         options_frame_row += 1
 
-        self.batting_side_select_frame = BattingSideSelectFrame(self.options_frame)
+        self.batting_side_select_frame = BattingSideSelectFrame(inner_frame)
         self.batting_side_select_frame.grid(row=options_frame_row, column=0, sticky="nsew")
         options_frame_row += 1
 
-        self.card_type_select_frame = CardTypeSelectFrame(self.options_frame)
+        self.card_type_select_frame = CardTypeSelectFrame(inner_frame)
         self.card_type_select_frame.grid(row=options_frame_row, column=0, sticky="nsew")
         options_frame_row += 1
 
+        self.collection_frame = SelectInCollectionFrame(inner_frame)
+        self.collection_frame.grid(row=options_frame_row, column=0, sticky="nsew")
+        options_frame_row += 1
+
+
         # Frame for seeing model data
-        self.model_info_frame = tk.Frame(self)
-        self.model_info_frame.grid(row=0, column=2, sticky="nsew")
+        self.model_info_frame = tk.Frame(inner_frame)
+        self.model_info_frame.grid(row=0, column=1, sticky="nsew", rowspan=options_frame_row-1)
 
         model_info_frame_row = 0
 
@@ -129,8 +143,8 @@ class ModelDisplayFrame(tk.Frame):
         # End model info frame
 
         # Custom model frame
-        self.custom_model_frame = CustomPlayerModelFrame(self)
-        self.custom_model_frame.grid(row=1, column=1, columnspan=2, sticky="nsew")
+        self.custom_model_frame = CustomPlayerModelFrame(inner_frame)
+        self.custom_model_frame.grid(row=options_frame_row, column=0, columnspan=2, sticky="nsew")
 
 
 
@@ -143,8 +157,9 @@ class ModelDisplayFrame(tk.Frame):
         selected_position = self.position_select_frame.get_position_select()
         selected_batter_side = self.batting_side_select_frame.get_selected_side()
         selected_card_type = self.card_type_select_frame.get_selected_card_types()
+        collection_only = self.collection_frame.get_collection_only_value()
 
-        model_df = fit_current_models(
+        model_df = fit_current_batting_models(
             min_value=min_rating,
             max_value=max_rating,
             min_year=selected_min_year,
@@ -153,6 +168,7 @@ class ModelDisplayFrame(tk.Frame):
             position_select=selected_position,
             batter_side_select=selected_batter_side,
             card_type_select=selected_card_type,
+            collection_only=collection_only,
         )
 
         self.view_model_results_frame.set_dataframe(model_df)

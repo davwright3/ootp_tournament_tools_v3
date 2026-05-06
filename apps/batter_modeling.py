@@ -5,11 +5,10 @@ Uses scikit learn.
 """
 
 import tkinter as tk
-from utils.modeling.run_ridgecv_model_batters import run_ridgecv_model
+from utils.modeling.run_model import run_ridgecv_model
 from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
 from utils.data_utils.select_load_stats_data_file import select_load_stats_data_file
-from utils.data_utils.card_list_store import card_list_store
 from utils.view_utils.model_display_frame import ModelDisplayFrame
 from pathlib import Path
 from utils.view_utils.batter_model_ratings_select_frame import BatterModelRatingsSelectFrame
@@ -26,15 +25,6 @@ class BatterModeling(tk.Toplevel):
         self.dataframe_loaded_var = tk.StringVar(value="No file selected.")
         self.is_dataframe_loaded = tk.BooleanVar(value=False)
         self.tourney_name = tk.StringVar(value="None")
-
-        card_list_store.load_card_list()
-
-        batter_ratings_list = ['BABIP', 'BABIP vL', 'BABIP vR', 'Avoid Ks',
-                               'Avoid K vL', 'Avoid K vR', 'Gap', 'Gap vL',
-                               'Gap vR', 'Power', 'Power vL', 'Power vR',
-                               'Eye', 'Eye vL', 'Eye vR', 'BattedBallType',
-                               'Speed', 'Baserunning', 'Steal Rate', 'Stealing'
-                               ]
 
         def set_active_buttons(frame):
             buttons = []
@@ -236,11 +226,9 @@ class BatterModeling(tk.Toplevel):
         if len(selected_ratings) == 0:
             selected_ratings = default_ratings
         use_bbt = self.ratings_select_frame.get_use_bbt()
-        alphas, cv_set, set_test_size = self.model_params_frame.get_params()
+        alphas, cv_set, set_test_size, model_type = self.model_params_frame.get_params()
         columns = ['Card ID', '//Card Title', 'Bats', 'BattedBallType']
         columns.extend(selected_ratings)
-        print(f'Columns: {columns}')
-        print(columns)
 
         run_ridgecv_model(
             passed_stat_columns=stat_columns,
@@ -252,6 +240,7 @@ class BatterModeling(tk.Toplevel):
             cv_params=cv_set,
             test_size=set_test_size,
             player_type='bat',
+            model_type=model_type,
             use_batted_ball_type=use_bbt,
             trny_name=self.tourney_name.get()
         ),
