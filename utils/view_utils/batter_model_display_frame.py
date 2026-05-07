@@ -62,7 +62,7 @@ class BatterModelDisplayFrame(tk.Frame):
         inner_frame = self.options_frame.inner
 
         options_frame_row = 0
-        self.run_model_button = tk.Button(inner_frame, text="Run Model", command=self.run_model)
+        self.run_model_button = tk.Button(inner_frame, text="Run Model", command=self.fit_model)
         self.run_model_button.grid(row=options_frame_row, column=0, sticky="nsew")
         options_frame_row += 1
 
@@ -150,7 +150,7 @@ class BatterModelDisplayFrame(tk.Frame):
 
         self.update_model_info_display()
 
-    def run_model(self):
+    def fit_model(self):
         min_rating, max_rating = self.min_max_value_frame.get_min_max_rating()
         selected_min_year, selected_max_year = self.min_max_years_frame.get_min_max_years()
         selected_search_name = self.player_search_input.get_search_term()

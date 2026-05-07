@@ -86,11 +86,13 @@ class PitcherModeling(tk.Toplevel):
         self.run_pitcher_babip_model_button = tk.Button(
             self.run_model_buttons_frame,
             text="Pit BABIP Model",
-            command=lambda: self.run_pitcher_model(
+            command=lambda: (self.run_pitcher_model(
                 ['pBABIP', 'pBABIP vL', 'pBABIP vR'],
                 ['CID', 'IP', 'BF', 'AB_1', 'HA', 'HR_1', 'K_1', 'SF_1'],
                 'p_babip',
                 'P_BABIP_Calc'
+            ),
+                self.display_model_frame.update_model_info()
             )
         )
         self.run_pitcher_babip_model_button.grid(row=0, column=0, sticky="nsew")
@@ -104,7 +106,7 @@ class PitcherModeling(tk.Toplevel):
                 'p_strikeouts',
                 'P_K_Calc'
             ),
-                self.display_model_frame.update_model_info()
+            self.display_model_frame.update_model_info()
             )
         )
         self.run_pitcher_strikeouts_model_button.grid(row=0, column=1, sticky="nsew")
@@ -112,23 +114,28 @@ class PitcherModeling(tk.Toplevel):
         self.run_pitcher_walks_model_button = tk.Button(
             self.run_model_buttons_frame,
             text="Pit BB Model",
-            command=lambda: self.run_pitcher_model(
+            command=lambda: (self.run_pitcher_model(
                 ['Control', 'Control vL', 'Control vR'],
                 ['CID', 'IP', 'BB_1', 'BF'],
                 'p_walks',
                 'P_BB_Calc'
-            )
+            ),
+            self.display_model_frame.update_model_info()
+        )
+
         )
         self.run_pitcher_walks_model_button.grid(row=0, column=2, sticky="nsew")
 
         self.run_pitcher_homerun_model_button = tk.Button(
             self.run_model_buttons_frame,
             text="Pit HR Model",
-            command=lambda: self.run_pitcher_model(
+            command=lambda: (self.run_pitcher_model(
                 ['pHR', 'pHR vL', 'pHR vR'],
                 ['CID', 'IP', 'HR_1', 'BF', 'K_1', 'BB_1', 'HP_1', 'IBB_1'],
                 'p_homeruns',
                 'P_HR_Calc'
+            ),
+            self.display_model_frame.update_model_info()
             )
         )
         self.run_pitcher_homerun_model_button.grid(row=0, column=3, sticky="nsew")
