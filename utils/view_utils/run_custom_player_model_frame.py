@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import ttk
 import pandas as pd
-from utils.modeling.fit_batters_model import fit_batters_model
+from utils.modeling.fit_model import fit_model
 
 
 class CustomPlayerModelFrame(tk.Frame):
@@ -175,11 +175,11 @@ class CustomPlayerModelFrame(tk.Frame):
             player_df['Bats'] = player_df['Bats'].astype(int)
             player_df['BattedBallType'] = player_df['BattedBallType'].astype(int)
 
-            player_df = fit_batters_model(player_df, 'babip', 'BABIP_pred', ['BABIP', 'BABIP vL', 'BABIP vR', 'Speed'])
-            player_df = fit_batters_model(player_df, 'strikeouts', 'K_pred', ['Avoid Ks', 'Avoid K vL', 'Avoid K vR'])
-            player_df = fit_batters_model(player_df, 'walks', 'BB_pred', ['Eye', 'Eye vL', 'Eye vR'])
-            player_df = fit_batters_model(player_df, 'homeruns', 'HR_pred', ['Power', 'Power vL', 'Power vR'])
-            player_df = fit_batters_model(player_df, 'xbh', 'XBH_pred', ['Gap', 'Gap vL', 'Gap vR', 'Baserunning', 'Speed'])
+            player_df = fit_model(player_df, 'babip', 'BABIP_pred', ['BABIP', 'BABIP vL', 'BABIP vR', 'Speed'])
+            player_df = fit_model(player_df, 'strikeouts', 'K_pred', ['Avoid Ks', 'Avoid K vL', 'Avoid K vR'])
+            player_df = fit_model(player_df, 'walks', 'BB_pred', ['Eye', 'Eye vL', 'Eye vR'])
+            player_df = fit_model(player_df, 'homeruns', 'HR_pred', ['Power', 'Power vL', 'Power vR'])
+            player_df = fit_model(player_df, 'xbh', 'XBH_pred', ['Gap', 'Gap vL', 'Gap vR', 'Baserunning', 'Speed'])
             player_df['K_pred'] = player_df['K_pred'].clip(lower=0)
             player_df['BB_pred'] = player_df['BB_pred'].clip(lower=0)
             player_df['HR_pred'] = player_df['HR_pred'].clip(lower=0)

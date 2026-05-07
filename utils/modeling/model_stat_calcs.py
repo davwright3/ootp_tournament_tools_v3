@@ -15,6 +15,13 @@ def run_model_calcs(df, function_name):
         df = generate_xbh_df(df)
     elif function_name == 'p_strikeouts':
         df = generate_pit_strikeouts_df(df)
+    elif function_name == 'p_walks':
+        df = generate_pit_walks_df(df)
+    elif function_name == 'p_homeruns':
+        df = generate_pit_hr_df(df)
+    elif function_name == 'p_babip':
+        df = generate_pit_babip_df(df)
+
 
 
     return df
@@ -45,4 +52,17 @@ def generate_xbh_df(df):
 
 def generate_pit_strikeouts_df(df):
     df['P_K_Calc'] = round(df['K_1'] / df['BF'], 4)
+    return df
+
+def generate_pit_walks_df(df):
+    df['P_BB_Calc'] = round(df['BB_1'] / df['BF'], 4)
+    return df
+
+def generate_pit_hr_df(df):
+    df['BIP'] = df['BF'] - df['K_1'] - df['BB_1'] - df['HP_1'] - df['IBB_1']
+    df['P_HR_Calc'] = round(df['HR_1'] / df['BIP'], 4)
+    return df
+
+def generate_pit_babip_df(df):
+    df['P_BABIP_Calc'] = round((df['HA'] - df['HR_1']) / (df['AB_1'] - df['K_1'] - df['HR_1'] + df['SF_1']), 4)
     return df

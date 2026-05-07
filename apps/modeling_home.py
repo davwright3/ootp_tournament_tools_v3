@@ -2,6 +2,7 @@
 import tkinter as tk
 from apps.batter_modeling import BatterModeling
 from apps.pitcher_modeling import PitcherModeling
+from utils.data_utils.card_list_store import card_list_store
 
 
 class ModelingHome(tk.Toplevel):
@@ -16,6 +17,8 @@ class ModelingHome(tk.Toplevel):
 
         def open_pitcher_modeling():
             PitcherModeling()
+
+        card_list_store.load_card_list()
 
         self.batter_modeling_button = tk.Button(
             self,

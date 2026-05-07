@@ -1,5 +1,5 @@
 """Utility for fitting currently stored models for display."""
-from utils.modeling.fit_batters_model import fit_batters_model
+from utils.modeling.fit_model import fit_model
 from utils.data_utils.card_list_store import card_list_store
 import pandas as pd
 
@@ -53,15 +53,15 @@ def fit_current_batting_models(
         {0: 'N', 1: 'GB', 2: 'FB', 3: 'LD'})
     cards = pd.get_dummies(cards, columns=['BattedBallType'], drop_first=False)
 
-    cards = fit_batters_model(cards, 'babip', 'BABIP_pred')
+    cards = fit_model(cards, 'babip', 'BABIP_pred', 'bat')
     cards['BABIP_pred'] = cards['BABIP_pred'].clip(lower=0)
-    cards = fit_batters_model(cards, 'strikeouts', 'K_pred')
+    cards = fit_model(cards, 'strikeouts', 'K_pred', 'bat')
     cards['K_pred'] = cards['K_pred'].clip(lower=0)
-    cards = fit_batters_model(cards, 'walks', 'BB_pred')
+    cards = fit_model(cards, 'walks', 'BB_pred', 'bat')
     cards['BB_pred'] = cards['BB_pred'].clip(lower=0)
-    cards = fit_batters_model(cards, 'homeruns', 'HR_pred')
+    cards = fit_model(cards, 'homeruns', 'HR_pred', 'bat')
     cards['HR_pred'] = cards['HR_pred'].clip(lower=0)
-    cards = fit_batters_model(cards, 'xbh', 'XBH_pred')
+    cards = fit_model(cards, 'xbh', 'XBH_pred', 'bat')
     cards['XBH_pred'] = cards['XBH_pred'].clip(lower=0)
 
     cards['K/600'] = round(cards['K_pred'] * 600, 2)

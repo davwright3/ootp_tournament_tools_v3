@@ -9,7 +9,7 @@ from utils.modeling.run_model import run_ridgecv_model
 from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
 from utils.data_utils.select_load_stats_data_file import select_load_stats_data_file
-from utils.view_utils.model_display_frame import ModelDisplayFrame
+from utils.view_utils.batter_model_display_frame import BatterModelDisplayFrame
 from pathlib import Path
 from utils.view_utils.batter_model_ratings_select_frame import BatterModelRatingsSelectFrame
 from utils.view_utils.model_params_frame import ModelParametersFrame
@@ -77,7 +77,7 @@ class BatterModeling(tk.Toplevel):
         self.run_model_frame.grid(row=main_frame_row, column=0, sticky="nsew")
         main_frame_row += 1
 
-        self.view_model_frame = ModelDisplayFrame(self.main_frame)
+        self.view_model_frame = BatterModelDisplayFrame(self.main_frame)
         self.view_model_frame.grid(row=main_frame_row, column=0, sticky="nsew")
         main_frame_row += 1
 

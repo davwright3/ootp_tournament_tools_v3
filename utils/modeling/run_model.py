@@ -42,7 +42,6 @@ def run_ridgecv_model(
     use_batted_ball_type = use_batted_ball_type
     # Get the loaded data file
     data = data_store.get_data().copy()
-    card_list_store.load_card_list()
     cards = card_list_store.get_card_list().copy()
 
     stat_columns = passed_stat_columns
@@ -56,7 +55,7 @@ def run_ridgecv_model(
     elif player_type == 'pit':
         data['IPC'] = data['IP'].apply(normalize_innings_pitched)
         data = data.groupby('CID', as_index=False).sum()
-        data = data[data['IPC'] >= 25]
+        data = data[data['IPC'] >= 15]
 
     cards = cards[card_columns]
     cards = cards.rename(columns={'Card ID': 'CID', '//Card Title': 'Title'})

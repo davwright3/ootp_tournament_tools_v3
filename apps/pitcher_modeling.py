@@ -7,6 +7,7 @@ from utils.data_utils.select_load_stats_data_file import select_load_stats_data_
 from utils.modeling.run_model import run_ridgecv_model
 from utils.view_utils.pitcher_model_ratings_select_frame import PitcherModelRatingsFrame
 from utils.view_utils.model_params_frame import ModelParametersFrame
+from utils.view_utils.pitcher_model_display_frame import PitcherModelDisplayFrame
 
 
 class PitcherModeling(tk.Toplevel):
@@ -58,7 +59,7 @@ class PitcherModeling(tk.Toplevel):
         self.run_model_frame = tk.Frame(self.main_frame)
         self.run_model_frame.grid(row=0, column=0, sticky="nsew")
 
-        self.display_model_frame = tk.Frame(self.main_frame)
+        self.display_model_frame = PitcherModelDisplayFrame(self.main_frame)
         self.display_model_frame.grid(row=1, column=0, sticky="nsew")
 
         # Set up the frame for running models
@@ -82,17 +83,55 @@ class PitcherModeling(tk.Toplevel):
         self.run_model_buttons_frame = tk.Frame(self.run_model_frame)
         self.run_model_buttons_frame.grid(row=1, column=0, sticky="nsew")
 
+        self.run_pitcher_babip_model_button = tk.Button(
+            self.run_model_buttons_frame,
+            text="Pit BABIP Model",
+            command=lambda: self.run_pitcher_model(
+                ['pBABIP', 'pBABIP vL', 'pBABIP vR'],
+                ['CID', 'IP', 'BF', 'AB_1', 'HA', 'HR_1', 'K_1', 'SF_1'],
+                'p_babip',
+                'P_BABIP_Calc'
+            )
+        )
+        self.run_pitcher_babip_model_button.grid(row=0, column=0, sticky="nsew")
+
         self.run_pitcher_strikeouts_model_button = tk.Button(
             self.run_model_buttons_frame,
-            text="Run Pitcher Model",
-            command=lambda: self.run_pitcher_model(
+            text="Pit K Model",
+            command=lambda: (self.run_pitcher_model(
                 ['Stuff', 'Stuff vL', 'Stuff vR'],
                 ['CID', 'IP', 'K_1', 'BF'],
                 'p_strikeouts',
                 'P_K_Calc'
+            ),
+                self.display_model_frame.update_model_info()
             )
         )
-        self.run_pitcher_strikeouts_model_button.grid(row=0, column=0, sticky="nsew")
+        self.run_pitcher_strikeouts_model_button.grid(row=0, column=1, sticky="nsew")
+
+        self.run_pitcher_walks_model_button = tk.Button(
+            self.run_model_buttons_frame,
+            text="Pit BB Model",
+            command=lambda: self.run_pitcher_model(
+                ['Control', 'Control vL', 'Control vR'],
+                ['CID', 'IP', 'BB_1', 'BF'],
+                'p_walks',
+                'P_BB_Calc'
+            )
+        )
+        self.run_pitcher_walks_model_button.grid(row=0, column=2, sticky="nsew")
+
+        self.run_pitcher_homerun_model_button = tk.Button(
+            self.run_model_buttons_frame,
+            text="Pit HR Model",
+            command=lambda: self.run_pitcher_model(
+                ['pHR', 'pHR vL', 'pHR vR'],
+                ['CID', 'IP', 'HR_1', 'BF', 'K_1', 'BB_1', 'HP_1', 'IBB_1'],
+                'p_homeruns',
+                'P_HR_Calc'
+            )
+        )
+        self.run_pitcher_homerun_model_button.grid(row=0, column=3, sticky="nsew")
 
         self.ratings_select_frame = PitcherModelRatingsFrame(self.run_model_frame)
         self.ratings_select_frame.grid(row=0, column=2, sticky="nsew", rowspan=2)

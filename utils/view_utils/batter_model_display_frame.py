@@ -23,7 +23,7 @@ from pathlib import Path
 
 
 
-class ModelDisplayFrame(tk.Frame):
+class BatterModelDisplayFrame(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent, bg='light blue', relief='groove', bd=3)
 
