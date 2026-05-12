@@ -23,7 +23,7 @@ def fit_current_pitching_models(
 
 
     if name_search is not None:
-        cards = cards[cards['Name'].str.contains(name_search)]
+        cards = cards[cards['//Card Title'].str.contains(name_search, case=False)]
 
     if pitcher_side_select != 'All':
         if pitcher_side_select == 'R':
@@ -58,6 +58,28 @@ def fit_current_pitching_models(
     cards = fit_model(cards, 'p_strikeouts', 'P_Strikeouts_Calc', 'pit')
     cards = fit_model(cards, 'p_walks', 'P_Walks_Calc', 'pit')
     cards = fit_model(cards, 'p_homeruns', 'P_Homeruns_Calc', 'pit')
+
+    cards['P_BABIP_Calc'] = round(cards['P_BABIP_Calc'], 3)
+    cards['P_Strikeouts_Calc'] = round(cards['P_Strikeouts_Calc'], 3)
+    cards['P_Walks_Calc'] = round(cards['P_Walks_Calc'], 3)
+    cards['P_Walks_Calc'] = cards['P_Walks_Calc'].clip(lower=0.005)
+    cards['Proj BIP'] = 1 - cards['P_Strikeouts_Calc'] - cards['P_Walks_Calc']
+    cards['Proj HR'] = round(cards['P_Homeruns_Calc'] * cards['Proj BIP'], 3)
+    cards['Proj Net BIP'] = round(cards['Proj BIP'] - cards['Proj HR'], 3)
+    cards['Proj Hits'] = round(cards['Proj Net BIP'] * cards['P_BABIP_Calc'], 3)
+    cards['AVG'] = round((cards['Proj Hits'] + cards['Proj HR']) / (1 - cards['P_Walks_Calc']), 3)
+    cards['OBP'] = round(((cards['Proj Hits'] + cards['Proj HR'] + cards['P_Walks_Calc']) / 1), 3)
+    cards['TB'] = round((cards['Proj Hits'] * 1.40) + (cards['Proj HR'] * 4), 3)
+    cards['SLG'] = round(cards['TB'] / (1 - cards['P_Walks_Calc']), 3)
+    cards['Proj HR/600'] = round(cards['Proj HR'] * 600, 1)
+    cards['Proj Score'] = round((cards['P_Strikeouts_Calc'] - (cards['P_Walks_Calc'] + (3 * cards['Proj HR']))), 3)
+
+    cards = cards.rename(columns={'//Card Title': 'Title', 'Card Value': 'Val',
+                                  'P_BABIP_Calc': 'BABIP', 'P_Strikeouts_Calc': 'K Pct',
+                                  'P_Walks_Calc': 'BB Pct', 'Proj Hits': 'Hits',
+                                  'Proj HR/600': 'HR/600', 'Proj Score': 'Score',})
+
+    cards = cards[['Title', 'Val', 'BABIP', 'K Pct', 'BB Pct', 'Hits', 'Proj HR', 'AVG', 'OBP', 'SLG', 'HR/600', 'Score']]
 
     return cards
 
