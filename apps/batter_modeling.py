@@ -5,7 +5,7 @@ Uses scikit learn.
 """
 
 import tkinter as tk
-from utils.modeling.run_model import run_ridgecv_model
+from utils.modeling.run_model import run_model
 from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
 from utils.data_utils.select_load_stats_data_file import select_load_stats_data_file
@@ -225,39 +225,41 @@ class BatterModeling(tk.Toplevel):
         selected_ratings = self.ratings_select_frame.get_selected_ratings()
         if len(selected_ratings) == 0:
             selected_ratings = default_ratings
-        use_bbt = self.ratings_select_frame.get_use_bbt()
-        alphas, cv_set, set_test_size, model_type = self.model_params_frame.get_params()
         columns = ['Card ID', '//Card Title', 'Bats', 'BattedBallType']
         columns.extend(selected_ratings)
+        use_bbt = self.ratings_select_frame.get_use_bbt()
 
-        run_ridgecv_model(
-            passed_stat_columns=stat_columns,
-            passed_card_columns=columns,
-            model_calc_name=model_name,
-            target_name=target_name,
-            model_headers=selected_ratings,
-            alpha_params=alphas,
-            cv_params=cv_set,
-            test_size=set_test_size,
-            player_type='bat',
-            model_type=model_type,
-            use_batted_ball_type=use_bbt,
-            trny_name=self.tourney_name.get()
-        ),
-        self.view_model_frame.update_model_info_display()
+        if self.model_params_frame.get_selected_model() == 'RidgeCV':
+            alphas, cv_set, set_test_size, model_type = self.model_params_frame.get_params()
 
-    # Migrate to pitcher modeling
-    # def run_pit_strikeout_model(self):
-    #     run_ridgecv_model(
-    #         passed_stat_columns=['CID', 'IP', 'BF', 'K_1'],
-    #         passed_card_columns=['Card ID', '//Card Title', 'BABIP', 'Stuff',
-    #                              'Stuff vL', 'Stuff vR', 'Throws'],
-    #         model_calc_name='p_strikeouts',
-    #         target_name='P_Strikeouts_Calc',
-    #         model_headers=['Stuff', 'Stuff vL', 'Stuff vR'],
-    #         alpha_params=[0.1, 1, 10, 100],
-    #         cv_params=3,
-    #         player_type='pit',
-    #         trny_name=self.tourney_name.get()
-    #     ),
-    #     self.view_model_frame.update_model_info_display()
+            run_model(
+                passed_stat_columns=stat_columns,
+                passed_card_columns=columns,
+                model_calc_name=model_name,
+                target_name=target_name,
+                model_headers=selected_ratings,
+                alpha_params=alphas,
+                cv_params=cv_set,
+                test_size=set_test_size,
+                player_type='bat',
+                model_type=model_type,
+                use_batted_ball_type=use_bbt,
+                trny_name=self.tourney_name.get()
+            ),
+            self.view_model_frame.update_model_info_display()
+
+        elif self.model_params_frame.get_selected_model() == 'Linear' or self.model_params_frame.get_selected_model() == 'SVM':
+            set_test_size, model_type = self.model_params_frame.get_params()
+            run_model(
+                passed_stat_columns=stat_columns,
+                passed_card_columns=columns,
+                model_calc_name=model_name,
+                target_name=target_name,
+                model_headers=selected_ratings,
+                test_size=set_test_size,
+                player_type='bat',
+                model_type=model_type,
+                use_batted_ball_type=use_bbt,
+                trny_name=self.tourney_name.get()
+            )
+            self.view_model_frame.update_model_info_display()

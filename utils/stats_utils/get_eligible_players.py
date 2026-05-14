@@ -51,9 +51,11 @@ def get_eligible_players(
             eligible_players[eligible_players['T'] == throws_side])
 
     if selected_search_term is not None:
+        player_list = [item.strip() for item in selected_search_term.split(',')]
+        pattern = '|'.join(player_list)
         eligible_players = (
             eligible_players[eligible_players['//Card Title'].str.contains(
-                selected_search_term, case=False, na=False)])
+                pattern, case=False, na=False)])
 
     eligible_players = eligible_players.rename(
         columns={'Card ID': 'CID', '//Card Title': 'Title',

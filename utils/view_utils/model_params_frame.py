@@ -18,11 +18,10 @@ class ModelParametersFrame(tk.Frame):
         self.columnconfigure(0, weight=1)
 
         def set_model_params_frame():
+            widgets = self.params_input_frame.winfo_children()
+            for widget in widgets:
+                widget.destroy()
             if self.selected_model.get() == 'RidgeCV':
-                widgets = self.params_input_frame.winfo_children()
-                for widget in widgets:
-                    widget.destroy()
-
                 self.alphas_label = tk.Label(self.params_input_frame, text="Alphas")
                 self.alphas_label.grid(row=0, column=0, padx=1, pady=1, columnspan=4)
 
@@ -49,6 +48,20 @@ class ModelParametersFrame(tk.Frame):
 
                 self.test_size_entry = tk.Entry(self.params_input_frame, width=10, textvariable=self.test_size)
                 self.test_size_entry.grid(row=1, column=5, padx=1, pady=1)
+            elif self.selected_model.get() == 'Linear':
+                self.test_size_label = tk.Label(self.params_input_frame, text="Test Size")
+                self.test_size_label.grid(row=0, column=0, padx=1, pady=1)
+
+                self.test_size_entry = tk.Entry(self.params_input_frame, width=10, textvariable=self.test_size)
+                self.test_size_entry.grid(row=1, column=0, padx=1, pady=1)
+
+            elif self.selected_model.get() == 'SVM':
+                self.test_size_label = tk.Label(self.params_input_frame, text="Test Size")
+                self.test_size_label.grid(row=0, column=0, padx=1, pady=1)
+
+                self.test_size_entry = tk.Entry(self.params_input_frame, width=10, textvariable=self.test_size)
+                self.test_size_entry.grid(row=1, column=0, padx=1, pady=1)
+
 
         # Frame for selecting model to use (add new models later)
         self.select_model_frame = tk.Frame(self)
@@ -63,6 +76,24 @@ class ModelParametersFrame(tk.Frame):
 
         )
         self.select_ridge_cv_button.grid(row=0, column=0)
+
+        self.select_linear_reg_button = tk.Radiobutton(
+            self.select_model_frame,
+            text="Linear",
+            variable=self.selected_model,
+            value='Linear',
+            command=set_model_params_frame
+        )
+        self.select_linear_reg_button.grid(row=0, column=1)
+
+        self.select_svm_button = tk.Radiobutton(
+            self.select_model_frame,
+            text="SVM",
+            variable=self.selected_model,
+            value='SVM',
+            command=set_model_params_frame
+        )
+        self.select_svm_button.grid(row=0, column=2)
 
         self.params_input_frame = tk.Frame(self)
         self.params_input_frame.grid(row=1, column=0, padx=10, pady=10)
@@ -96,3 +127,26 @@ class ModelParametersFrame(tk.Frame):
 
 
             return alphas, cv, test_size, self.selected_model.get()
+
+        elif self.selected_model.get() == 'Linear':
+            try:
+                test_size = float(self.test_size.get())
+                if not 0.1 <= test_size <= 0.4:
+                    test_size = 0.2
+            except ValueError:
+                test_size = 0.2
+
+            return test_size, self.selected_model.get()
+
+        elif self.selected_model.get() == 'SVM':
+            try:
+                test_size = float(self.test_size.get())
+                if not 0.1 <= test_size <= 0.4:
+                    test_size = 0.2
+            except ValueError:
+                test_size = 0.2
+
+            return test_size, self.selected_model.get()
+
+    def get_selected_model(self):
+        return self.selected_model.get()

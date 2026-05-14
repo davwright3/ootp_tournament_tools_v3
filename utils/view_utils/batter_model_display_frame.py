@@ -153,7 +153,10 @@ class BatterModelDisplayFrame(tk.Frame):
     def fit_model(self):
         min_rating, max_rating = self.min_max_value_frame.get_min_max_rating()
         selected_min_year, selected_max_year = self.min_max_years_frame.get_min_max_years()
-        selected_search_name = self.player_search_input.get_search_term()
+        if self.player_search_input.get_search_term() is not None:
+            selected_search_name = [item.strip() for item in self.player_search_input.get_search_term().split(',')]
+        else:
+            selected_search_name = None
         selected_position = self.position_select_frame.get_position_select()
         selected_batter_side = self.batting_side_select_frame.get_selected_side()
         selected_card_type = self.card_type_select_frame.get_selected_card_types()

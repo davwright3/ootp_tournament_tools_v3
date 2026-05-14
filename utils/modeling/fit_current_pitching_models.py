@@ -23,7 +23,9 @@ def fit_current_pitching_models(
 
 
     if name_search is not None:
-        cards = cards[cards['//Card Title'].str.contains(name_search, case=False)]
+        print(name_search)
+        pattern = '|'.join(name_search)
+        cards = cards[cards['//Card Title'].str.contains(pattern, case=False)]
 
     if pitcher_side_select != 'All':
         if pitcher_side_select == 'R':
@@ -48,7 +50,7 @@ def fit_current_pitching_models(
         cards = cards[cards['Position'] == 1]
 
     if collection_only is True:
-        cards = cards[cards['onhand'] > 0]
+        cards = cards[cards['owned'] > 0]
 
     cards = cards[['//Card Title', 'Card Value', 'Stuff', 'Stuff vL',
                    'Stuff vR', 'pBABIP', 'pBABIP vL', 'pBABIP vR', 'pHR',
@@ -71,15 +73,17 @@ def fit_current_pitching_models(
     cards['OBP'] = round(((cards['Proj Hits'] + cards['Proj HR'] + cards['P_Walks_Calc']) / 1), 3)
     cards['TB'] = round((cards['Proj Hits'] * 1.40) + (cards['Proj HR'] * 4), 3)
     cards['SLG'] = round(cards['TB'] / (1 - cards['P_Walks_Calc']), 3)
+    cards['OPS'] = round(cards['OBP'] + cards['SLG'], 3)
     cards['Proj HR/600'] = round(cards['Proj HR'] * 600, 1)
-    cards['Proj Score'] = round((cards['P_Strikeouts_Calc'] - (cards['P_Walks_Calc'] + (3 * cards['Proj HR']))), 3)
+    cards['K-BB'] = round(cards['P_Strikeouts_Calc'] - cards['P_Walks_Calc'], 3)
+    cards['Proj Score'] = round((cards['P_Strikeouts_Calc'] - (cards['P_Walks_Calc'] + cards['Proj HR'])), 3)
 
     cards = cards.rename(columns={'//Card Title': 'Title', 'Card Value': 'Val',
                                   'P_BABIP_Calc': 'BABIP', 'P_Strikeouts_Calc': 'K Pct',
                                   'P_Walks_Calc': 'BB Pct', 'Proj Hits': 'Hits',
                                   'Proj HR/600': 'HR/600', 'Proj Score': 'Score',})
 
-    cards = cards[['Title', 'Val', 'BABIP', 'K Pct', 'BB Pct', 'Hits', 'Proj HR', 'AVG', 'OBP', 'SLG', 'HR/600', 'Score']]
+    cards = cards[['Title', 'Val', 'BABIP', 'K Pct', 'BB Pct', 'K-BB', 'AVG', 'OBP', 'SLG', 'OPS', 'HR/600', 'Score']]
 
     return cards
 

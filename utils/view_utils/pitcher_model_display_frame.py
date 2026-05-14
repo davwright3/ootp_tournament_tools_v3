@@ -219,7 +219,10 @@ class PitcherModelDisplayFrame(tk.Frame):
         print("Fitting pitching models")
         min_value, max_value = self.min_max_ratings_frame.get_min_max_rating()
         min_year, max_year = self.min_max_years_frame.get_min_max_years()
-        search_string = self.search_frame.get_search_term()
+        if self.search_frame.get_search_term() is not None:
+            search_string = [item.strip() for item in self.search_frame.get_search_term().split(',')]
+        else:
+            search_string = None
         selected_positions = self.position_select_frame.get_position_select()
         selected_pitcher_side = self.pitcher_side_select_frame.get_pitcher_side_select()
         selected_card_types = self.card_type_select_frame.get_selected_card_types()

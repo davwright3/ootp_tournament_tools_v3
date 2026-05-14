@@ -4,7 +4,7 @@ from pathlib import Path
 from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
 from utils.data_utils.select_load_stats_data_file import select_load_stats_data_file
-from utils.modeling.run_model import run_ridgecv_model
+from utils.modeling.run_model import run_model
 from utils.view_utils.pitcher_model_ratings_select_frame import PitcherModelRatingsFrame
 from utils.view_utils.model_params_frame import ModelParametersFrame
 from utils.view_utils.pitcher_model_display_frame import PitcherModelDisplayFrame
@@ -161,23 +161,58 @@ class PitcherModeling(tk.Toplevel):
             selected_ratings = default_ratings
         columns = ['Card ID', '//Card Title', 'Throws']
         columns.extend(selected_ratings)
-        alphas, cv_set, set_test_size, model_type = self.model_parameters_frame.get_params()
         print(columns)
 
-        run_ridgecv_model(
-            passed_stat_columns=stat_columns,
-            passed_card_columns=columns,
-            model_calc_name=model_name,
-            target_name=target_name,
-            model_headers=selected_ratings,
-            alpha_params=alphas,
-            cv_params=cv_set,
-            test_size=set_test_size,
-            player_type='pit',
-            model_type=model_type,
-            use_batted_ball_type=False,
-            trny_name=self.tourney_name.get()
-        )
+        if self.model_parameters_frame.get_selected_model() == 'RidgeCV':
+            alphas, cv_set, set_test_size, model_type = self.model_parameters_frame.get_params()
+
+            run_model(
+                passed_stat_columns=stat_columns,
+                passed_card_columns=columns,
+                model_calc_name=model_name,
+                target_name=target_name,
+                model_headers=selected_ratings,
+                alpha_params=alphas,
+                cv_params=cv_set,
+                test_size=set_test_size,
+                player_type='pit',
+                model_type=model_type,
+                use_batted_ball_type=False,
+                trny_name=self.tourney_name.get()
+            )
+            self.display_model_frame.update_model_info()
+
+        elif self.model_parameters_frame.get_selected_model() == 'Linear':
+            set_test_size, model_type = self.model_parameters_frame.get_params()
+            run_model(
+                passed_stat_columns=stat_columns,
+                passed_card_columns=columns,
+                model_calc_name=model_name,
+                target_name=target_name,
+                model_headers=selected_ratings,
+                test_size=set_test_size,
+                player_type='pit',
+                model_type=model_type,
+                use_batted_ball_type=False,
+                trny_name=self.tourney_name.get()
+            )
+            self.display_model_frame.update_model_info()
+
+        elif self.model_parameters_frame.get_selected_model() == 'SVM':
+            set_test_size, model_type = self.model_parameters_frame.get_params()
+            run_model(
+                passed_stat_columns=stat_columns,
+                passed_card_columns=columns,
+                model_calc_name=model_name,
+                target_name=target_name,
+                model_headers=selected_ratings,
+                test_size=set_test_size,
+                player_type='pit',
+                model_type=model_type,
+                use_batted_ball_type=False,
+                trny_name=self.tourney_name.get()
+            )
+            self.display_model_frame.update_model_info()
 
 
 

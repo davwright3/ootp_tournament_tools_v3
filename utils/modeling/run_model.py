@@ -2,7 +2,8 @@ from os import mkdir
 import pandas as pd
 from utils.modeling.update_model_tracker import update_model_tracker
 from pathlib import Path
-from sklearn.linear_model import RidgeCV
+from sklearn.linear_model import RidgeCV, LinearRegression
+from sklearn.svm import SVR
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import joblib
@@ -13,16 +14,16 @@ from utils.config_utils.load_save_settings import get_setting
 from utils.stats_utils.normalize_innings_pitched import normalize_innings_pitched
 
 
-def run_ridgecv_model(
+def run_model(
         passed_stat_columns,
         passed_card_columns,
         model_calc_name,
         target_name,
         model_headers,
-        alpha_params,
-        cv_params,
-        test_size,
-        player_type,
+        alpha_params=[0.1, 1, 10, 100],
+        cv_params=3,
+        test_size=0.2,
+        player_type='bat',
         model_type=None,
         use_batted_ball_type=False,
         trny_name=None,
@@ -95,7 +96,7 @@ def run_ridgecv_model(
     x_model_left = model_df_left[selected_headers]
     y_model_left = model_df_left[target_name]
 
-    x_train_left, x_test_left, y_train_left, y_test_left = train_test_split(x_model_left, y_model_left, test_size=0.3, random_state=31)
+    x_train_left, x_test_left, y_train_left, y_test_left = train_test_split(x_model_left, y_model_left, test_size=test_size, random_state=31)
     left_scalar = StandardScaler()
     x_train_left_scaled = left_scalar.fit_transform(x_train_left)
     x_test_left_scaled = left_scalar.transform(x_test_left)
@@ -103,7 +104,7 @@ def run_ridgecv_model(
     x_model_right = model_df_right[selected_headers]
     y_model_right = model_df_right[target_name]
 
-    x_train_right, x_test_right, y_train_right, y_test_right = train_test_split(x_model_right, y_model_right, test_size=0.3, random_state=32)
+    x_train_right, x_test_right, y_train_right, y_test_right = train_test_split(x_model_right, y_model_right, test_size=test_size, random_state=32)
     right_scalar = StandardScaler()
     x_train_right_scaled = right_scalar.fit_transform(x_train_right)
     x_test_right_scaled = right_scalar.transform(x_test_right)
@@ -115,6 +116,23 @@ def run_ridgecv_model(
 
         right_model = RidgeCV(alphas=alpha_params, cv=cv_params)
         right_model.fit(x_train_right_scaled, y_train_right)
+
+    elif model_type == 'Linear':
+        print('Running Linear Regression')
+        left_model = LinearRegression()
+        left_model.fit(x_train_left_scaled, y_train_left)
+
+        right_model = LinearRegression()
+        right_model.fit(x_train_right_scaled, y_train_right)
+
+    elif model_type == 'SVM':
+        print('Running SVR model')
+        left_model = SVR(kernel='linear')
+        left_model.fit(x_train_left_scaled, y_train_left)
+
+        right_model = SVR(kernel='linear')
+        right_model.fit(x_train_right_scaled, y_train_right)
+
     else:
         left_model = RidgeCV(alphas=alpha_params, cv=cv_params)
         left_model.fit(x_train_left_scaled, y_train_left)
@@ -155,6 +173,6 @@ def run_ridgecv_model(
     joblib.dump(right_scalar, right_scaler_target)
     joblib.dump(list(x_test_left.columns), features_target)
 
-    update_model_tracker(model_calc_name, 'ridgecv', trny_name, left_model_score, right_model_score)
+    update_model_tracker(model_calc_name, model_type, trny_name, left_model_score, right_model_score)
 
 

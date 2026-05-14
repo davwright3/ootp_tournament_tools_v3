@@ -53,7 +53,9 @@ def generate_ratings_df(
     if selected_card_types:
         card_df = card_df[card_df['Type'].isin(selected_card_types)]
     if search_term:
-        card_df = card_df[card_df['Title'].str.contains(search_term, case=False, na=False)]
+        player_list = [item.strip() for item in search_term.split(',')]
+        pattern = '|'.join(player_list)
+        card_df = card_df[card_df['Title'].str.contains(pattern, case=False, na=False)]
 
 
     card_df['B'] = card_df['Bats'].apply(

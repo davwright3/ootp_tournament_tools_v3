@@ -186,6 +186,8 @@ class BasicStatsApp(tk.Toplevel):
         )
         self.pitcher_slideshow_button.grid(row=2, column=1, sticky="nsew")
 
+
+
         self.message_panel = MessagePanel(self.main_frame, height=12)
         self.message_panel.grid(row=0, column=1, sticky="nsew")
         attach_panel(self.message_panel, 'apps.basic_stats_app')
