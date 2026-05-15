@@ -23,7 +23,6 @@ from utils.log_utils.tk_handler import TkTextHandler
 from apps.file_processing_app import FileProcessingApp
 from apps.basic_stats_app import BasicStatsApp
 from apps.modeling_home import ModelingHome
-import config
 
 root = logging.getLogger()
 root.setLevel(logging.INFO)
