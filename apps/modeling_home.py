@@ -1,7 +1,9 @@
 """Home page for modeling module."""
+import sys
 import tkinter as tk
-from apps.batter_modeling import BatterModeling
-from apps.pitcher_modeling import PitcherModeling
+if not getattr(sys, 'frozen', False):
+    from apps.batter_modeling import BatterModeling
+    from apps.pitcher_modeling import PitcherModeling
 from utils.data_utils.card_list_store import card_list_store
 
 
