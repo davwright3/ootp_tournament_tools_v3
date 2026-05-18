@@ -7,7 +7,15 @@ from utils.data_utils.card_list_store import card_list_store
 import math
 
 
-def calc_player_win_ratios(num_teams, games_per_round, games_per_finals):
+def calc_player_win_ratios(
+        num_teams,
+        games_per_round,
+        games_per_finals,
+        min_apps=20,
+        min_rating=40,
+        max_rating=105,
+        position_select=None
+):
     print('Calculating player win ratios...')
     print('num_teams', num_teams)
     print('games_per_round', games_per_round)
@@ -65,13 +73,23 @@ def calc_player_win_ratios(num_teams, games_per_round, games_per_finals):
                                     f'R{keys[-3]}% T': 'SF% T'})
 
     result = result.sort_values(by=['App'], ascending=False)
-    result = result[result['App'] >= 50]
+    result = result[result['App'] >= min_apps]
 
-    cards = card_list_store.get_card_list().copy()[['Card ID', '//Card Title', 'Card Value']]
+    cards = card_list_store.get_card_list().copy()
+    if position_select is not None and position_select != 'All':
+        if position_select == 'Pitcher Role':
+            cards = cards[cards['Position'] == 1]
+        else:
+            cards = cards[cards[position_select] == 1]
+
+    cards = cards[['Card ID', '//Card Title', 'Card Value']]
     cards = cards.rename(columns={'Card ID': 'CID', '//Card Title': 'Title', 'Card Value': 'Val'})
 
-    final_result = pd.merge(cards, result, on='CID', how='inner')
+    cards = cards[cards['Val'].between(min_rating, max_rating)]
 
+    final_result = pd.merge(cards, result, on='CID', how='inner')
+    final_result = final_result[['Title', 'Val', 'App', 'SF', 'F', 'CH', 'SF%', 'F%',
+                                 'CH%', 'SF% T', 'F% T', 'CH% T']]
 
     # print(final_result.head(30))
 

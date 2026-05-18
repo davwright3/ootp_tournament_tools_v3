@@ -21,6 +21,7 @@ from apps.view_tourney_splits import DisplayTourneySplits
 from apps.batter_slideshow import BatterSlideshowApp
 from apps.pitcher_slideshow import PitcherSlideshowApp
 from apps.player_win_ratios import PlayerWinRatios
+from apps.lineup_builder import LineupBuilder
 
 
 
@@ -129,6 +130,7 @@ class BasicStatsApp(tk.Toplevel):
         self.app_select_frame.rowconfigure(0, weight=1)
         self.app_select_frame.rowconfigure(1, weight=1)
         self.app_select_frame.rowconfigure(2, weight=1)
+        self.app_select_frame.rowconfigure(3, weight=1)
 
 
         self.batting_app_select_button = tk.Button(
@@ -190,9 +192,16 @@ class BasicStatsApp(tk.Toplevel):
         self.player_win_ratios_button = tk.Button(
             self.app_select_frame,
             text='Player Win Ratios',
-            command=self.open_player_win_ratios
+            command=open_player_win_ratios
         )
         self.player_win_ratios_button.grid(row=2, column=2, sticky="nsew")
+
+        self.lineup_builder_button = tk.Button(
+            self.app_select_frame,
+            text='Lineup Builder',
+            command=open_lineup_builder
+        )
+        self.lineup_builder_button.grid(row=3, column=0, sticky="nsew")
 
 
 
@@ -229,8 +238,11 @@ class BasicStatsApp(tk.Toplevel):
         team_select = self.team_select_entry.get_selected_team()
         RatingsComparisonApp(selected_team=team_select)
 
-    def open_player_win_ratios(self):
-        PlayerWinRatios()
+def open_player_win_ratios():
+    PlayerWinRatios()
+
+def open_lineup_builder():
+    LineupBuilder()
 
 def open_batter_slideshow():
     BatterSlideshowApp()

@@ -12,11 +12,17 @@ class Footer(tk.Frame):
         def open_link(url):
             webbrowser.open_new(url)
 
-        def on_enter(event):
+        def on_github_enter(event):
             self.github_button.configure(bg='violet', cursor='hand2')
 
-        def on_leave(event):
+        def on_github_leave(event):
             self.github_button.configure(bg='lightgray', cursor='')
+
+        def on_paypal_enter(event):
+            self.paypal_button.configure(bg='violet', cursor='')
+
+        def on_paypal_leave(event):
+            self.paypal_button.configure(bg='lightgray', cursor='')
 
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -32,9 +38,25 @@ class Footer(tk.Frame):
         )
         self.au_label.grid(row=0, column=0, sticky="e")
 
+        self.paypal_button_frame = tk.Frame(self, padx=5, pady=5, bg='lightgray')
+        self.paypal_button_frame.grid(row=0, column=1, sticky="e")
+
+        self.paypal_button = tk.Button(
+            self.paypal_button_frame,
+            text="Support the Developer",
+            font=("Arial", 12),
+            padx=5,
+            pady=5,
+            borderwidth=2,
+            command=lambda: webbrowser.open_new(
+                "https://www.paypal.com/donate/?hosted_button_id=GGQLQXG8ZFYWU"
+            )
+        )
+        self.paypal_button.grid(row=0, column=0, sticky="e")
+
         self.github_button_frame = tk.Frame(
             self, padx=5, pady=5, bg='lightgray')
-        self.github_button_frame.grid(row=0, column=1, sticky="e")
+        self.github_button_frame.grid(row=0, column=2, sticky="e")
 
         self.github_button = tk.Button(
             self.github_button_frame,
@@ -49,5 +71,7 @@ class Footer(tk.Frame):
                 "https://github.com/davwright3")
         )
         self.github_button.grid(row=0, column=2, sticky='w')
-        self.github_button.bind("<Enter>", on_enter)
-        self.github_button.bind("<Leave>", on_leave)
+        self.github_button.bind("<Enter>", on_github_enter)
+        self.github_button.bind("<Leave>", on_github_leave)
+        self.paypal_button.bind("<Enter>", on_paypal_enter)
+        self.paypal_button.bind("<Leave>", on_paypal_leave)
