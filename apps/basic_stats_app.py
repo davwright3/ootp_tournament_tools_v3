@@ -20,6 +20,7 @@ from apps.data_visualization import DataVisualizationApp
 from apps.view_tourney_splits import DisplayTourneySplits
 from apps.batter_slideshow import BatterSlideshowApp
 from apps.pitcher_slideshow import PitcherSlideshowApp
+from apps.player_win_ratios import PlayerWinRatios
 
 
 
@@ -186,6 +187,13 @@ class BasicStatsApp(tk.Toplevel):
         )
         self.pitcher_slideshow_button.grid(row=2, column=1, sticky="nsew")
 
+        self.player_win_ratios_button = tk.Button(
+            self.app_select_frame,
+            text='Player Win Ratios',
+            command=self.open_player_win_ratios
+        )
+        self.player_win_ratios_button.grid(row=2, column=2, sticky="nsew")
+
 
 
         self.message_panel = MessagePanel(self.main_frame, height=12)
@@ -220,6 +228,9 @@ class BasicStatsApp(tk.Toplevel):
     def open_ratings_comparison(self):
         team_select = self.team_select_entry.get_selected_team()
         RatingsComparisonApp(selected_team=team_select)
+
+    def open_player_win_ratios(self):
+        PlayerWinRatios()
 
 def open_batter_slideshow():
     BatterSlideshowApp()
