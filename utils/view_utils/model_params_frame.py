@@ -48,14 +48,7 @@ class ModelParametersFrame(tk.Frame):
 
                 self.test_size_entry = tk.Entry(self.params_input_frame, width=10, textvariable=self.test_size)
                 self.test_size_entry.grid(row=1, column=5, padx=1, pady=1)
-            elif self.selected_model.get() == 'Linear':
-                self.test_size_label = tk.Label(self.params_input_frame, text="Test Size")
-                self.test_size_label.grid(row=0, column=0, padx=1, pady=1)
-
-                self.test_size_entry = tk.Entry(self.params_input_frame, width=10, textvariable=self.test_size)
-                self.test_size_entry.grid(row=1, column=0, padx=1, pady=1)
-
-            elif self.selected_model.get() == 'SVM':
+            elif self.selected_model.get() in ('Linear', 'SVM', 'Bayes'):
                 self.test_size_label = tk.Label(self.params_input_frame, text="Test Size")
                 self.test_size_label.grid(row=0, column=0, padx=1, pady=1)
 
@@ -95,6 +88,15 @@ class ModelParametersFrame(tk.Frame):
         )
         self.select_svm_button.grid(row=0, column=2)
 
+        self.select_bayesian_button = tk.Radiobutton(
+            self.select_model_frame,
+            text="Bayesian",
+            variable=self.selected_model,
+            value='Bayes',
+            command=set_model_params_frame
+        )
+        self.select_bayesian_button.grid(row=0, column=3)
+
         self.params_input_frame = tk.Frame(self)
         self.params_input_frame.grid(row=1, column=0, padx=10, pady=10)
 
@@ -128,7 +130,7 @@ class ModelParametersFrame(tk.Frame):
 
             return alphas, cv, test_size, self.selected_model.get()
 
-        elif self.selected_model.get() == 'Linear':
+        elif self.selected_model.get() in ('Linear', 'SVM', 'Bayes'):
             try:
                 test_size = float(self.test_size.get())
                 if not 0.1 <= test_size <= 0.4:
@@ -136,16 +138,7 @@ class ModelParametersFrame(tk.Frame):
             except ValueError:
                 test_size = 0.2
 
-            return test_size, self.selected_model.get()
-
-        elif self.selected_model.get() == 'SVM':
-            try:
-                test_size = float(self.test_size.get())
-                if not 0.1 <= test_size <= 0.4:
-                    test_size = 0.2
-            except ValueError:
-                test_size = 0.2
-
+            print(self.selected_model.get())
             return test_size, self.selected_model.get()
 
     def get_selected_model(self):

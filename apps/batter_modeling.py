@@ -248,7 +248,7 @@ class BatterModeling(tk.Toplevel):
             ),
             self.view_model_frame.update_model_info_display()
 
-        elif self.model_params_frame.get_selected_model() == 'Linear' or self.model_params_frame.get_selected_model() == 'SVM':
+        elif self.model_params_frame.get_selected_model() in ('Linear', 'SVM', 'Bayes'):
             set_test_size, model_type = self.model_params_frame.get_params()
             run_model(
                 passed_stat_columns=stat_columns,

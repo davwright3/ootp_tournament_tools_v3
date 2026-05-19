@@ -1,8 +1,13 @@
 """Utility for fitting currently stored models for display."""
 from utils.modeling.fit_model import fit_model
 from utils.data_utils.card_list_store import card_list_store
+from utils.data_utils.data_store import data_store
 import pandas as pd
 from utils.modeling.fit_batter_models import fit_batter_model
+from datetime import datetime, timedelta
+
+from utils.stats_utils.cull_teams import cull_teams
+
 
 def fit_current_batting_models(
         min_value=40,
@@ -10,12 +15,17 @@ def fit_current_batting_models(
         min_year=1860,
         max_year=2026,
         name_search=None,
+        lookback_days=None,
         position_select=None,
         batter_side_select=None,
         card_type_select=None,
         collection_only=False
 ):
     cards = card_list_store.get_card_list().copy()
+    if lookback_days:
+        cutoff_date = datetime.today() - timedelta(days=lookback_days)
+        cards['date'] = pd.to_datetime(cards['date'], format='%Y-%m-%d')
+        cards = cards[cards['date'] >= cutoff_date]
     cards = cards[cards['Card Value'].between(min_value, max_value)]
     cards = cards[cards['Year'].between(min_year, max_year)]
 

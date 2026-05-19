@@ -17,6 +17,7 @@ from utils.view_utils.dataframe_table_frame import DataFrameTableFrame
 from utils.view_utils.run_custom_player_model_frame import CustomPlayerModelFrame
 from utils.view_utils.scrollable_frame import ScrollableFrame
 from utils.view_utils.select_in_collection_frame import SelectInCollectionFrame
+from utils.view_utils.select_release_date_lookback_frame import SelectReleaseDateFrame
 import json
 from datetime import datetime
 from pathlib import Path
@@ -94,6 +95,10 @@ class BatterModelDisplayFrame(tk.Frame):
         self.collection_frame.grid(row=options_frame_row, column=0, sticky="nsew")
         options_frame_row += 1
 
+        self.lookback_days_frame = SelectReleaseDateFrame(inner_frame)
+        self.lookback_days_frame.grid(row=options_frame_row, column=0, sticky="nsew")
+        options_frame_row += 1
+
 
         # Frame for seeing model data
         self.model_info_frame = tk.Frame(inner_frame)
@@ -140,6 +145,8 @@ class BatterModelDisplayFrame(tk.Frame):
         self.xbh_model_info_label = tk.Label(self.model_info_frame, textvariable=self.xbh_model_scores_info)
         self.xbh_model_info_label.grid(row=model_info_frame_row, column=0, sticky="nsew")
         model_info_frame_row += 1
+
+
         # End model info frame
 
         # Custom model frame
@@ -161,6 +168,7 @@ class BatterModelDisplayFrame(tk.Frame):
         selected_batter_side = self.batting_side_select_frame.get_selected_side()
         selected_card_type = self.card_type_select_frame.get_selected_card_types()
         collection_only = self.collection_frame.get_collection_only_value()
+        selected_lookback_days = self.lookback_days_frame.get_lookback_days()
 
         model_df = fit_current_batting_models(
             min_value=min_rating,
@@ -168,6 +176,7 @@ class BatterModelDisplayFrame(tk.Frame):
             min_year=selected_min_year,
             max_year=selected_max_year,
             name_search=selected_search_name,
+            lookback_days=selected_lookback_days,
             position_select=selected_position,
             batter_side_select=selected_batter_side,
             card_type_select=selected_card_type,

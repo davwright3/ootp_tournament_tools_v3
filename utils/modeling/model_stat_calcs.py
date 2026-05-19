@@ -1,7 +1,6 @@
 """Utility for running calculations for models."""
 import pandas as pd
 
-
 def run_model_calcs(df, function_name):
     if function_name == 'babip':
         df = generate_babip_df(df)
@@ -30,6 +29,7 @@ def run_model_calcs(df, function_name):
 def generate_babip_df(df):
     df['BABIP Calc'] = round(
         (df['H'] - df['HR']) / (df['AB'] - df['K'] - df['HR'] + df['SF']), 4)
+
     return df
 
 def generate_strikeout_df(df):

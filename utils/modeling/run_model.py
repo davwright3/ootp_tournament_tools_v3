@@ -1,8 +1,9 @@
 from os import mkdir
 import pandas as pd
 from utils.modeling.update_model_tracker import update_model_tracker
+from utils.stats_utils.cull_teams import cull_teams
 from pathlib import Path
-from sklearn.linear_model import RidgeCV, LinearRegression
+from sklearn.linear_model import RidgeCV, LinearRegression, BayesianRidge
 from sklearn.svm import SVR
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -42,8 +43,9 @@ def run_model(
 
     use_batted_ball_type = use_batted_ball_type
     # Get the loaded data file
-    data = data_store.get_data().copy()
+    data = cull_teams(data_store.get_data().copy())
     cards = card_list_store.get_card_list().copy()
+    cards = cards[cards['Card Type'] != 1]
 
     stat_columns = passed_stat_columns
     card_columns = passed_card_columns
@@ -131,6 +133,14 @@ def run_model(
         left_model.fit(x_train_left_scaled, y_train_left)
 
         right_model = SVR(kernel='linear')
+        right_model.fit(x_train_right_scaled, y_train_right)
+
+    elif model_type == 'Bayes':
+        print('Running Bayesian Ridge model')
+        left_model = BayesianRidge()
+        left_model.fit(x_train_left_scaled, y_train_left)
+
+        right_model = BayesianRidge()
         right_model.fit(x_train_right_scaled, y_train_right)
 
     else:
