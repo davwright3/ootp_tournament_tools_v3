@@ -11,7 +11,8 @@ def select_target_file():
     their OOTP Baseball Perfect Team card list dump from the card shop in game.
     This is a requirement for the statistics portion of the program to
     function.
-    # :param target_var: The target card list file name for display, tk.StringVar
+    # :param target_var: The target card list file name for
+    display, tk.StringVar
     :return: none
     """
     path = filedialog.askopenfilename(

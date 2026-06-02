@@ -3,6 +3,7 @@ from PyInstaller.utils.hooks import collect_submodules
 hidden = collect_submodules('ootp_tournament_tools_v3')
 hidden += collect_submodules('apps')
 hidden += collect_submodules('utils.view_utils')
+hidden += collect_submodules('image_assets')
 
 a = Analysis(
     ['main.py'],

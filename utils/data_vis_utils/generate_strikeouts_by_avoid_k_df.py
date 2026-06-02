@@ -4,7 +4,8 @@ from utils.data_utils.card_list_store import card_list_store
 
 
 def generate_strikeouts_by_avoid_k_df():
-    cards = card_list_store.get_card_list()[['Card ID', '//Card Title', 'Avoid Ks']].copy()
+    cards = card_list_store.get_card_list()[['Card ID', '//Card Title',
+                                             'Avoid Ks']].copy()
     cards = cards.rename(columns={'Card ID': 'CID', '//Card Title': 'Title'})
 
     data = data_store.get_data()[['CID', 'PA', 'K']].copy()

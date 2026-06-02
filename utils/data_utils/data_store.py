@@ -1,8 +1,6 @@
 """Singleton pattern data frame for basic stats app use."""
 import pandas as pd
 from datetime import datetime as dt
-import numpy as np
-from pandas.api.types import is_datetime64_any_dtype
 
 
 class DataStore:
@@ -60,8 +58,6 @@ class DataStore:
                     continue
 
             return 'na'
-
-
 
     def load_data(self, filepath):
         """

@@ -5,6 +5,7 @@ import pandas as pd
 import os
 from utils.config_utils.get_resource_path import get_resource_path
 
+
 class MLBSeasonStatsStore:
     """
     Singleton pattern for storing MLB season stats.
@@ -31,10 +32,8 @@ class MLBSeasonStatsStore:
             print("Unable to load stats dataframe from", e)
             return
 
-
     def get_stats_dataframe(self):
         return self._stats_dataframe
 
+
 mlb_stats_store = MLBSeasonStatsStore()
-
-

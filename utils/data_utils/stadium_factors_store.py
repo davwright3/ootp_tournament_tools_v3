@@ -23,8 +23,8 @@ class StadiumFactorsStore:
         try:
             self._park_factors_dataframe = pd.read_csv(file_path)
             self._park_factors_dataframe['name_and_year'] = (
-                    self._park_factors_dataframe['park name'].astype(str) + ' ' +
-                    self._park_factors_dataframe['year'].astype(str))
+                    self._park_factors_dataframe['park name'].astype(str) +
+                    ' ' + self._park_factors_dataframe['year'].astype(str))
         except Exception as e:
             print(e)
             print("Parks file not found")
@@ -32,5 +32,5 @@ class StadiumFactorsStore:
     def get_park_factors(self):
         return self._park_factors_dataframe
 
-stadium_factors_store = StadiumFactorsStore()
 
+stadium_factors_store = StadiumFactorsStore()

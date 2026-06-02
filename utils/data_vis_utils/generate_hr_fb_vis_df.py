@@ -24,5 +24,3 @@ def generate_hr_bip_vis():
     final_df = result_df[
         ['POW', 'HR/BIP', 'Title', 'PA', 'vL', 'vR', 'BattedBallType']]
     return final_df
-
-
