@@ -3,11 +3,14 @@ import tkinter as tk
 from pathlib import Path
 from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
-from utils.data_utils.select_load_stats_data_file import select_load_stats_data_file
+from utils.data_utils.select_load_stats_data_file import (
+    select_load_stats_data_file)
 from utils.modeling.run_model import run_model
-from utils.view_utils.pitcher_model_ratings_select_frame import PitcherModelRatingsFrame
+from utils.view_utils.pitcher_model_ratings_select_frame import (
+    PitcherModelRatingsFrame)
 from utils.view_utils.model_params_frame import ModelParametersFrame
-from utils.view_utils.pitcher_model_display_frame import PitcherModelDisplayFrame
+from utils.view_utils.pitcher_model_display_frame import (
+    PitcherModelDisplayFrame)
 
 
 class PitcherModeling(tk.Toplevel):
@@ -35,7 +38,6 @@ class PitcherModeling(tk.Toplevel):
         def set_tourney_name(tourney_path):
             self.tourney_name.set(Path(tourney_path).stem)
             print(self.tourney_name.get())
-
 
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=0)
@@ -77,7 +79,8 @@ class PitcherModeling(tk.Toplevel):
         )
         self.select_file_button.grid(row=0, column=0, sticky="nsew")
 
-        self.selected_file_label = tk.Label(self.run_model_frame, textvariable=self.loaded_file)
+        self.selected_file_label = tk.Label(
+            self.run_model_frame, textvariable=self.loaded_file)
         self.selected_file_label.grid(row=0, column=1, sticky="nsew")
 
         self.run_model_buttons_frame = tk.Frame(self.run_model_frame)
@@ -88,14 +91,16 @@ class PitcherModeling(tk.Toplevel):
             text="Pit BABIP Model",
             command=lambda: (self.run_pitcher_model(
                 ['pBABIP', 'pBABIP vL', 'pBABIP vR'],
-                ['CID', 'IP', 'BF', 'AB_1', 'HA', 'HR_1', 'K_1', 'SF_1'],
+                ['CID', 'IP', 'BF', 'AB_1', 'HA',
+                 'HR_1', 'K_1', 'SF_1'],
                 'p_babip',
                 'P_BABIP_Calc'
             ),
                 self.display_model_frame.update_model_info()
             )
         )
-        self.run_pitcher_babip_model_button.grid(row=0, column=0, sticky="nsew")
+        self.run_pitcher_babip_model_button.grid(
+            row=0, column=0, sticky="nsew")
 
         self.run_pitcher_strikeouts_model_button = tk.Button(
             self.run_model_buttons_frame,
@@ -106,10 +111,11 @@ class PitcherModeling(tk.Toplevel):
                 'p_strikeouts',
                 'P_K_Calc'
             ),
-            self.display_model_frame.update_model_info()
+                self.display_model_frame.update_model_info()
             )
         )
-        self.run_pitcher_strikeouts_model_button.grid(row=0, column=1, sticky="nsew")
+        self.run_pitcher_strikeouts_model_button.grid(
+            row=0, column=1, sticky="nsew")
 
         self.run_pitcher_walks_model_button = tk.Button(
             self.run_model_buttons_frame,
@@ -120,34 +126,40 @@ class PitcherModeling(tk.Toplevel):
                 'p_walks',
                 'P_BB_Calc'
             ),
-            self.display_model_frame.update_model_info()
-        )
+                self.display_model_frame.update_model_info()
+            )
 
         )
-        self.run_pitcher_walks_model_button.grid(row=0, column=2, sticky="nsew")
+        self.run_pitcher_walks_model_button.grid(
+            row=0, column=2, sticky="nsew")
 
         self.run_pitcher_homerun_model_button = tk.Button(
             self.run_model_buttons_frame,
             text="Pit HR Model",
             command=lambda: (self.run_pitcher_model(
                 ['pHR', 'pHR vL', 'pHR vR'],
-                ['CID', 'IP', 'HR_1', 'BF', 'K_1', 'BB_1', 'HP_1', 'IBB_1'],
+                ['CID', 'IP', 'HR_1', 'BF', 'K_1',
+                 'BB_1', 'HP_1', 'IBB_1'],
                 'p_homeruns',
                 'P_HR_Calc'
             ),
-            self.display_model_frame.update_model_info()
+                self.display_model_frame.update_model_info()
             )
         )
-        self.run_pitcher_homerun_model_button.grid(row=0, column=3, sticky="nsew")
+        self.run_pitcher_homerun_model_button.grid(
+            row=0, column=3, sticky="nsew")
 
-        self.ratings_select_frame = PitcherModelRatingsFrame(self.run_model_frame)
-        self.ratings_select_frame.grid(row=0, column=2, sticky="nsew", rowspan=2)
+        self.ratings_select_frame = PitcherModelRatingsFrame(
+            self.run_model_frame)
+        self.ratings_select_frame.grid(
+            row=0, column=2, sticky="nsew", rowspan=2)
 
-        self.model_parameters_frame = ModelParametersFrame(self.run_model_frame)
-        self.model_parameters_frame.grid(row=0, column=3, sticky="nsew", rowspan=2)
+        self.model_parameters_frame = ModelParametersFrame(
+            self.run_model_frame)
+        self.model_parameters_frame.grid(
+            row=0, column=3, sticky="nsew", rowspan=2)
 
         set_active_buttons(self.run_model_buttons_frame)
-
 
     def run_pitcher_model(
             self,
@@ -164,7 +176,8 @@ class PitcherModeling(tk.Toplevel):
         print(columns)
 
         if self.model_parameters_frame.get_selected_model() == 'RidgeCV':
-            alphas, cv_set, set_test_size, model_type = self.model_parameters_frame.get_params()
+            alphas, cv_set, set_test_size, model_type = (
+                self.model_parameters_frame.get_params())
 
             run_model(
                 passed_stat_columns=stat_columns,
@@ -182,8 +195,10 @@ class PitcherModeling(tk.Toplevel):
             )
             self.display_model_frame.update_model_info()
 
-        elif self.model_parameters_frame.get_selected_model() == 'Linear':
-            set_test_size, model_type = self.model_parameters_frame.get_params()
+        elif self.model_parameters_frame.get_selected_model() in (
+                'Linear', 'SVM', 'Bayes', 'Polynomial'):
+            set_test_size, model_type = (
+                self.model_parameters_frame.get_params())
             run_model(
                 passed_stat_columns=stat_columns,
                 passed_card_columns=columns,
@@ -197,23 +212,3 @@ class PitcherModeling(tk.Toplevel):
                 trny_name=self.tourney_name.get()
             )
             self.display_model_frame.update_model_info()
-
-        elif self.model_parameters_frame.get_selected_model() == 'SVM':
-            set_test_size, model_type = self.model_parameters_frame.get_params()
-            run_model(
-                passed_stat_columns=stat_columns,
-                passed_card_columns=columns,
-                model_calc_name=model_name,
-                target_name=target_name,
-                model_headers=selected_ratings,
-                test_size=set_test_size,
-                player_type='pit',
-                model_type=model_type,
-                use_batted_ball_type=False,
-                trny_name=self.tourney_name.get()
-            )
-            self.display_model_frame.update_model_info()
-
-
-
-

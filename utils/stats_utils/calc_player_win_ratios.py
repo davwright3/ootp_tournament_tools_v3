@@ -14,7 +14,8 @@ def calc_player_win_ratios(
         min_apps=20,
         min_rating=40,
         max_rating=105,
-        position_select=None
+        position_select=None,
+        player_search_term=None
 ):
     print('Calculating player win ratios...')
     print('num_teams', num_teams)
@@ -86,6 +87,9 @@ def calc_player_win_ratios(
     cards = cards.rename(columns={'Card ID': 'CID', '//Card Title': 'Title', 'Card Value': 'Val'})
 
     cards = cards[cards['Val'].between(min_rating, max_rating)]
+
+    if player_search_term is not None:
+        cards = cards[cards['Title'].str.contains(player_search_term, case=False)]
 
     final_result = pd.merge(cards, result, on='CID', how='inner')
     final_result = final_result[['Title', 'Val', 'App', 'SF', 'F', 'CH', 'SF%', 'F%',

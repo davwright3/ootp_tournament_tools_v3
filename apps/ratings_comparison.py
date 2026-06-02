@@ -19,9 +19,14 @@ from utils.view_utils.position_select_frame import PositionSelectFrame
 from utils.view_utils.batting_side_select_frame import BattingSideSelectFrame
 from utils.view_utils.pitcher_side_select_frame import PitcherSideSelectFrame
 from utils.view_utils.select_in_collection_frame import SelectInCollectionFrame
+from utils.view_utils.theme_team_aliteration_frame import (
+    ThemeTeamAlliterationFrame)
 from utils.view_utils.general_info_select_frame import GeneralInfoFrame
+from utils.view_utils.select_release_date_lookback_frame import (
+    SelectReleaseDateFrame)
 from utils.view_utils.run_env_frame import RunEnvironmentFrame
 from utils.view_utils.search_frame import SearchFrame
+
 
 class RatingsComparisonApp(tk.Toplevel):
     def __init__(self, selected_team=None):
@@ -50,7 +55,8 @@ class RatingsComparisonApp(tk.Toplevel):
         self.main_frame.columnconfigure(1, weight=0)
         self.main_frame.rowconfigure(0, weight=1)
 
-        self.dataview_frame = DataFrameTableFrame(self.main_frame, on_row_double_click=self.open_batter_card)
+        self.dataview_frame = DataFrameTableFrame(
+            self.main_frame, on_row_double_click=self.open_batter_card)
         self.dataview_frame.grid(column=0, row=0, sticky='nsew')
 
         self.run_env_frame = RunEnvironmentFrame(self.main_frame)
@@ -140,24 +146,50 @@ class RatingsComparisonApp(tk.Toplevel):
         self.in_collection_frame.grid(column=0, row=row, sticky='nsew')
         row += 1
 
+        self.theme_team_alliteration_frame = (
+            ThemeTeamAlliterationFrame(inner_frame))
+        self.theme_team_alliteration_frame.grid(
+            column=0, row=row, sticky='nsew')
+        row += 1
+
+        self.release_lookback_frame = SelectReleaseDateFrame(inner_frame)
+        self.release_lookback_frame.grid(column=0, row=row, sticky='nsew')
+        row += 1
+
         ratings_df = generate_ratings_df()
         self.dataview_frame.set_dataframe(ratings_df)
 
     def reload_data(self):
-        selected_min_year, selected_max_year = self.year_range_select.get_min_max_years()
-        selected_min_rating, selected_max_rating = self.min_max_select.get_min_max_rating()
+        selected_min_year, selected_max_year = (
+            self.year_range_select.get_min_max_years())
+        selected_min_rating, selected_max_rating = (
+            self.min_max_select.get_min_max_rating())
         selected_ratings = self.rating_select_frame.get_active_ratings()
-        selected_batter_side = self.batting_side_select_frame.get_selected_side()
-        selected_pitcher_side = self.pitcher_side_select_frame.get_pitcher_side_select()
-        selected_general_items=self.general_info_select_frame.get_selected_items()
-        selected_batter_weights = self.bat_ratings_weight_frame.get_batter_rating_weights()
-        selected_pitcher_weights = self.pitch_ratings_weight_frame.get_pitcher_rating_weights()
-        selected_defense_weights = self.defense_weights_frame.get_defense_ratings_weights()
-        selected_baserunning_weights = self.baserunning_weight_frame.get_baserunning_weights()
+        selected_batter_side = (
+            self.batting_side_select_frame.get_selected_side())
+        selected_pitcher_side = (
+            self.pitcher_side_select_frame.get_pitcher_side_select())
+        selected_general_items = (
+            self.general_info_select_frame.get_selected_items())
+        selected_batter_weights = (
+            self.bat_ratings_weight_frame.get_batter_rating_weights())
+        selected_pitcher_weights = (
+            self.pitch_ratings_weight_frame.get_pitcher_rating_weights())
+        selected_defense_weights = (
+            self.defense_weights_frame.get_defense_ratings_weights())
+        selected_baserunning_weights = (
+            self.baserunning_weight_frame.get_baserunning_weights())
         selected_position = self.position_select_frame.get_position_select()
-        selected_in_collection_only = self.in_collection_frame.get_collection_only_value()
-        selected_card_types = self.card_type_select_frame.get_selected_card_types()
-        selected_run_factors = self.run_env_frame.get_run_environment_factors()
+        selected_in_collection_only = (
+            self.in_collection_frame.get_collection_only_value())
+        selected_theme_team_only = (
+            self.theme_team_alliteration_frame.get_theme_team_only_var())
+        selected_card_types = (
+            self.card_type_select_frame.get_selected_card_types())
+        selected_run_factors = (
+            self.run_env_frame.get_run_environment_factors())
+        selected_lookback_days = (
+            self.release_lookback_frame.get_lookback_days())
         if self.search_frame.get_search_term() != '':
             selected_search_term = self.search_frame.get_search_term()
         else:
@@ -177,7 +209,9 @@ class RatingsComparisonApp(tk.Toplevel):
             baserunning_weights=selected_baserunning_weights,
             selected_position=selected_position,
             collection_only=selected_in_collection_only,
+            theme_team_only=selected_theme_team_only,
             selected_card_types=selected_card_types,
+            lookback_days=selected_lookback_days,
             search_term=selected_search_term,
             run_env_weights=selected_run_factors
         )
@@ -188,5 +222,3 @@ class RatingsComparisonApp(tk.Toplevel):
         cid = int(row.get('CID')) if 'CID' in row else None
         team_select = self.selected_team
         BatterCard(cid, team_select)
-
-

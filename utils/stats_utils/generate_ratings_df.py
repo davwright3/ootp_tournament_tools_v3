@@ -2,7 +2,8 @@
 from utils.data_utils.card_list_store import card_list_store
 from utils.stats_utils.calc_ratings import calc_ratings
 import numpy as np
-
+from datetime import datetime, timedelta
+import pandas as pd
 
 def generate_ratings_df(
         min_rating=40,
@@ -19,6 +20,8 @@ def generate_ratings_df(
         baserunning_weights=None,
         selected_position=None,
         collection_only=False,
+        theme_team_only=False,
+        lookback_days=None,
         selected_card_types=None,
         search_term=None,
         run_env_weights=None
@@ -35,6 +38,23 @@ def generate_ratings_df(
         columns={'Card ID': 'CID', '//Card Title': 'Title',
                  'Card Value': 'Val', 'Card Type': 'Type',
                  'Last 10 Price': 'L10', 'Last 10 Price(VAR)': 'VL10'})
+
+    if lookback_days:
+        cutoff_date = datetime.today() - timedelta(days=lookback_days)
+        card_df['date'] = pd.to_datetime(card_df['date'], format='%Y-%m-%d')
+        card_df = card_df[card_df['date'] >= cutoff_date]
+
+    if theme_team_only:
+        mask = ((card_df['FirstName'].str[0].str.lower() ==
+                 card_df['LastName'].str[0].str.lower()) |
+                (card_df['FirstName'].str[0].str.lower() ==
+                 card_df['LastName'].str[-1].str.lower()) |
+                (card_df['FirstName'].str[-1].str.lower() ==
+                 card_df['LastName'].str[0].str.lower()) |
+                (card_df['FirstName'].str[-1].str.lower() ==
+                 card_df['LastName'].str[-1].str.lower()))
+        card_df = card_df[mask]
+
     card_df = card_df[['CID', 'Title', 'Val', 'Year', 'Type', 'Bats', 'Throws',
                        'Contact', 'Gap', 'Power', 'Eye', 'Avoid Ks', 'BABIP',
                        'Contact vL', 'Gap vL', 'Power vL', 'Eye vL',

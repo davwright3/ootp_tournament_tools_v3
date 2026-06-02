@@ -2,8 +2,8 @@
 import tkinter as tk
 import pandas as pd
 from utils.data_utils.data_store import data_store
-from utils.stats_utils.generate_basic_pitching_stats_df import generate_basic_pitching_stats
-from utils.view_utils import pitcher_type_select_frame
+from utils.stats_utils.generate_basic_pitching_stats_df import (
+    generate_basic_pitching_stats)
 from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
 from utils.view_utils.table_formatters import fmt_leading_dot
@@ -120,7 +120,8 @@ class PitchStatsApp(tk.Toplevel):
         inner_frame.rowconfigure(5, weight=0)
 
         row = 0
-        if data_store.get_tournament_type() == 'daily' or data_store.get_tournament_type() == 'quick':
+        if (data_store.get_tournament_type() == 'daily' or
+                data_store.get_tournament_type() == 'quick'):
             self.date_cutoff_frame = DataCutoffByDaysFrame(
                 inner_frame,
             )
@@ -181,8 +182,10 @@ class PitchStatsApp(tk.Toplevel):
         self.collection_only_frame.grid(row=row, column=0, sticky="nsew")
         row += 1
 
-        self.selected_team_only_checkbox_frame = TeamOnlyCheckboxFrame(inner_frame)
-        self.selected_team_only_checkbox_frame.grid(row=row, column=0, sticky="nsew")
+        self.selected_team_only_checkbox_frame = (
+            TeamOnlyCheckboxFrame(inner_frame))
+        self.selected_team_only_checkbox_frame.grid(
+            row=row, column=0, sticky="nsew")
         row += 1
 
         self.cull_teams_frame = SetCullTeamsFrame(
@@ -191,26 +194,29 @@ class PitchStatsApp(tk.Toplevel):
         self.cull_teams_frame.grid(row=row, column=0, sticky="nsew")
         row += 1
 
-
         stats_df = generate_basic_pitching_stats()
         self.stats_frame.set_dataframe(stats_df)
 
     def reload_data(self):
         min_ip_select = self.min_innings_frame.get_min_innings()
-        start_relief_cutoff_select = self.pitcher_type_select_frame.get_pitcher_type_cutoff()
-        min_select, max_select = self.min_max_ratings_frame.get_min_max_rating()
+        start_relief_cutoff_select = (
+            self.pitcher_type_select_frame.get_pitcher_type_cutoff())
+        min_select, max_select = (
+            self.min_max_ratings_frame.get_min_max_rating())
         stat_list_select = self.pitcher_stats_select_frame.get_active_stats()
         general_list_select = self.general_items_frame.get_selected_items()
-        throws_side_select = self.pitcher_side_select_frame.get_pitcher_side_select()
+        throws_side_select = (
+            self.pitcher_side_select_frame.get_pitcher_side_select())
         pitcher_type_select = self.pitcher_type_select_frame.get_pitcher_type()
-        collection_only_select = self.collection_only_frame.get_collection_only_value()
+        collection_only_select = (
+            self.collection_only_frame.get_collection_only_value())
         cull_team_var_select = self.cull_teams_frame.get_cull_teams_limit()
         search_term = self.search_frame.get_search_term()
         variant_split_select = self.split_variants_frame.get_variant_split()
 
         try:
             selected_cutoff_days = self.date_cutoff_frame.get_cutoff_days()
-        except Exception as e:
+        except Exception:
             selected_cutoff_days = None
         if self.selected_team_only_checkbox_frame.get_selected_team_bool():
             selected_team = self.selected_team

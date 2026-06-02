@@ -10,7 +10,8 @@ from tkinter import ttk
 import pandas as pd
 from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
-from utils.stats_utils.generate_basic_batting_stats_df import generate_basic_batting_stats_df
+from utils.stats_utils.generate_basic_batting_stats_df import (
+    generate_basic_batting_stats_df)
 from utils.view_utils.dataframe_table_frame import DataFrameTableFrame
 from utils.data_utils.data_store import data_store
 from utils.view_utils.table_formatters import fmt_leading_dot
@@ -28,7 +29,6 @@ from utils.view_utils.search_frame import SearchFrame
 from utils.view_utils.split_variants_frame import SplitVariantsFrame
 from apps.batter_card import BatterCard
 from utils.view_utils.data_cutoff_by_days_frame import DataCutoffByDaysFrame
-from utils.view_utils.team_select_frame import TeamSelectFrame
 
 
 class BattingStatsApp(tk.Toplevel):
@@ -80,7 +80,8 @@ class BattingStatsApp(tk.Toplevel):
             width=5,
             height=1,
         )
-        self.load_data_button.grid(row=0, column=1, ipadx=5, ipady=5, sticky='nsew')
+        self.load_data_button.grid(
+            row=0, column=1, ipadx=5, ipady=5, sticky='nsew')
 
         # Frame for the various user options to select
         self.options_select_frame = ScrollableFrame(
@@ -100,7 +101,8 @@ class BattingStatsApp(tk.Toplevel):
 
         item = 0
         print(data_store.get_tournament_type())
-        if data_store.get_tournament_type() == 'daily' or data_store.get_tournament_type() == 'quick':
+        if (data_store.get_tournament_type() == 'daily' or
+                data_store.get_tournament_type() == 'quick'):
             self.days_cutoff_frame = DataCutoffByDaysFrame(
                 inner_frame,
             )
@@ -153,11 +155,8 @@ class BattingStatsApp(tk.Toplevel):
         self.cull_teams_limit_frame.grid(row=item, column=0, sticky='ew')
         item += 1
 
-
-
         # Set up initial dataframe for the table
         stats_df = generate_basic_batting_stats_df()
-
 
         fmt = {
             'AVG': fmt_leading_dot(3, '.000'),
@@ -173,7 +172,12 @@ class BattingStatsApp(tk.Toplevel):
             'WARrate': fmt_leading_dot(1, '.0')
         }
 
-        self.dataframe_frame = DataFrameTableFrame(self.main_frame, df=stats_df, formatters=fmt, on_row_double_click=self.open_batter_card)
+        self.dataframe_frame = DataFrameTableFrame(
+            self.main_frame,
+            df=stats_df,
+            formatters=fmt,
+            on_row_double_click=self.open_batter_card
+        )
         self.dataframe_frame.grid(row=0, column=0, sticky='nsew')
 
     def reload_data(self):
@@ -181,16 +185,16 @@ class BattingStatsApp(tk.Toplevel):
         min_rating, max_rating = self.min_max_frame.get_min_max_rating()
         selected_position = self.position_select_frame.get_position_select()
         selected_stats = self.batting_stats_select_frame.get_selected_stats()
-        selected_general_items = self.general_info_select_frame.get_selected_items()
+        selected_general_items = (
+            self.general_info_select_frame.get_selected_items())
         selected_batting_side = self.batting_side_frame.get_selected_side()
         min_plate_app = self.min_plate_app_frame.get_min_plate_app()
-        collection_only_sel = self.collection_only_frame.get_collection_only_value()
+        collection_only_sel = (
+            self.collection_only_frame.get_collection_only_value())
         cull_teams_limit = self.cull_teams_limit_frame.get_cull_teams_limit()
         search_term = self.search_frame.get_search_term()
         split_variants_select = self.split_variants_frame.get_variant_split()
         num_cutoff_days = self.days_cutoff_frame.get_cutoff_days()
-
-        
         if self.selected_team_only_frame.get_selected_team_bool():
             selected_team = self.selected_team
         else:
@@ -209,7 +213,7 @@ class BattingStatsApp(tk.Toplevel):
             variant_split_select=split_variants_select,
             team_select=selected_team,
             cutoff_days=num_cutoff_days,
-            tournament_type= data_store.get_tournament_type()
+            tournament_type=data_store.get_tournament_type()
         )
         self.dataframe_frame.set_dataframe(stats_df)
 
@@ -217,4 +221,3 @@ class BattingStatsApp(tk.Toplevel):
         cid = int(row.get('CID')) if 'CID' in row else None
         team_select = self.selected_team
         BatterCard(cid, team_select)
-

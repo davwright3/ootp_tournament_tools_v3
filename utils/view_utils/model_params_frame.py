@@ -97,6 +97,15 @@ class ModelParametersFrame(tk.Frame):
         )
         self.select_bayesian_button.grid(row=0, column=3)
 
+        self.select_polynomial_button =tk.Radiobutton(
+            self.select_model_frame,
+            text="Polynomial",
+            variable=self.selected_model,
+            value='Polynomial',
+            command=set_model_params_frame
+        )
+        self.select_polynomial_button.grid(row=0, column=4)
+
         self.params_input_frame = tk.Frame(self)
         self.params_input_frame.grid(row=1, column=0, padx=10, pady=10)
 
@@ -130,7 +139,7 @@ class ModelParametersFrame(tk.Frame):
 
             return alphas, cv, test_size, self.selected_model.get()
 
-        elif self.selected_model.get() in ('Linear', 'SVM', 'Bayes'):
+        elif self.selected_model.get() in ('Linear', 'SVM', 'Bayes', 'Polynomial'):
             try:
                 test_size = float(self.test_size.get())
                 if not 0.1 <= test_size <= 0.4:

@@ -4,10 +4,10 @@ Loads a dataframe singleton for opening apps for specific categories.
 """
 import tkinter as tk
 import logging
-import os
 from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
-from utils.data_utils.select_load_stats_data_file import select_load_stats_data_file
+from utils.data_utils.select_load_stats_data_file import (
+    select_load_stats_data_file)
 from utils.view_utils.message_panel import MessagePanel
 from utils.view_utils.team_select_frame import TeamSelectFrame
 from utils.data_utils.card_list_store import card_list_store
@@ -22,7 +22,6 @@ from apps.batter_slideshow import BatterSlideshowApp
 from apps.pitcher_slideshow import PitcherSlideshowApp
 from apps.player_win_ratios import PlayerWinRatios
 from apps.lineup_builder import LineupBuilder
-
 
 
 class BasicStatsApp(tk.Toplevel):
@@ -56,7 +55,7 @@ class BasicStatsApp(tk.Toplevel):
 
         self.columnconfigure(0, weight=1)
 
-        # Main frames for page (header, footer, data file selection, app select)
+        # Main frames for page (header, footer, data file selection)
         self.header_frame = Header(self)
         self.header_frame.grid(row=0, column=0, sticky="nsew")
 
@@ -101,7 +100,9 @@ class BasicStatsApp(tk.Toplevel):
 
         self.data_file_select_info_label = tk.Label(
             self.select_data_file_frame,
-            text="Select data file to load.  File must be CSV, and will be set as a DataFrame singleton.",
+            text=("Select data file to load.  "
+                  "File must be CSV, and will be "
+                  "set as a DataFrame singleton."),
             font=("Arial", 12),
             bg="lightgray",
         )
@@ -116,7 +117,14 @@ class BasicStatsApp(tk.Toplevel):
         self.valid_file_label.grid(row=0, column=3, sticky="e")
 
         self.team_select_entry = TeamSelectFrame(self.select_data_file_frame)
-        self.team_select_entry.grid(row=1, column=0, sticky="w", padx=(10, 0), pady=(5, 0), columnspan=3)
+        self.team_select_entry.grid(
+            row=1,
+            column=0,
+            sticky="w",
+            padx=(10, 0),
+            pady=(5, 0),
+            columnspan=3
+        )
 
         # Data for main frame
         self.app_select_frame = tk.Frame(
@@ -131,7 +139,6 @@ class BasicStatsApp(tk.Toplevel):
         self.app_select_frame.rowconfigure(1, weight=1)
         self.app_select_frame.rowconfigure(2, weight=1)
         self.app_select_frame.rowconfigure(3, weight=1)
-
 
         self.batting_app_select_button = tk.Button(
             self.app_select_frame,
@@ -159,19 +166,21 @@ class BasicStatsApp(tk.Toplevel):
             text="Ratings Comparison",
             command=self.open_ratings_comparison
         )
-        self.ratings_comparison_app_select_button.grid(row=1, column=0, sticky="nsew")
+        self.ratings_comparison_app_select_button.grid(
+            row=1, column=0, sticky="nsew")
 
         self.data_visualization_app_select_button = tk.Button(
             self.app_select_frame,
             text="Data Visualization",
             command=self.open_data_visualization
         )
-        self.data_visualization_app_select_button.grid(row=1, column=1, sticky="nsew")
+        self.data_visualization_app_select_button.grid(
+            row=1, column=1, sticky="nsew")
 
         self.view_tourney_splits_button = tk.Button(
             self.app_select_frame,
             text="View Tourney Ratios",
-            command=self.open_tourney_splits
+            command=open_tourney_splits
         )
         self.view_tourney_splits_button.grid(row=1, column=2, sticky="nsew")
 
@@ -203,8 +212,6 @@ class BasicStatsApp(tk.Toplevel):
         )
         self.lineup_builder_button.grid(row=3, column=0, sticky="nsew")
 
-
-
         self.message_panel = MessagePanel(self.main_frame, height=12)
         self.message_panel.grid(row=0, column=1, sticky="nsew")
         attach_panel(self.message_panel, 'apps.basic_stats_app')
@@ -213,7 +220,6 @@ class BasicStatsApp(tk.Toplevel):
 
         set_active_buttons(self.app_select_frame)
         card_list_store.load_card_list()
-
 
     def open_batting_stats(self):
         team_select = self.team_select_entry.get_selected_team()
@@ -231,21 +237,26 @@ class BasicStatsApp(tk.Toplevel):
         team_select = self.team_select_entry.get_selected_team()
         DataVisualizationApp(selected_team=team_select)
 
-    def open_tourney_splits(self):
-        DisplayTourneySplits()
-
     def open_ratings_comparison(self):
         team_select = self.team_select_entry.get_selected_team()
         RatingsComparisonApp(selected_team=team_select)
 
+
+def open_tourney_splits():
+    DisplayTourneySplits()
+
+
 def open_player_win_ratios():
     PlayerWinRatios()
+
 
 def open_lineup_builder():
     LineupBuilder()
 
+
 def open_batter_slideshow():
     BatterSlideshowApp()
+
 
 def open_pitcher_slideshow():
     PitcherSlideshowApp()

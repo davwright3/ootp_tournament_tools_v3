@@ -8,10 +8,12 @@ import tkinter as tk
 from utils.modeling.run_model import run_model
 from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
-from utils.data_utils.select_load_stats_data_file import select_load_stats_data_file
+from utils.data_utils.select_load_stats_data_file import (
+    select_load_stats_data_file)
 from utils.view_utils.batter_model_display_frame import BatterModelDisplayFrame
 from pathlib import Path
-from utils.view_utils.batter_model_ratings_select_frame import BatterModelRatingsSelectFrame
+from utils.view_utils.batter_model_ratings_select_frame import (
+    BatterModelRatingsSelectFrame)
 from utils.view_utils.model_params_frame import ModelParametersFrame
 
 
@@ -38,18 +40,15 @@ class BatterModeling(tk.Toplevel):
                 else:
                     button.configure(state=tk.DISABLED)
 
-
         def set_tourney_name(tourney_path):
             self.tourney_name.set(Path(tourney_path).stem)
             print(self.tourney_name.get())
-
 
         self.columnconfigure(0, weight=1)
 
         self.rowconfigure(0, weight=0)
         self.rowconfigure(1, weight=1)
         self.rowconfigure(2, weight=0)
-
 
         # Main frames for the app
         row = 0
@@ -101,15 +100,16 @@ class BatterModeling(tk.Toplevel):
                 set_tourney_name(self.dataframe_loaded_var.get()),
             )
         )
-        self.file_select_button.grid(row=run_model_frame_row, column=0, sticky="w")
+        self.file_select_button.grid(
+            row=run_model_frame_row, column=0, sticky="w")
 
         self.selected_file_label = tk.Label(
             self.run_model_frame,
             textvariable=self.dataframe_loaded_var
         )
-        self.selected_file_label.grid(row=run_model_frame_row, column=1, sticky="w")
+        self.selected_file_label.grid(
+            row=run_model_frame_row, column=1, sticky="w")
         run_model_frame_row += 1
-
 
         self.run_model_buttons_frame = tk.Frame(self.run_model_frame)
         self.run_model_buttons_frame.grid(
@@ -121,12 +121,15 @@ class BatterModeling(tk.Toplevel):
 
         # Modeling buttons
         model_button_frame_column = 0
-        model_button_frame_row = 0
         self.ridge_models_label = tk.Label(
             self.run_model_buttons_frame,
             text="Ridge Models"
         )
-        self.ridge_models_label.grid(row=run_model_frame_row, column=model_button_frame_column, sticky="w")
+        self.ridge_models_label.grid(
+            row=run_model_frame_row,
+            column=model_button_frame_column,
+            sticky="w"
+        )
         model_button_frame_column += 1
 
         self.model_babip_button = tk.Button(
@@ -139,7 +142,11 @@ class BatterModeling(tk.Toplevel):
                 target_name='BABIP Calc',
             )
         )
-        self.model_babip_button.grid(row=run_model_frame_row, column=model_button_frame_column, sticky="nsew")
+        self.model_babip_button.grid(
+            row=run_model_frame_row,
+            column=model_button_frame_column,
+            sticky="nsew"
+        )
         model_button_frame_column += 1
 
         self.model_strikeouts_button = tk.Button(
@@ -152,7 +159,11 @@ class BatterModeling(tk.Toplevel):
                 target_name='Strikeout Calc',
             )
         )
-        self.model_strikeouts_button.grid(row=run_model_frame_row, column=model_button_frame_column, sticky="nsew")
+        self.model_strikeouts_button.grid(
+            row=run_model_frame_row,
+            column=model_button_frame_column,
+            sticky="nsew"
+        )
         model_button_frame_column += 1
 
         self.model_walks_button = tk.Button(
@@ -165,7 +176,11 @@ class BatterModeling(tk.Toplevel):
                 target_name='Walk Calc',
             )
         )
-        self.model_walks_button.grid(row=run_model_frame_row, column=model_button_frame_column, sticky="nsew")
+        self.model_walks_button.grid(
+            row=run_model_frame_row,
+            column=model_button_frame_column,
+            sticky="nsew"
+        )
         model_button_frame_column += 1
 
         self.model_home_runs_button = tk.Button(
@@ -173,13 +188,16 @@ class BatterModeling(tk.Toplevel):
             text='Bat HR Model',
             command=lambda: self.run_bat_model(
                 default_ratings=['Power', 'Power vL', 'Power vR'],
-                stat_columns=['CID', 'PA', 'AB', 'K', 'BB', 'HP', 'IBB',
-                                 'HR'],
+                stat_columns=['CID', 'PA', 'AB', 'K', 'BB', 'HP', 'IBB', 'HR'],
                 model_name='homeruns',
                 target_name='HR Calc',
             )
         )
-        self.model_home_runs_button.grid(row=run_model_frame_row, column=model_button_frame_column, sticky="nsew")
+        self.model_home_runs_button.grid(
+            row=run_model_frame_row,
+            column=model_button_frame_column,
+            sticky="nsew"
+        )
         model_button_frame_column += 1
 
         self.model_xbh_button = tk.Button(
@@ -192,7 +210,11 @@ class BatterModeling(tk.Toplevel):
                 target_name='XBH Calc',
             )
         )
-        self.model_xbh_button.grid(row=run_model_frame_row, column=model_button_frame_column, sticky="nsew")
+        self.model_xbh_button.grid(
+            row=run_model_frame_row,
+            column=model_button_frame_column,
+            sticky="nsew"
+        )
         model_button_frame_column += 1
 
         self.ratings_select_frame = BatterModelRatingsSelectFrame(
@@ -205,13 +227,14 @@ class BatterModeling(tk.Toplevel):
         )
         model_button_frame_column += 1
 
-        self.model_params_frame = ModelParametersFrame(self.run_model_buttons_frame)
-        self.model_params_frame.grid(row=run_model_frame_row, column=model_button_frame_column,)
+        self.model_params_frame = ModelParametersFrame(
+            self.run_model_buttons_frame
+        )
+        self.model_params_frame.grid(
+            row=run_model_frame_row, column=model_button_frame_column,)
 
         run_model_frame_row += 1
-
         # End run model frame
-
 
         set_active_buttons(self.run_model_buttons_frame)
 
@@ -230,7 +253,9 @@ class BatterModeling(tk.Toplevel):
         use_bbt = self.ratings_select_frame.get_use_bbt()
 
         if self.model_params_frame.get_selected_model() == 'RidgeCV':
-            alphas, cv_set, set_test_size, model_type = self.model_params_frame.get_params()
+            alphas, cv_set, set_test_size, model_type = (
+                self.model_params_frame.get_params()
+            )
 
             run_model(
                 passed_stat_columns=stat_columns,
@@ -248,7 +273,8 @@ class BatterModeling(tk.Toplevel):
             ),
             self.view_model_frame.update_model_info_display()
 
-        elif self.model_params_frame.get_selected_model() in ('Linear', 'SVM', 'Bayes'):
+        elif self.model_params_frame.get_selected_model() in (
+                'Linear', 'SVM', 'Bayes', 'Polynomial'):
             set_test_size, model_type = self.model_params_frame.get_params()
             run_model(
                 passed_stat_columns=stat_columns,

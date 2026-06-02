@@ -112,20 +112,26 @@ class LineupBuilder(tk.Toplevel):
         self.options_frame = tk.Frame(self.main_frame, relief='groove', bd=3)
         self.options_frame.grid(row=0, column=0, sticky="nsew", columnspan=4)
 
-        self.set_lineup_v_right_frame = tk.Frame(self.main_frame, relief='groove', bd=3)
+        self.set_lineup_v_right_frame = tk.Frame(
+            self.main_frame, relief='groove', bd=3)
         self.set_lineup_v_right_frame.grid(row=1, column=0, sticky="nsew")
 
         self.view_lineup_v_right_frame = DataFrameTableFrame(self.main_frame)
         self.view_lineup_v_right_frame.grid(row=1, column=1, sticky="nsew")
 
-        self.set_lineup_v_left_frame = tk.Frame(self.main_frame, relief='groove', bd=3)
+        self.set_lineup_v_left_frame = tk.Frame(
+            self.main_frame, relief='groove', bd=3)
         self.set_lineup_v_left_frame.grid(row=1, column=2, sticky="nsew")
 
-        self.view_lineup_v_left_frame =DataFrameTableFrame(self.main_frame)
+        self.view_lineup_v_left_frame = DataFrameTableFrame(self.main_frame)
         self.view_lineup_v_left_frame.grid(row=1, column=3, sticky="nsew")
 
         # Set up the options frame
-        self.run_lineups_button = tk.Button(self.options_frame, text="Run Lineup Builder", command=self.build_lineups)
+        self.run_lineups_button = tk.Button(
+            self.options_frame,
+            text="Run Lineup Builder",
+            command=self.build_lineups
+        )
         self.run_lineups_button.grid(row=0, column=0, sticky="nsew")
 
         self.use_dh_button = tk.Checkbutton(
@@ -142,9 +148,9 @@ class LineupBuilder(tk.Toplevel):
 
     def build_lineups(self):
         print('Generating lineups')
-        #TODO Get the list of players (right and left)
-        #TODO Send the list to build lineups method
-        #TODO Get a dataframe back that fills in the lineups dynamically
+        # TODO Get the list of players (right and left)
+        # TODO Send the list to build lineups method
+        # TODO Get a dataframe back that fills in the lineups dynamically
         batters_vs_right_list = []
         batters_vs_left_list = []
         for widget in self.set_lineup_v_right_frame.winfo_children():
@@ -168,12 +174,3 @@ class LineupBuilder(tk.Toplevel):
         self.view_lineup_v_right_frame.set_dataframe(lineup_v_right)
         lineup_v_left = build_lineup_from_stats(batters_vs_left_list)
         self.view_lineup_v_left_frame.set_dataframe(lineup_v_left)
-
-
-
-
-
-
-
-
-

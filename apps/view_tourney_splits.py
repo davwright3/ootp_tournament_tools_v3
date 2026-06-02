@@ -6,7 +6,8 @@ import tkinter as tk
 from tkinter import ttk
 from utils.data_utils.data_store import data_store
 from utils.data_utils.card_list_store import card_list_store
-from utils.stats_utils.normalize_innings_pitched import normalize_innings_pitched
+from utils.stats_utils.normalize_innings_pitched import (
+    normalize_innings_pitched)
 import pandas as pd
 
 
@@ -21,13 +22,15 @@ class DisplayTourneySplits(tk.Toplevel):
 
         data = data_store.get_data().copy()[['CID', 'PA', 'IP']]
         data['IPC'] = data['IP'].apply(normalize_innings_pitched)
-        cards = card_list_store.get_card_list().copy()[['Card ID', 'Bats', 'Throws']]
+        cards = card_list_store.get_card_list().copy()[[
+            'Card ID', 'Bats', 'Throws']]
         cards = cards.rename(columns={'Card ID': 'CID'})
 
         df = pd.merge(cards, data, how='inner', on='CID')
         df = df.drop(columns=['CID'])
         bats = df[['Bats', 'PA']].groupby(by='Bats', as_index=False).sum()
-        throws = df[['Throws', 'IPC']].groupby(by='Throws', as_index=False).sum()
+        throws = (df[['Throws', 'IPC']].
+                  groupby(by='Throws', as_index=False).sum())
 
         total_pa = bats['PA'].sum()
         left_pa = bats[bats['Bats'] == 1]['PA'].sum()
@@ -94,5 +97,3 @@ class DisplayTourneySplits(tk.Toplevel):
             font=set_font
         )
         self.right_ip_label.grid(row=7, column=0, padx=10, pady=10)
-
-

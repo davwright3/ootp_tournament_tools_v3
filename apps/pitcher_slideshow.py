@@ -3,11 +3,6 @@ from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
 from utils.view_utils.pitcher_slide_frame import PitcherSlideFrame
 
-# TODO 2: Create dataframe for slideshow
-# TODO 3: Create individual player frame
-# TODO 4: Add custom frames for ratings displays
-# TODO 5: Create stats display frame
-# TODO 6: Create buttons and methods for navigation
 
 class PitcherSlideshowApp(tk.Toplevel):
     def __init__(self):

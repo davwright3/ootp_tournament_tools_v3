@@ -7,6 +7,7 @@ from utils.stats_utils.calc_player_win_ratios import calc_player_win_ratios
 from utils.view_utils.min_max_rating_frame import MinMaxFrame
 from utils.view_utils.position_select_frame import PositionSelectFrame
 from utils.view_utils.minimum_trny_app_frame import MinTrnyAppFrame
+from utils.view_utils.search_frame import SearchFrame
 
 
 class PlayerWinRatios(tk.Toplevel):
@@ -59,44 +60,65 @@ class PlayerWinRatios(tk.Toplevel):
         # TODO number of games in finals
         # TODO Button to run the data
         # TODO Position/ratings/etc selection
-        self.run_player_win_ratios_button = tk.Button(self.options_frame, text='Run Calcs', command=self.run_player_win_ratios)
-        self.run_player_win_ratios_button.grid(row=row, column=0, sticky='nsew', columnspan=2, padx=3, pady=3)
+        self.run_player_win_ratios_button = tk.Button(
+            self.options_frame,
+            text='Run Calcs',
+            command=self.run_player_win_ratios
+        )
+        self.run_player_win_ratios_button.grid(
+            row=row, column=0, sticky='nsew', columnspan=2, padx=3, pady=3)
         row += 1
 
         self.num_of_teams_label = tk.Label(self.options_frame, text='Teams: ')
-        self.num_of_teams_label.grid(row=row, column=0, sticky='nsew', padx=3, pady=3)
+        self.num_of_teams_label.grid(
+            row=row, column=0, sticky='nsew', padx=3, pady=3)
 
-        self.num_of_teams_entry = tk.Entry(self.options_frame, textvariable=self.number_of_teams)
-        self.num_of_teams_entry.grid(row=row, column=1, sticky='nsew', padx=3, pady=3)
+        self.num_of_teams_entry = tk.Entry(
+            self.options_frame, textvariable=self.number_of_teams)
+        self.num_of_teams_entry.grid(
+            row=row, column=1, sticky='nsew', padx=3, pady=3)
         row += 1
 
-        self.games_per_round_label = tk.Label(self.options_frame, text='Best Of: ')
-        self.games_per_round_label.grid(row=row, column=0, sticky='nsew', padx=3, pady=3)
+        self.games_per_round_label = tk.Label(
+            self.options_frame, text='Best Of: ')
+        self.games_per_round_label.grid(
+            row=row, column=0, sticky='nsew', padx=3, pady=3)
 
-        self.games_per_round_entry = tk.Entry(self.options_frame, textvariable=self.games_per_round)
-        self.games_per_round_entry.grid(row=row, column=1, sticky='nsew', padx=3, pady=3)
+        self.games_per_round_entry = tk.Entry(
+            self.options_frame, textvariable=self.games_per_round)
+        self.games_per_round_entry.grid(
+            row=row, column=1, sticky='nsew', padx=3, pady=3)
         row += 1
 
-        self.games_per_finals_label = tk.Label(self.options_frame, text='Finals BO: ')
-        self.games_per_finals_label.grid(row=row, column=0, sticky='nsew', padx=3, pady=3)
+        self.games_per_finals_label = tk.Label(
+            self.options_frame, text='Finals BO: ')
+        self.games_per_finals_label.grid(
+            row=row, column=0, sticky='nsew', padx=3, pady=3)
 
-        self.games_per_finals_entry = tk.Entry(self.options_frame, textvariable=self.games_per_finals)
-        self.games_per_finals_entry.grid(row=row, column=1, sticky='nsew', padx=3, pady=3)
+        self.games_per_finals_entry = tk.Entry(
+            self.options_frame, textvariable=self.games_per_finals)
+        self.games_per_finals_entry.grid(
+            row=row, column=1, sticky='nsew', padx=3, pady=3)
+        row += 1
+
+        self.player_search_frame = SearchFrame(self.options_frame)
+        self.player_search_frame.grid(row=row, column=0, sticky='nsew')
         row += 1
 
         self.min_apps_frame = MinTrnyAppFrame(self.options_frame)
-        self.min_apps_frame.grid(row=row, column=0, sticky='nsew', columnspan=2)
+        self.min_apps_frame.grid(
+            row=row, column=0, sticky='nsew', columnspan=2)
         row += 1
 
         self.min_max_rating_frame = MinMaxFrame(self.options_frame)
-        self.min_max_rating_frame.grid(row=row, column=0, sticky='nsew', columnspan=2, padx=3, pady=3)
+        self.min_max_rating_frame.grid(
+            row=row, column=0, sticky='nsew', columnspan=2, padx=3, pady=3)
         row += 1
 
         self.position_select_frame = PositionSelectFrame(self.options_frame)
-        self.position_select_frame.grid(row=row, column=0, sticky='nsew', padx=3, pady=3, columnspan=2)
+        self.position_select_frame.grid(
+            row=row, column=0, sticky='nsew', padx=3, pady=3, columnspan=2)
         row += 1
-
-
 
     def run_player_win_ratios(self):
         print('Running Player Win Ratios')
@@ -104,7 +126,8 @@ class PlayerWinRatios(tk.Toplevel):
             set_num_teams = int(self.number_of_teams.get())
             set_games_per_round = int(self.games_per_round.get())
             set_games_per_finals = int(self.games_per_finals.get())
-            min_rating, max_rating = self.min_max_rating_frame.get_min_max_rating()
+            min_rating, max_rating = (
+                self.min_max_rating_frame.get_min_max_rating())
             set_min_rating = int(min_rating)
             set_max_rating = int(max_rating)
         except ValueError:
@@ -116,6 +139,7 @@ class PlayerWinRatios(tk.Toplevel):
         selected_position = self.position_select_frame.get_position_select()
         selected_min_apps = self.min_apps_frame.get_min_apps()
 
+        selected_search_name = self.player_search_frame.get_search_term()
 
         ratios_df = calc_player_win_ratios(
             set_num_teams,
@@ -125,9 +149,7 @@ class PlayerWinRatios(tk.Toplevel):
             min_rating=set_min_rating,
             max_rating=set_max_rating,
             position_select=selected_position,
+            player_search_term=selected_search_name,
 
         )
         self.results_view_frame.set_dataframe(ratios_df)
-
-
-

@@ -4,6 +4,8 @@ from utils.modeling.update_model_tracker import update_model_tracker
 from utils.stats_utils.cull_teams import cull_teams
 from pathlib import Path
 from sklearn.linear_model import RidgeCV, LinearRegression, BayesianRidge
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.pipeline import make_pipeline
 from sklearn.svm import SVR
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -143,6 +145,14 @@ def run_model(
         right_model = BayesianRidge()
         right_model.fit(x_train_right_scaled, y_train_right)
 
+    elif model_type == 'Polynomial':
+        print('Running Polynomial model')
+        left_model = make_pipeline(PolynomialFeatures(degree=2), LinearRegression())
+        left_model.fit(x_train_left_scaled, y_train_left)
+
+        right_model = make_pipeline(PolynomialFeatures(degree=2), LinearRegression())
+        right_model.fit(x_train_right_scaled, y_train_right)
+
     else:
         left_model = RidgeCV(alphas=alpha_params, cv=cv_params)
         left_model.fit(x_train_left_scaled, y_train_left)
@@ -153,9 +163,10 @@ def run_model(
     y_pred_left = left_model.predict(x_test_left_scaled)
     left_model_score = round(left_model.score(x_test_left_scaled, y_test_left), 3)
 
-    left_model_coeffs = left_model.coef_.flatten()
-    for name, importance in zip(x_model_left.columns, left_model_coeffs):
-        print(f'{name}: {importance}')
+    if model_type != 'Polynomial':
+        left_model_coeffs = left_model.coef_.flatten()
+        for name, importance in zip(x_model_left.columns, left_model_coeffs):
+            print(f'{name}: {importance}')
     print('Left model score: ', left_model_score)
     # Run right model
 

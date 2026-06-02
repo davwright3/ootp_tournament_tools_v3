@@ -35,5 +35,3 @@ class ModelingHome(tk.Toplevel):
             command=open_pitcher_modeling
         )
         self.pitcher_modeling_button.grid(row=0, column=1, padx=10, pady=10)
-
-

@@ -9,7 +9,9 @@ from utils.view_utils.batting_stats_select_frame import BattingStatsSelectFrame
 from utils.view_utils.pitcher_stats_select_frame import PitcherStatsSelectFrame
 from utils.view_utils.min_team_games_frame import MinTeamGamesFrame
 from apps.team_card import TeamCard
-from utils.stats_utils.generate_basic_team_stats_df import generate_basic_team_stats_df
+from utils.stats_utils.generate_basic_team_stats_df import (
+    generate_basic_team_stats_df)
+
 
 class TeamStatsApp(tk.Toplevel):
     def __init__(self, master=None, team_select=None):
@@ -101,7 +103,6 @@ class TeamStatsApp(tk.Toplevel):
         )
         self.pitching_stats_select.grid(row=row, column=0, sticky="nsew")
         row += 1
-
 
     def reload_data(self):
         batting_stats_list = self.batting_stats_select.get_selected_stats()

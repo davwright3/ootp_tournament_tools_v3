@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
 from utils.view_utils.data_vis_scatter_frame_2d import DataVisScatterFrame2d
@@ -8,7 +7,8 @@ from utils.data_vis_utils.generate_babip_vis_df import generate_babip_vis_df
 from utils.data_vis_utils.generate_hr_fb_vis_df import generate_hr_bip_vis
 from utils.data_vis_utils.generate_bip_rate_df import generate_bip_rate_df
 from utils.data_vis_utils.generate_k_rate_df import generate_k_rate_df
-from utils.data_vis_utils.generate_strikeouts_by_avoid_k_df import generate_strikeouts_by_avoid_k_df
+from utils.data_vis_utils.generate_strikeouts_by_avoid_k_df import (
+    generate_strikeouts_by_avoid_k_df)
 
 
 class DataVisualizationApp(tk.Toplevel):
@@ -30,7 +30,8 @@ class DataVisualizationApp(tk.Toplevel):
         def display_hr_bip_vis():
             clear_display_frame()
             hr_df = generate_hr_bip_vis()
-            self.hr_scatter_frame = DataVisScatterFrame2d(self.display_frame, df=hr_df)
+            self.hr_scatter_frame = DataVisScatterFrame2d(
+                self.display_frame, df=hr_df)
             self.hr_scatter_frame.grid(row=0, column=0, sticky='nsew')
 
         def display_k_rate_vis():
@@ -43,17 +44,18 @@ class DataVisualizationApp(tk.Toplevel):
         def display_k_rate_by_avoid_k():
             clear_display_frame()
             krate_df = generate_strikeouts_by_avoid_k_df()
-            self.krate_scatter_frame = DataVisScatterFrame2d(self.display_frame, df=krate_df)
+            self.krate_scatter_frame = DataVisScatterFrame2d(
+                self.display_frame, df=krate_df)
             self.krate_scatter_frame.grid(row=0, column=0, sticky='nsew')
 
         def display_bip_rate_vis():
             clear_display_frame()
             bip_df = generate_bip_rate_df()
-            self.bip_scatter_frame = DataVisualScatterFrame3D(self.display_frame,
-                                                              df=bip_df)
+            self.bip_scatter_frame = DataVisualScatterFrame3D(
+                self.display_frame,
+                df=bip_df
+            )
             self.bip_scatter_frame.grid(row=0, column=0, sticky='nsew')
-
-
 
         self.geometry('1920x1080')
         self.title('Data Visualization')
@@ -90,30 +92,51 @@ class DataVisualizationApp(tk.Toplevel):
         self.batter_vis_label.grid(row=row, column=0, sticky='ew')
         row += 1
 
-        self.babip_button = tk.Button(self.options_frame, text='BABIP by BABIP Rate', width=40, command=display_babip_vis)
-        self.babip_button.grid(row=row, column=0, sticky='nsew', padx=5, pady=5)
+        self.babip_button = tk.Button(
+            self.options_frame,
+            text='BABIP by BABIP Rate',
+            width=40,
+            command=display_babip_vis
+        )
+        self.babip_button.grid(
+            row=row, column=0, sticky='nsew', padx=5, pady=5)
         row += 1
 
-        self.hr_fb_button = tk.Button(self.options_frame, text='HR/BIP', width=40, command=display_hr_bip_vis)
-        self.hr_fb_button.grid(row=row, column=0, sticky='nsew', padx=5, pady=5)
+        self.hr_fb_button = tk.Button(
+            self.options_frame,
+            text='HR/BIP',
+            width=40,
+            command=display_hr_bip_vis
+        )
+        self.hr_fb_button.grid(
+            row=row, column=0, sticky='nsew', padx=5, pady=5)
         row += 1
 
-        self.k_rate_button = tk.Button(self.options_frame, text='K/600 by Avoid K and Eye Rating', width=40, command=display_k_rate_vis)
-        self.k_rate_button.grid(row=row, column=0, sticky='nsew', padx=5, pady=5)
+        self.k_rate_button = tk.Button(
+            self.options_frame,
+            text='K/600 by Avoid K and Eye Rating',
+            width=40,
+            command=display_k_rate_vis
+        )
+        self.k_rate_button.grid(
+            row=row, column=0, sticky='nsew', padx=5, pady=5)
         row += 1
 
-        self.k_rate_by_avoid_k_button = tk.Button(self.options_frame, text='K/600 by Avoid K', width=40, command=display_k_rate_by_avoid_k)
-        self.k_rate_by_avoid_k_button.grid(row=row, column=0, sticky='nsew', padx=5, pady=5)
+        self.k_rate_by_avoid_k_button = tk.Button(
+            self.options_frame,
+            text='K/600 by Avoid K',
+            width=40,
+            command=display_k_rate_by_avoid_k
+        )
+        self.k_rate_by_avoid_k_button.grid(
+            row=row, column=0, sticky='nsew', padx=5, pady=5)
         row += 1
 
-        self.bip_button = tk.Button(self.options_frame, text='BIP Rate by Avoid K and Eye Rating', width=40, command=display_bip_rate_vis)
+        self.bip_button = tk.Button(
+            self.options_frame,
+            text='BIP Rate by Avoid K and Eye Rating',
+            width=40,
+            command=display_bip_rate_vis
+        )
         self.bip_button.grid(row=row, column=0, sticky='nsew', padx=5, pady=5)
         row += 1
-
-
-
-
-        #
-
-        #
-
