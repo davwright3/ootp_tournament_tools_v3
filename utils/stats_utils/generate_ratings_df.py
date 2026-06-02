@@ -1,9 +1,9 @@
 """Return dataframe with selected calculated ratings to be viewed."""
 from utils.data_utils.card_list_store import card_list_store
 from utils.stats_utils.calc_ratings import calc_ratings
-import numpy as np
 from datetime import datetime, timedelta
 import pandas as pd
+
 
 def generate_ratings_df(
         min_rating=40,
@@ -31,7 +31,6 @@ def generate_ratings_df(
         return_columns.extend(selected_general_list)
     if selected_ratings_list:
         return_columns.extend(selected_ratings_list)
-
 
     card_df = card_list_store.get_card_list().copy()
     card_df = card_df.rename(
@@ -75,8 +74,8 @@ def generate_ratings_df(
     if search_term:
         player_list = [item.strip() for item in search_term.split(',')]
         pattern = '|'.join(player_list)
-        card_df = card_df[card_df['Title'].str.contains(pattern, case=False, na=False)]
-
+        card_df = card_df[card_df['Title'].str.contains(
+            pattern, case=False, na=False)]
 
     card_df['B'] = card_df['Bats'].apply(
         lambda x: 'R' if x == 1 else 'L' if x == 2 else 'S')
@@ -95,13 +94,8 @@ def generate_ratings_df(
     card_df = card_df[(card_df['Year'] >= min_year) &
                       (card_df['Year'] <= max_year)]
 
-
-
     if selected_position is not None:
         card_df = card_df[card_df[selected_position] != 0]
-
-
-
 
     ratings_df = calc_ratings(
         card_df,

@@ -1,6 +1,5 @@
 """Calculates and returns a dataframe with basic pitching stats."""
 import numpy as np
-from utils.data_utils.data_store import data_store
 from utils.data_utils.league_stats_store import league_stats_store
 
 
@@ -81,8 +80,8 @@ def calculate_pitching_stats(df1, min_ip_sel=200):
         df2 = df2[df2['IPC'] >= min_ip_sel]
     else:
         df2 = df2[['ORG', 'IPC', 'ERA', 'FIP', 'WHIP', 'K%', 'BB%', 'K-BB',
-                   'HR/9', 'HR%', 'SV%', 'SD/MD', 'IRS%', 'GB%', 'WAR/200', 'IP/G',
-                   'QS%', 'oBABIP']]
+                   'HR/9', 'HR%', 'SV%', 'SD/MD', 'IRS%', 'GB%', 'WAR/200',
+                   'IP/G', 'QS%', 'oBABIP']]
 
     del df1
     return df2

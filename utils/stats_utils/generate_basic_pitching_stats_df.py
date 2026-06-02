@@ -9,7 +9,7 @@ from utils.stats_utils.normalize_innings_pitched import (
 from utils.stats_utils.calc_pitching_stats import calculate_pitching_stats
 from utils.stats_utils.get_eligible_players import get_eligible_players
 import pandas as pd
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 
 
 def generate_basic_pitching_stats(
@@ -28,18 +28,18 @@ def generate_basic_pitching_stats(
         card_id=None,
         team_select=None,
         cutoff_days=None,
-        tournament_type: str=None
+        tournament_type: str = None
 ):
     df = cull_teams(
         data_store.get_data().copy(),
         run_cutoff=cull_team_limit_select)
     stats_df = df.copy()
 
-
     if cutoff_days is not None:
         if tournament_type == 'daily':
             cutoff = datetime.now() - timedelta(days=cutoff_days)
-            stats_df['Trny'] = pd.to_datetime(stats_df['Trny'] + ' 2026', format='%d %b %Y')
+            stats_df['Trny'] = pd.to_datetime(
+                stats_df['Trny'] + ' 2026', format='%d %b %Y')
             stats_df = stats_df[stats_df['Trny'] >= cutoff]
             if stats_df.empty:
                 stats_df = df.copy()
@@ -53,7 +53,8 @@ def generate_basic_pitching_stats(
                 print(tourney_list_full)
                 tourney_list_included = tourney_list_full[:cutoff_days]
                 print(tourney_list_included)
-                stats_df = stats_df[stats_df['Trny'].isin(tourney_list_included)]
+                stats_df = stats_df[
+                    stats_df['Trny'].isin(tourney_list_included)]
             except TypeError:
                 return
 
@@ -71,15 +72,15 @@ def generate_basic_pitching_stats(
                                'AB_1', 'ER', 'K_1', 'BB_1', 'IBB_1', 'HA',
                                '1B_1', '2B_1', '3B_1', 'HR_1', 'SV', 'SVO',
                                'SD', 'MD', 'HP_1', 'SH_1', 'SF_1', 'QS', 'IR',
-                               'IRS', 'GB', 'FB', 'WAR_1']].groupby(['CID', 'VLvl'],
-                                                as_index=False).sum()
+                               'IRS', 'GB', 'FB',
+                               'WAR_1']].groupby(['CID', 'VLvl'],
+                                                 as_index=False).sum()
     else:
         stats_df1 = stats_df1[['CID', 'IPC', 'G_1', 'GS_1', 'BF', 'AB_1', 'ER',
                                'K_1', 'BB_1', 'IBB_1', 'HA', '1B_1', '2B_1',
                                '3B_1', 'HR_1', 'SV', 'SVO', 'SD', 'MD', 'HP_1',
                                'SH_1', 'SF_1', 'QS', 'IR', 'IRS', 'GB', 'FB',
-                               'WAR_1']].groupby(['CID'],
-                                                         as_index=False).sum()
+                               'WAR_1']].groupby(['CID'], as_index=False).sum()
 
     card_list = card_list_store.get_card_list().copy()
     eligible_player_set = get_eligible_players(

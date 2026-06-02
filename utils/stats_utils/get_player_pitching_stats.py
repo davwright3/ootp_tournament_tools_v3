@@ -6,7 +6,8 @@ def get_player_pitching_stats(card_id, team_select=None, cutoff_days=None):
     if team_select is None and cutoff_days is None:
         df = generate_basic_pitching_stats(min_ip=1, card_id=card_id)
     elif team_select is None:
-        df = generate_basic_pitching_stats(min_ip=1, card_id=card_id, cutoff_days=cutoff_days)
+        df = generate_basic_pitching_stats(
+            min_ip=1, card_id=card_id, cutoff_days=cutoff_days)
     else:
         df = generate_basic_pitching_stats(
             min_ip=1, card_id=card_id, team_select=team_select)

@@ -10,7 +10,7 @@ from utils.stats_utils.calc_batting_stats import calc_batting_stats
 from utils.stats_utils.get_eligible_players import get_eligible_players
 from utils.stats_utils.cull_teams import cull_teams
 import pandas as pd
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 
 
 def generate_basic_batting_stats_df(
@@ -61,7 +61,8 @@ def generate_basic_batting_stats_df(
         if tournament_type == 'daily':
             try:
                 cutoff = datetime.now() - timedelta(days=cutoff_days)
-                df1['Trny'] = pd.to_datetime(df1['Trny'] + ' 2026', format='%d %b %Y')
+                df1['Trny'] = pd.to_datetime(
+                    df1['Trny'] + ' 2026', format='%d %b %Y')
                 df1 = df1[df1['Trny'] >= cutoff]
 
                 if df1.empty:
@@ -132,7 +133,6 @@ def generate_basic_batting_stats_df(
     else:
         return_list = ['CID', 'Title', 'Val']
         eligible_player_set = eligible_player_set[return_list]
-
 
     stats_df = pd.merge(
         eligible_player_set,

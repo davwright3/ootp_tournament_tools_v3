@@ -17,11 +17,11 @@ def generate_basic_team_stats_df(
     df1['IPC'] = df1['IP'].apply(normalize_innings_pitched)
     df1 = df1[['ORG', 'PA', 'AB', 'H', '1B', '2B', '3B', 'HR', 'TB', 'K', 'R',
                'HP', 'BB', 'IBB', 'SF', 'SB', 'RC', 'ZR', 'PO', 'A', 'E', 'CS',
-               'WAR', 'IPC', 'G_1', 'GS_1', 'W', 'L', 'BF', 'AB_1', 'R_1', 'ER', 'K_1',
-               'BB_1', 'IBB_1', 'HA', '1B_1', '2B_1', '3B_1', 'HR_1', 'SV',
-               'SVO', 'SD', 'MD', 'HP_1', 'SH_1', 'SF_1', 'QS', 'IR', 'IRS',
-               'GB', 'FB', 'WAR_1', 'Trny']].groupby(['ORG'],
-                                                     as_index=False).sum()
+               'WAR', 'IPC', 'G_1', 'GS_1', 'W', 'L', 'BF', 'AB_1', 'R_1',
+               'ER', 'K_1', 'BB_1', 'IBB_1', 'HA', '1B_1', '2B_1', '3B_1',
+               'HR_1', 'SV', 'SVO', 'SD', 'MD', 'HP_1', 'SH_1', 'SF_1', 'QS',
+               'IR', 'IRS', 'GB', 'FB', 'WAR_1',
+               'Trny']].groupby(['ORG'], as_index=False).sum()
     df1['Win%'] = (df1['W'] / (df1['W'] + df1['L'])).round(3)
     df1['Rdif'] = ((df1['R'] - df1['R_1']) / (df1['W'] + df1['L'])).round(1)
 

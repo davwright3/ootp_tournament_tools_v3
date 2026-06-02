@@ -1,11 +1,10 @@
 from utils.data_utils.card_list_store import card_list_store
-import pandas as pd
 
 
 def generate_batter_ratings_df(position_select=None):
     df = card_list_store.get_card_list().copy()
     if position_select is not None:
-        df = df[df[position_select]==1]
+        df = df[df[position_select] == 1]
 
     ratings_df = (
         df[['Card ID', '//Card Title', 'BABIP', 'BABIP vL', 'BABIP vR',
@@ -19,6 +18,7 @@ def generate_batter_ratings_df(position_select=None):
             'LearnSS', 'LearnLF', 'LearnCF', 'LearnRF', 'Bats', 'Throws',
             'brefid']]
     )
-    ratings_df = ratings_df.rename(columns={'//Card Title': 'Title', 'Card ID': 'CID',})
+    ratings_df = ratings_df.rename(columns={'//Card Title': 'Title',
+                                            'Card ID': 'CID'})
 
     return ratings_df

@@ -1,6 +1,5 @@
 """Script for returning calculated basic batting stats."""
 import numpy as np
-from utils.data_utils.data_store import data_store
 
 
 def calc_batting_stats(df, min_pa=0):
@@ -91,12 +90,12 @@ def calc_batting_stats(df, min_pa=0):
     else:
         if 'VLvl' in df1.columns:
             df2 = df1[['ORG', 'VLvl', 'PA', 'AVG', 'OBP', 'SLG', 'OPS', 'wOBA',
-                       'RCrate', 'HRrate', 'Krate', 'BBrate', 'SBrate', 'SBpct',
-                       'WARrate', 'ZRrate', 'Fld%']]
+                       'RCrate', 'HRrate', 'Krate', 'BBrate', 'SBrate',
+                       'SBpct', 'WARrate', 'ZRrate', 'Fld%']]
         else:
             df2 = df1[['ORG', 'PA', 'AVG', 'OBP', 'SLG', 'OPS', 'wOBA',
-                       'RCrate', 'HRrate', 'Krate', 'BBrate', 'SBrate', 'SBpct',
-                       'WARrate', 'ZRrate', 'Fld%']]
+                       'RCrate', 'HRrate', 'Krate', 'BBrate', 'SBrate',
+                       'SBpct', 'WARrate', 'ZRrate', 'Fld%']]
 
     del df1
     return df2

@@ -10,7 +10,7 @@ def calc_ratings(
         baserunning_weights=None,
         run_env_weights=None,
 ):
-    #Set weights from run environment
+    # Set weights from run environment
     if run_env_weights:
         bat_vl_mask = df['B'].isin(['R', 'S'])
         df['BABIP vL'] = np.where(
@@ -33,7 +33,7 @@ def calc_ratings(
         bat_vr_mask = df['B'].isin(['L', 'S'])
         df['BABIP vR'] = np.where(
             bat_vr_mask,
-            round(df['BABIP vR'] * run_env_weights['avg_lhb'],1),
+            round(df['BABIP vR'] * run_env_weights['avg_lhb'], 1),
             round(df['BABIP vR'] * run_env_weights['avg_rhb'], 1)
         )
         df['Power vR'] = np.where(
@@ -43,8 +43,12 @@ def calc_ratings(
         )
         df['Gap vR'] = np.where(
             bat_vr_mask,
-            round(df['Gap vR'] * run_env_weights['avg_lhb'] * run_env_weights['doubles_lhb'] * run_env_weights['triples_lhb'], 1),
-            round(df['Gap vR'] * run_env_weights['avg_rhb'] * run_env_weights['doubles_rhb'] * run_env_weights['triples_rhb'], 1)
+            round(df['Gap vR'] * run_env_weights['avg_lhb'] *
+                  run_env_weights['doubles_lhb'] *
+                  run_env_weights['triples_lhb'], 1),
+            round(df['Gap vR'] * run_env_weights['avg_rhb'] *
+                  run_env_weights['doubles_rhb'] *
+                  run_env_weights['triples_rhb'], 1)
         )
 
     # Batter ratings
@@ -56,26 +60,24 @@ def calc_ratings(
         df['BatvR'] = (df['Gap vR'] + df['Power vR'] + df['Eye vR'] +
                        df['Avoid K vR'] + df['BABIP vR'])
     else:
-        df['BatOA'] = round(((df['Gap'] * batter_weights['weight_gap']) +
-                       (df['Power'] * batter_weights['weight_power']) +
-                       (df['Eye'] * batter_weights['weight_eye']) +
-                       (df['Avoid Ks'] * batter_weights['weight_avoidk']) +
-                       (df['BABIP'] * batter_weights['weight_babip'])
-                       ), 2)
-        df['BatvL'] = round(((df['Gap vL'] * batter_weights['weight_gap_vL']) +
-                       (df['Power vL'] * batter_weights['weight_power_vL']) +
-                       (df['Eye vL'] * batter_weights['weight_eye_vL']) +
-                       (df['Avoid K vL'] *
-                        batter_weights['weight_avoidk_vL']) +
-                       (df['BABIP vL'] * batter_weights['weight_babip_vL'])
-                       ), 2)
-        df['BatvR'] = round(((df['Gap vR'] * batter_weights['weight_gap_vR']) +
-                       (df['Power vR'] * batter_weights['weight_power_vR']) +
-                       (df['Eye vR'] * batter_weights['weight_eye_vR']) +
-                       (df['Avoid K vR'] *
-                        batter_weights['weight_avoidk_vR']) +
-                       (df['BABIP vR'] * batter_weights['weight_babip_vR'])
-                       ),2)
+        df['BatOA'] = round(
+            ((df['Gap'] * batter_weights['weight_gap']) +
+             (df['Power'] * batter_weights['weight_power']) +
+             (df['Eye'] * batter_weights['weight_eye']) +
+             (df['Avoid Ks'] * batter_weights['weight_avoidk']) +
+             (df['BABIP'] * batter_weights['weight_babip'])), 2)
+        df['BatvL'] = round(
+            ((df['Gap vL'] * batter_weights['weight_gap_vL']) +
+             (df['Power vL'] * batter_weights['weight_power_vL']) +
+             (df['Eye vL'] * batter_weights['weight_eye_vL']) +
+             (df['Avoid K vL'] * batter_weights['weight_avoidk_vL']) +
+             (df['BABIP vL'] * batter_weights['weight_babip_vL'])), 2)
+        df['BatvR'] = round(
+            ((df['Gap vR'] * batter_weights['weight_gap_vR']) +
+             (df['Power vR'] * batter_weights['weight_power_vR']) +
+             (df['Eye vR'] * batter_weights['weight_eye_vR']) +
+             (df['Avoid K vR'] * batter_weights['weight_avoidk_vR']) +
+             (df['BABIP vR'] * batter_weights['weight_babip_vR'])), 2)
     df['BatSplit'] = round((df['BatvL'] - df['BatvR']), 2)
 
     # Pitcher ratings
@@ -87,23 +89,21 @@ def calc_ratings(
         df['PitvR'] = (df['Stuff vR'] + df['pHR vR'] +
                        df['pBABIP vR'] + df['Control vR'])
     else:
-        df['PitOA'] = round(((df['Stuff'] * pitcher_weights['weight_stuff']) +
-                       (df['pHR'] * pitcher_weights['weight_phr']) +
-                       (df['pBABIP'] * pitcher_weights['weight_pbabip']) +
-                       (df['Control'] * pitcher_weights['weight_control'])
-                       ), 2)
-        df['PitvL'] = round(((df['Stuff vL'] * pitcher_weights['weight_stuff_vL']) +
-                       (df['pHR vL'] * pitcher_weights['weight_phr_vL']) +
-                       (df['pBABIP vL'] *
-                        pitcher_weights['weight_pbabip_vL']) +
-                       (df['Control vL'] *
-                        pitcher_weights['weight_control_vL'])), 2)
-        df['PitvR'] = round(((df['Stuff vR'] * pitcher_weights['weight_stuff_vR']) +
-                       (df['pHR vR'] * pitcher_weights['weight_phr_vR']) +
-                       (df['pBABIP vR'] *
-                        pitcher_weights['weight_pbabip_vR']) +
-                       (df['Control vR'] *
-                        pitcher_weights['weight_control_vR'])), 2)
+        df['PitOA'] = round(
+            ((df['Stuff'] * pitcher_weights['weight_stuff']) +
+             (df['pHR'] * pitcher_weights['weight_phr']) +
+             (df['pBABIP'] * pitcher_weights['weight_pbabip']) +
+             (df['Control'] * pitcher_weights['weight_control'])), 2)
+        df['PitvL'] = round(
+            ((df['Stuff vL'] * pitcher_weights['weight_stuff_vL']) +
+             (df['pHR vL'] * pitcher_weights['weight_phr_vL']) +
+             (df['pBABIP vL'] * pitcher_weights['weight_pbabip_vL']) +
+             (df['Control vL'] * pitcher_weights['weight_control_vL'])), 2)
+        df['PitvR'] = round(
+            ((df['Stuff vR'] * pitcher_weights['weight_stuff_vR']) +
+             (df['pHR vR'] * pitcher_weights['weight_phr_vR']) +
+             (df['pBABIP vR'] * pitcher_weights['weight_pbabip_vR']) +
+             (df['Control vR'] * pitcher_weights['weight_control_vR'])), 2)
 
     df['PitSplit'] = round((df['PitvL'] - df['PitvR']), 2)
 
@@ -115,40 +115,30 @@ def calc_ratings(
                         df['Infield Arm'] + df['DP'])
         df['OF Def'] = df['OF Range'] + df['OF Error'] + df['OF Arm']
     else:
-        df['Catch Def'] = round(((df['CatcherAbil'] *
-                            defense_weights['weight_catch_abil']) +
-                           (df['CatcherFrame'] *
-                            defense_weights['weight_catch_frame']) +
-                           (df['Catcher Arm'] *
-                            defense_weights['weight_catch_arm'])
-                           ), 2)
-        df['IF Def'] = round(((df['Infield Range'] *
-                         defense_weights['weight_infield_range']) +
-                        (df['Infield Error'] *
-                         defense_weights['weight_infield_error']) +
-                        (df['Infield Arm'] *
-                         defense_weights['weight_infield_arm']) +
-                        (df['DP'] * defense_weights['weight_turn_dp'])
-                        ), 2)
-        df['OF Def'] = round(((df['OF Range'] *
-                         defense_weights['weight_outfield_range']) +
-                        (df['OF Error'] *
-                         defense_weights['weight_outfield_error']) +
-                        (df['OF Arm'] * defense_weights['weight_outfield_arm'])
-                        ), 2)
+        df['Catch Def'] = round(
+            ((df['CatcherAbil'] * defense_weights['weight_catch_abil']) +
+             (df['CatcherFrame'] * defense_weights['weight_catch_frame']) +
+             (df['Catcher Arm'] * defense_weights['weight_catch_arm'])), 2)
+        df['IF Def'] = round(
+            ((df['Infield Range'] * defense_weights['weight_infield_range']) +
+             (df['Infield Error'] * defense_weights['weight_infield_error']) +
+             (df['Infield Arm'] * defense_weights['weight_infield_arm']) +
+             (df['DP'] * defense_weights['weight_turn_dp'])), 2)
+        df['OF Def'] = round(
+            ((df['OF Range'] * defense_weights['weight_outfield_range']) +
+             (df['OF Error'] * defense_weights['weight_outfield_error']) +
+             (df['OF Arm'] * defense_weights['weight_outfield_arm'])), 2)
 
     # Baserunning ratings
     if baserunning_weights is None:
         df['Bsr'] = (df['Speed'] + df['Steal Rate'] + df['Stealing'] +
                      df['Baserunning'])
     else:
-        df['Bsr'] = round(((df['Speed'] * baserunning_weights['weight_speed']) +
-                     (df['Steal Rate'] *
-                      baserunning_weights['weight_steal_agg']) +
-                     (df['Stealing'] *
-                      baserunning_weights['weight_steal_ability']) +
-                     (df['Baserunning'] *
-                      baserunning_weights['weight_baserunning'])
-                     ), 2)
+        df['Bsr'] = round(
+            ((df['Speed'] * baserunning_weights['weight_speed']) +
+             (df['Steal Rate'] * baserunning_weights['weight_steal_agg']) +
+             (df['Stealing'] * baserunning_weights['weight_steal_ability']) +
+             (df['Baserunning'] * baserunning_weights['weight_baserunning'])),
+            2)
 
     return df
