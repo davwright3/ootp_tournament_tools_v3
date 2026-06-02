@@ -14,7 +14,8 @@ from utils.data_utils.data_store import data_store
 from utils.data_utils.card_list_store import card_list_store
 from utils.modeling.model_stat_calcs import run_model_calcs
 from utils.config_utils.load_save_settings import get_setting
-from utils.stats_utils.normalize_innings_pitched import normalize_innings_pitched
+from utils.stats_utils.normalize_innings_pitched import (
+    normalize_innings_pitched)
 
 
 def run_model(
@@ -39,7 +40,8 @@ def run_model(
     """
     # TODO set up dataframes to prep for modeling
     # TODO run model (start with babip, then set up for inputs via arguments)
-    # TODO Arguments needed: Card headers, stat headers, output file paths, method to run
+    # TODO Arguments needed: Card headers, stat headers,
+    #  output file paths, method to run
     # TODO print results to command line for testing
     # TODO set up saving of the model using joblib
 
@@ -65,12 +67,14 @@ def run_model(
     cards = cards[card_columns]
     cards = cards.rename(columns={'Card ID': 'CID', '//Card Title': 'Title'})
     if 'BattedBallType' in cards.columns:
-        cards['BattedBallType'] = cards['BattedBallType'].map({0: 'N', 1: 'GB', 2: 'FB', 3: 'LD'})
-        cards = pd.get_dummies(cards, columns=['BattedBallType'], drop_first=True)
+        cards['BattedBallType'] = (cards['BattedBallType']
+                                   .map({0: 'N', 1: 'GB', 2: 'FB', 3: 'LD'}))
+        cards = pd.get_dummies(
+            cards, columns=['BattedBallType'], drop_first=True)
 
     if player_type == 'bat':
         cards['Bats'] = cards['Bats'].map({1: 'L', 2: 'R', 3: 'S'})
-    # Use methods to get required stats and then merge the ratings with the target stats
+    # Use methods to get required stats and then merge the ratings with tgt
         stats = run_model_calcs(data, model_calc_name)
         final_df = pd.merge(cards, stats[['CID', target_name]], on='CID')
 
@@ -90,7 +94,9 @@ def run_model(
     # Split into three dataframes for left, right and switch
 
     if use_batted_ball_type:
-        selected_headers = model_headers + ['BattedBallType_GB', 'BattedBallType_LD', 'BattedBallType_N']
+        selected_headers = model_headers + ['BattedBallType_GB',
+                                            'BattedBallType_LD',
+                                            'BattedBallType_N']
         print(f'Selected Headers: {selected_headers}')
     else:
         selected_headers = model_headers
@@ -100,7 +106,13 @@ def run_model(
     x_model_left = model_df_left[selected_headers]
     y_model_left = model_df_left[target_name]
 
-    x_train_left, x_test_left, y_train_left, y_test_left = train_test_split(x_model_left, y_model_left, test_size=test_size, random_state=31)
+    x_train_left, x_test_left, y_train_left, y_test_left = (
+        train_test_split(
+            x_model_left,
+            y_model_left,
+            test_size=test_size,
+            random_state=31
+        ))
     left_scalar = StandardScaler()
     x_train_left_scaled = left_scalar.fit_transform(x_train_left)
     x_test_left_scaled = left_scalar.transform(x_test_left)
@@ -108,7 +120,13 @@ def run_model(
     x_model_right = model_df_right[selected_headers]
     y_model_right = model_df_right[target_name]
 
-    x_train_right, x_test_right, y_train_right, y_test_right = train_test_split(x_model_right, y_model_right, test_size=test_size, random_state=32)
+    x_train_right, x_test_right, y_train_right, y_test_right = (
+        train_test_split(
+            x_model_right,
+            y_model_right,
+            test_size=test_size,
+            random_state=32
+        ))
     right_scalar = StandardScaler()
     x_train_right_scaled = right_scalar.fit_transform(x_train_right)
     x_test_right_scaled = right_scalar.transform(x_test_right)
@@ -147,10 +165,12 @@ def run_model(
 
     elif model_type == 'Polynomial':
         print('Running Polynomial model')
-        left_model = make_pipeline(PolynomialFeatures(degree=2), LinearRegression())
+        left_model = make_pipeline(
+            PolynomialFeatures(degree=2), LinearRegression())
         left_model.fit(x_train_left_scaled, y_train_left)
 
-        right_model = make_pipeline(PolynomialFeatures(degree=2), LinearRegression())
+        right_model = make_pipeline(
+            PolynomialFeatures(degree=2), LinearRegression())
         right_model.fit(x_train_right_scaled, y_train_right)
 
     else:
@@ -160,8 +180,8 @@ def run_model(
         right_model = RidgeCV(alphas=alpha_params, cv=cv_params)
         right_model.fit(x_train_right_scaled, y_train_right)
 
-    y_pred_left = left_model.predict(x_test_left_scaled)
-    left_model_score = round(left_model.score(x_test_left_scaled, y_test_left), 3)
+    left_model_score = (
+        round(left_model.score(x_test_left_scaled, y_test_left), 3))
 
     if model_type != 'Polynomial':
         left_model_coeffs = left_model.coef_.flatten()
@@ -170,16 +190,13 @@ def run_model(
     print('Left model score: ', left_model_score)
     # Run right model
 
-
-    y_pred_right = right_model.predict(x_test_right_scaled)
-    right_model_score = round(right_model.score(x_test_right_scaled, y_test_right), 4)
+    right_model_score = (
+        round(right_model.score(x_test_right_scaled, y_test_right), 4))
     print("Right model score: ", right_model_score)
 
-
-
-
     # Save models
-    target_folder = f'{get_setting("InitialTargetDirs", "starting_target_folder")}/models'
+    target_folder = f'{get_setting(
+        "InitialTargetDirs", "starting_target_folder")}/models'
     if not Path(target_folder).exists():
         mkdir(target_folder)
 
@@ -194,6 +211,10 @@ def run_model(
     joblib.dump(right_scalar, right_scaler_target)
     joblib.dump(list(x_test_left.columns), features_target)
 
-    update_model_tracker(model_calc_name, model_type, trny_name, left_model_score, right_model_score)
-
-
+    update_model_tracker(
+        model_calc_name,
+        model_type,
+        trny_name,
+        left_model_score,
+        right_model_score
+    )

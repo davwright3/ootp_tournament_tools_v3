@@ -1,12 +1,8 @@
 """Utility for fitting currently stored models for display."""
-from utils.modeling.fit_model import fit_model
 from utils.data_utils.card_list_store import card_list_store
-from utils.data_utils.data_store import data_store
 import pandas as pd
 from utils.modeling.fit_batter_models import fit_batter_model
 from datetime import datetime, timedelta
-
-from utils.stats_utils.cull_teams import cull_teams
 
 
 def fit_current_batting_models(
@@ -52,8 +48,10 @@ def fit_current_batting_models(
     if card_type_select is not None:
         cards = cards[cards['Card Type'].isin(card_type_select)]
 
-    cards['CD'] = cards['CatcherAbil'] + cards['CatcherFrame'] + cards['Catcher Arm']
-    cards['IFD'] = cards['Infield Range'] + cards['Infield Error'] + cards['Infield Arm'] + cards['DP']
+    cards['CD'] = (cards['CatcherAbil'] +
+                   cards['CatcherFrame'] + cards['Catcher Arm'])
+    cards['IFD'] = (cards['Infield Range'] + cards['Infield Error'] +
+                    cards['Infield Arm'] + cards['DP'])
     cards['OFD'] = cards['OF Range'] + cards['OF Error'] + cards['OF Arm']
 
     cards = cards[['Card ID', '//Card Title', 'Card Value', 'Year', 'Bats',
@@ -68,9 +66,7 @@ def fit_current_batting_models(
 
     cards = fit_batter_model(cards)
 
-    final_df = cards[['//Card Title', 'Card Value', 'HR/600', 'AVG', 'OBP', 'SLG', 'OPS', 'wOBA', 'K/600', 'BB/600', 'CD', 'IFD', 'OFD']]
+    final_df = cards[['//Card Title', 'Card Value', 'HR/600', 'AVG', 'OBP',
+                      'SLG', 'OPS', 'wOBA', 'K/600', 'BB/600', 'CD',
+                      'IFD', 'OFD']]
     return final_df
-
-
-
-

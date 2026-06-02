@@ -2,11 +2,28 @@ from utils.modeling.fit_model import fit_model
 
 
 def fit_batter_model(player_df):
-    player_df = fit_model(player_df, 'babip', 'BABIP_pred', 'bat')
-    player_df = fit_model(player_df, 'strikeouts', 'K_pred', 'bat')
-    player_df = fit_model(player_df, 'walks', 'BB_pred', 'bat')
-    player_df = fit_model(player_df, 'homeruns', 'HR_pred', 'bat')
-    player_df = fit_model(player_df, 'xbh', 'XBH_pred', 'bat')
+    player_df = fit_model(
+        player_df,
+        'babip',
+        'BABIP_pred',
+        'bat'
+    )
+    player_df = fit_model(
+        player_df,
+        'strikeouts',
+        'K_pred',
+        'bat'
+    )
+    player_df = fit_model(
+        player_df, 'walks', 'BB_pred', 'bat')
+    player_df = fit_model(
+        player_df,
+        'homeruns',
+        'HR_pred',
+        'bat'
+    )
+    player_df = fit_model(
+        player_df, 'xbh', 'XBH_pred', 'bat')
     player_df['K_pred'] = player_df['K_pred'].clip(lower=0)
     player_df['BB_pred'] = player_df['BB_pred'].clip(lower=0)
     player_df['HR_pred'] = player_df['HR_pred'].clip(lower=0)
