@@ -38,7 +38,8 @@ class Footer(tk.Frame):
         )
         self.au_label.grid(row=0, column=0, sticky="e")
 
-        self.paypal_button_frame = tk.Frame(self, padx=5, pady=5, bg='lightgray')
+        self.paypal_button_frame = tk.Frame(
+            self, padx=5, pady=5, bg='lightgray')
         self.paypal_button_frame.grid(row=0, column=1, sticky="e")
 
         self.paypal_button = tk.Button(

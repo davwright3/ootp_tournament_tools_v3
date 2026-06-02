@@ -95,5 +95,7 @@ class PlayerCardPitcherProfileFrame(tk.Frame):
         self.gb_type_rating_label.configure(text=pitcher_type)
         self.arm_slot_label.configure(text=arm_slot)
         self.velocity_label.configure(text=player_df.iloc[0]['Velocity'])
-        self.stamina_frame.update_label(player_df.iloc[0]['Stamina'], font=fonts.basic_font)
-        self.hold_runners_frame.update_label(player_df.iloc[0]['Hold'], font=fonts.basic_font)
+        self.stamina_frame.update_label(
+            player_df.iloc[0]['Stamina'], font=fonts.basic_font)
+        self.hold_runners_frame.update_label(
+            player_df.iloc[0]['Hold'], font=fonts.basic_font)

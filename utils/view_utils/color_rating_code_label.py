@@ -11,7 +11,6 @@ class ColorRatingLabel(tk.Label):
 
         self.update_label(self.rating, self.font)
 
-
     def update_label(self, rating, font):
         self.configure(text=rating)
         self.configure(font=font)

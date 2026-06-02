@@ -1,10 +1,8 @@
 import tkinter as tk
-from tkinter import ttk
-import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
 from tkinter import messagebox
-from mpl_toolkits.mplot3d import Axes3D
 
 
 class DataVisualScatterFrame3D(tk.Frame):
@@ -26,8 +24,9 @@ class DataVisualScatterFrame3D(tk.Frame):
 
             colormap = plt.get_cmap('plasma')
 
-            scatter = ax.scatter(xs, ys, c=zs, cmap=colormap, s=100, alpha=.7, edgecolors='black', linewidth=1)
-            colorbar= plt.colorbar(scatter, ax=ax, label='Result Value')
+            scatter = ax.scatter(
+                xs, ys, c=zs, cmap=colormap, s=100, alpha=.7,
+                edgecolors='black', linewidth=1)
 
             ax.set_xlabel('Avoid Ks')
             ax.set_ylabel('Eye')
@@ -37,7 +36,7 @@ class DataVisualScatterFrame3D(tk.Frame):
 
             annot = ax.annotate(
                 "",
-                xy=(0,0),
+                xy=(0, 0),
                 xytext=(10, 10),
                 textcoords="offset points",
                 bbox=dict(boxstyle='round', fc='w'),
@@ -68,7 +67,8 @@ class DataVisualScatterFrame3D(tk.Frame):
                 lines.append('Val: ' + str(self.df.iloc[idx, 1]))
                 annot.set_text("\n".join(lines))
 
-                ax_bbox = ax.get_window_extent(renderer=self.fig.canvas.get_renderer())
+                ax_bbox = ax.get_window_extent(
+                    renderer=self.fig.canvas.get_renderer())
                 disp_pt = ax.transData.transform(pos)
 
                 cx = (ax_bbox.x0 + ax_bbox.x1) / 2
@@ -97,7 +97,9 @@ class DataVisualScatterFrame3D(tk.Frame):
                 """Handle click events."""
                 if hasattr(event, 'ind') and len(event.ind) > 0:
                     idx = event.ind[0]
-                    point_id = str(self.df['Title'].iloc[idx] + 'PA: ' + self.df['PA'].iloc[idx])
+                    point_id = str(
+                        self.df['Title'].iloc[idx] + 'PA: ' +
+                        self.df['PA'].iloc[idx])
                     print('Clicked id:', point_id)
                     messagebox.showinfo('Clicked id:', point_id)
 

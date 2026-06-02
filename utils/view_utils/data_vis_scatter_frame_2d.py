@@ -7,15 +7,12 @@ Sent dataframe should have x values at column index 0 and
 
 import tkinter as tk
 from tkinter import messagebox
-
-import pandas as pd
-import matplotlib.pyplot as plt
 import matplotlib.colors as mcol
 from matplotlib.figure import Figure
 import matplotlib.patches as mpatches
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
 import numpy as np
-
 
 
 class DataVisScatterFrame2d(tk.Frame):
@@ -56,12 +53,13 @@ class DataVisScatterFrame2d(tk.Frame):
                     label='Overall Trend'
                 )
 
-
             if 'BattedBallType' in df.columns:
                 col_idx = df.columns.get_loc('BattedBallType')
                 categories = df.iloc[:, col_idx]
-                custom_cmap = mcol.ListedColormap(['blue', 'yellow', 'red', 'green'])
-                scatter = ax.scatter(x, y, s=40, c=categories, cmap=custom_cmap, picker=True)
+                custom_cmap = mcol.ListedColormap(
+                    ['blue', 'yellow', 'red', 'green'])
+                scatter = ax.scatter(
+                    x, y, s=40, c=categories, cmap=custom_cmap, picker=True)
 
                 label_map = {
                     0: 'Normal',
@@ -71,9 +69,10 @@ class DataVisScatterFrame2d(tk.Frame):
                 }
 
                 handles = [
-                    mpatches.Patch(color=custom_cmap(i), label=label_map.get(i, str(i)))
+                    mpatches.Patch(
+                        color=custom_cmap(i), label=label_map.get(i, str(i)))
                     for i in sorted(label_map.keys())
-                    if(categories -- i).any()
+                    if (categories - i).any()
                 ]
                 ax.legend(handles=handles, title='BBT', loc='upper left')
             else:
@@ -81,7 +80,7 @@ class DataVisScatterFrame2d(tk.Frame):
 
             annot = ax.annotate(
                 "",
-                xy=(0,0),
+                xy=(0, 0),
                 xytext=(10, 10),
                 textcoords="offset points",
                 bbox=dict(boxstyle='round', fc='w'),
@@ -108,7 +107,8 @@ class DataVisScatterFrame2d(tk.Frame):
                 lines.append('Val: ' + str(self.df.iloc[idx, 1]))
                 annot.set_text("\n".join(lines))
 
-                ax_bbox = ax.get_window_extent(renderer=fig.canvas.get_renderer())
+                ax_bbox = ax.get_window_extent(
+                    renderer=fig.canvas.get_renderer())
                 disp_pt = ax.transData.transform(pos)
 
                 cx = (ax_bbox.x0 + ax_bbox.x1) / 2
@@ -137,7 +137,9 @@ class DataVisScatterFrame2d(tk.Frame):
                 """Handle click events."""
                 if hasattr(event, 'ind') and len(event.ind) > 0:
                     idx = event.ind[0]
-                    point_id = str(self.df['Title'].iloc[idx] + 'PA: ' + self.df['PA'].iloc[idx])
+                    point_id = str(
+                        self.df['Title'].iloc[idx] +
+                        'PA: ' + self.df['PA'].iloc[idx])
                     print('Clicked id:', point_id)
                     messagebox.showinfo('Clicked id:', point_id)
 

@@ -1,7 +1,5 @@
 import tkinter as tk
 
-from pygments.lexers import q
-
 
 class TeamOnlyCheckboxFrame(tk.Frame):
     def __init__(self, parent):

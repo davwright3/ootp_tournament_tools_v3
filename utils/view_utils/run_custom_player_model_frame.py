@@ -2,7 +2,6 @@
 import tkinter as tk
 from tkinter import ttk
 import pandas as pd
-from utils.modeling.fit_model import fit_model
 from utils.modeling.fit_batter_models import fit_batter_model
 
 
@@ -44,7 +43,6 @@ class CustomPlayerModelFrame(tk.Frame):
         self.woba_display_var = tk.StringVar(value='WOBA: .000')
         self.homerun_display_var = tk.StringVar(value='HR/600: .000')
 
-
         self.label = tk.Label(self, text="Custom Player Model")
         self.label.grid(row=0, column=0, columnspan=4, sticky='nsew')
 
@@ -66,7 +64,8 @@ class CustomPlayerModelFrame(tk.Frame):
         self.vs_right_label = tk.Label(self, text="vR")
         self.vs_right_label.grid(row=1, column=3, sticky='nsew')
 
-        self.avoidk_ovr_entry = tk.Entry(self, textvariable=self.avoidk_ovr_var)
+        self.avoidk_ovr_entry = tk.Entry(
+            self, textvariable=self.avoidk_ovr_var)
         self.avoidk_ovr_entry.grid(row=2, column=1, sticky='nsew')
         self.avoidk_vl_entry = tk.Entry(self, textvariable=self.avoidk_vl_var)
         self.avoidk_vl_entry.grid(row=2, column=2, sticky='nsew')
@@ -102,34 +101,42 @@ class CustomPlayerModelFrame(tk.Frame):
         self.eye_vr_entry.grid(row=6, column=3, sticky='nsew')
 
         self.separator_one = ttk.Separator(self, orient=tk.HORIZONTAL)
-        self.separator_one.grid(row=7, column=0, columnspan=4, sticky='nsew', padx=10, pady=10)
+        self.separator_one.grid(
+            row=7, column=0, columnspan=4, sticky='nsew', padx=10, pady=10)
 
         self.speed_label = tk.Label(self, text="Speed")
         self.speed_label.grid(row=8, column=0, sticky='nsew')
         self.baserunning_label = tk.Label(self, text="Baserunning")
         self.baserunning_label.grid(row=9, column=0, sticky='nsew')
-        self.batted_ball_type_label = tk.Label(self, text="BBT (N: 0, GB: 1, FB:2, LD:3)")
+        self.batted_ball_type_label = tk.Label(
+            self, text="BBT (N: 0, GB: 1, FB:2, LD:3)")
         self.batted_ball_type_label.grid(row=10, column=2, sticky='nsew')
         self.bats_label = tk.Label(self, text="Bats (L:1, R:2, S: 3)")
         self.bats_label.grid(row=8, column=2, sticky='nsew')
 
         self.speed_entry = tk.Entry(self, textvariable=self.speed_var)
         self.speed_entry.grid(row=8, column=1, sticky='nsew')
-        self.baserunning_entry = tk.Entry(self, textvariable=self.baserunning_var)
+        self.baserunning_entry = tk.Entry(
+            self, textvariable=self.baserunning_var)
         self.baserunning_entry.grid(row=9, column=1, sticky='nsew')
-        self.batted_ball_type_entry = tk.Entry(self, textvariable=self.battedballtype_var)
+        self.batted_ball_type_entry = tk.Entry(
+            self, textvariable=self.battedballtype_var)
         self.batted_ball_type_entry.grid(row=10, column=3, sticky='nsew')
         self.bats_entry = tk.Entry(self, textvariable=self.bats_var)
         self.bats_entry.grid(row=8, column=3, sticky='nsew')
 
-        self.run_custom_model_button = tk.Button(self, text='Run Model', command=self.run_custom_model)
+        self.run_custom_model_button = tk.Button(
+            self, text='Run Model', command=self.run_custom_model)
         self.run_custom_model_button.grid(row=10, column=0, sticky='nsew')
 
         self.separator_two = ttk.Separator(self, orient=tk.HORIZONTAL)
-        self.separator_two.grid(row=11, column=0, columnspan=4, sticky='nsew', padx=10, pady=10)
+        self.separator_two.grid(
+            row=11, column=0, columnspan=4, sticky='nsew', padx=10, pady=10)
 
-        self.average_display = tk.Label(self, textvariable=self.average_display_var)
-        self.average_display.grid(row=12, column=0, sticky='nsew', columnspan=2)
+        self.average_display = tk.Label(
+            self, textvariable=self.average_display_var)
+        self.average_display.grid(
+            row=12, column=0, sticky='nsew', columnspan=2)
 
         self.obp_display = tk.Label(self, textvariable=self.obp_display_var)
         self.obp_display.grid(row=12, column=2, sticky='nsew', columnspan=2)
@@ -143,8 +150,10 @@ class CustomPlayerModelFrame(tk.Frame):
         self.woba_display = tk.Label(self, textvariable=self.woba_display_var)
         self.woba_display.grid(row=14, column=0, sticky='nsew', columnspan=2)
 
-        self.homerun_display = tk.Label(self, textvariable=self.homerun_display_var)
-        self.homerun_display.grid(row=14, column=2, sticky='nsew', columnspan=2)
+        self.homerun_display = tk.Label(
+            self, textvariable=self.homerun_display_var)
+        self.homerun_display.grid(
+            row=14, column=2, sticky='nsew', columnspan=2)
 
     def run_custom_model(self):
         print('Running custom model')
@@ -171,24 +180,27 @@ class CustomPlayerModelFrame(tk.Frame):
             player_df.loc[0, 'Bats'] = int(self.bats_var.get())
             player_df.loc[0, 'Speed'] = int(self.speed_var.get())
             player_df.loc[0, 'Baserunning'] = int(self.baserunning_var.get())
-            player_df.loc[0, 'BattedBallType'] = int(self.battedballtype_var.get())
+            player_df.loc[0, 'BattedBallType'] = int(
+                self.battedballtype_var.get())
             player_df['Bats'] = player_df['Bats'].astype(int)
-            player_df['BattedBallType'] = player_df['BattedBallType'].astype(int)
+            player_df['BattedBallType'] = (
+                player_df['BattedBallType'].astype(int))
 
             fit_batter_model(player_df)
 
-            return_df = player_df[['AVG', 'OBP', 'SLG', 'OPS', 'wOBA', 'HR/600']]
+            return_df = player_df[['AVG', 'OBP', 'SLG', 'OPS',
+                                   'wOBA', 'HR/600']]
 
             self.average_display_var.set(f'AVG: {return_df.loc[0]['AVG']}')
             self.obp_display_var.set(f'OBP: {return_df.loc[0]['OBP']}')
             self.slg_display_var.set(f'SLG: {return_df.loc[0]['SLG']}')
             self.ops_display_var.set(f'OPS: {return_df.loc[0]['OPS']}')
             self.woba_display_var.set(f'WOBA: {return_df.loc[0]['wOBA']}')
-            self.homerun_display_var.set(f'HR/600: {return_df.loc[0]['HR/600']}')
+            self.homerun_display_var.set(f'HR/600:'
+                                         f' {return_df.loc[0]['HR/600']}')
 
         except Exception as e:
             print(e)
             return
 
         print(return_df)
-

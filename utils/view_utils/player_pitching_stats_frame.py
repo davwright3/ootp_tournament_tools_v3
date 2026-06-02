@@ -5,7 +5,9 @@ from utils.view_utils.stat_label import StatLabel
 
 
 class PlayerPitchingStatsFrame(tk.Frame):
-    def __init__(self, parent, label='', card_id=None, team_select=None, cutoff_days=None):
+    def __init__(
+            self, parent, label='', card_id=None,
+            team_select=None, cutoff_days=None):
         super().__init__(parent)
 
         if team_select is None and cutoff_days is None:

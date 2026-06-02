@@ -19,5 +19,5 @@ class MinTrnyAppFrame(tk.Frame):
     def get_min_apps(self):
         try:
             return int(self.min_app_entry.get())
-        except:
+        except Exception:
             return 20

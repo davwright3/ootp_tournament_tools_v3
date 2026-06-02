@@ -3,7 +3,7 @@ from utils.view_utils import program_fonts as fonts
 
 
 class BatsThrowsLabel(tk.Label):
-    def __init__(self, parent, label_type: str=None, side_id=None):
+    def __init__(self, parent, label_type: str = None, side_id=None):
         super().__init__(parent)
 
         self.configure(font=fonts.slideshow_label_font)

@@ -54,13 +54,13 @@ class RunEnvironmentFrame(tk.Frame):
             search_term = self.search_stadium.get().lower()
             if search_term and search_term != '':
                 new_list = stadium_list.copy()
-                filtered = [item for item in new_list if search_term in item.lower()]
+                filtered = [
+                    item for item in new_list if search_term in item.lower()]
                 stadium_list = filtered
-            #TODO Filter stadium list if a search term is given
+            # TODO Filter stadium list if a search term is given
             # if search_name:
-            #     stadium_list = stadium_list.
+            # stadium_list = stadium_list.
             return stadium_list
-
 
         def set_park_factors():
             try:
@@ -82,7 +82,7 @@ class RunEnvironmentFrame(tk.Frame):
             try:
                 park_list = get_park_list()
                 self.stadium_dropdown.configure(values=park_list)
-            except Exception as e:
+            except Exception:
                 return
 
         def set_park_factors_callback(choice):
@@ -91,76 +91,106 @@ class RunEnvironmentFrame(tk.Frame):
         self.run_environment_frame = tk.Frame(self)
         self.run_environment_frame.grid(row=0, column=0, sticky='nsew')
         column = 0
-        self.rerun_environment_button = tk.Button(self.run_environment_frame, text='RERUN', command=update_run_environment)
+        self.rerun_environment_button = tk.Button(
+            self.run_environment_frame, text='RERUN',
+            command=update_run_environment)
         self.rerun_environment_button.grid(row=0, column=column, sticky='nsew')
         column += 1
 
-        self.select_run_environment_label = tk.Label(self.run_environment_frame, text='Select Year')
-        self.select_run_environment_label.grid(row=0, column=column, padx=1, pady=1)
+        self.select_run_environment_label = tk.Label(
+            self.run_environment_frame, text='Select Year')
+        self.select_run_environment_label.grid(
+            row=0, column=column, padx=1, pady=1)
         column += 1
 
         self.select_run_environment_entry = tk.Entry(
-            self.run_environment_frame, textvariable=self.selected_year, width=10)
-        self.select_run_environment_entry.grid(column=column, row=0, sticky='nsew')
+            self.run_environment_frame, textvariable=self.selected_year,
+            width=10)
+        self.select_run_environment_entry.grid(
+            column=column, row=0, sticky='nsew')
         column += 1
 
-        self.label = tk.Label(self.run_environment_frame, text=f"{self.selected_year.get()} Run Environment")
+        self.label = tk.Label(
+            self.run_environment_frame,
+            text=f"{self.selected_year.get()} Run Environment")
         self.label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.babip_label = tk.Label(self.run_environment_frame, text='BABIP: ', font=fonts.basic_font)
+        self.babip_label = tk.Label(
+            self.run_environment_frame, text='BABIP: ', font=fonts.basic_font)
         self.babip_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.babip_stat_label = tk.Label(self.run_environment_frame, textvariable=self.babip_var, font=fonts.basic_font)
+        self.babip_stat_label = tk.Label(
+            self.run_environment_frame, textvariable=self.babip_var,
+            font=fonts.basic_font)
         self.babip_stat_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.hrrate_label = tk.Label(self.run_environment_frame, text='HRrate: ', font=fonts.basic_font)
+        self.hrrate_label = tk.Label(
+            self.run_environment_frame, text='HRrate: ', font=fonts.basic_font)
         self.hrrate_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.hrrate_stat_label = tk.Label(self.run_environment_frame, textvariable=self.hrrate_var, font=fonts.basic_font)
+        self.hrrate_stat_label = tk.Label(
+            self.run_environment_frame, textvariable=self.hrrate_var,
+            font=fonts.basic_font)
         self.hrrate_stat_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.xbhrate_label = tk.Label(self.run_environment_frame, text='XBHrate: ', font=fonts.basic_font)
+        self.xbhrate_label = tk.Label(
+            self.run_environment_frame, text='XBHrate: ',
+            font=fonts.basic_font)
         self.xbhrate_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.xbhrate_stat_label = tk.Label(self.run_environment_frame, textvariable=self.xbhrate_var, font=fonts.basic_font)
+        self.xbhrate_stat_label = tk.Label(
+            self.run_environment_frame, textvariable=self.xbhrate_var,
+            font=fonts.basic_font)
         self.xbhrate_stat_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.krate_label = tk.Label(self.run_environment_frame, text='Krate: ', font=fonts.basic_font)
+        self.krate_label = tk.Label(
+            self.run_environment_frame, text='Krate: ', font=fonts.basic_font)
         self.krate_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.krate_stat_label = tk.Label(self.run_environment_frame, textvariable=self.krate_var, font=fonts.basic_font)
+        self.krate_stat_label = tk.Label(
+            self.run_environment_frame, textvariable=self.krate_var,
+            font=fonts.basic_font)
         self.krate_stat_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.bbrate_label = tk.Label(self.run_environment_frame, text='BBRate: ', font=fonts.basic_font)
+        self.bbrate_label = tk.Label(
+            self.run_environment_frame, text='BBRate: ', font=fonts.basic_font)
         self.bbrate_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.bbrate_stat_label = tk.Label(self.run_environment_frame, textvariable=self.bbrate_var, font=fonts.basic_font)
+        self.bbrate_stat_label = tk.Label(
+            self.run_environment_frame, textvariable=self.bbrate_var,
+            font=fonts.basic_font)
         self.bbrate_stat_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.sbrate_label = tk.Label(self.run_environment_frame, text='SBRate: ', font=fonts.basic_font)
+        self.sbrate_label = tk.Label(
+            self.run_environment_frame, text='SBRate: ', font=fonts.basic_font)
         self.sbrate_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.sbrate_stat_label = tk.Label(self.run_environment_frame, textvariable=self.sbrate_var, font=fonts.basic_font)
+        self.sbrate_stat_label = tk.Label(
+            self.run_environment_frame, textvariable=self.sbrate_var,
+            font=fonts.basic_font)
         self.sbrate_stat_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.sbpctrate_label = tk.Label(self.run_environment_frame, text='SBPct: ', font=fonts.basic_font)
+        self.sbpctrate_label = tk.Label(
+            self.run_environment_frame, text='SBPct: ', font=fonts.basic_font)
         self.sbpctrate_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
-        self.sbpctrate_stat_label = tk.Label(self.run_environment_frame, textvariable=self.sbpctrate_var, font=fonts.basic_font)
+        self.sbpctrate_stat_label = tk.Label(
+            self.run_environment_frame, textvariable=self.sbpctrate_var,
+            font=fonts.basic_font)
         self.sbpctrate_stat_label.grid(column=column, row=0, sticky='nsew')
         column += 1
 
@@ -171,7 +201,9 @@ class RunEnvironmentFrame(tk.Frame):
         self.park_factors_frame.grid(column=0, row=1, sticky='nsew')
 
         column = 0
-        self.search_entry = tk.Entry(self.park_factors_frame, font=fonts.basic_font, textvariable=self.search_stadium)
+        self.search_entry = tk.Entry(
+            self.park_factors_frame, font=fonts.basic_font,
+            textvariable=self.search_stadium)
         self.search_entry.grid(column=column, row=1, sticky='nsew')
         column += 1
         self.search_entry.bind("<KeyRelease>", update_stadium_dropdown)
@@ -186,93 +218,121 @@ class RunEnvironmentFrame(tk.Frame):
         self.stadium_dropdown.grid(column=column, row=1, sticky='nsew')
         column += 1
 
-        self.avg_lhb_label = tk.Label(self.park_factors_frame, text='Avg LHB: ', font=fonts.basic_font)
+        self.avg_lhb_label = tk.Label(
+            self.park_factors_frame, text='Avg LHB: ', font=fonts.basic_font)
         self.avg_lhb_label.grid(column=column, row=1, sticky='nsew')
         column += 1
 
-        self.avg_lhb_stat_label = tk.Label(self.park_factors_frame, textvariable=self.avg_lhb_var, font=fonts.basic_font)
+        self.avg_lhb_stat_label = tk.Label(
+            self.park_factors_frame, textvariable=self.avg_lhb_var,
+            font=fonts.basic_font)
         self.avg_lhb_stat_label.grid(column=column, row=1, sticky='nsew')
         column += 1
 
-        self.avg_rhb_label = tk.Label(self.park_factors_frame, text='Avg RHB: ', font=fonts.basic_font)
+        self.avg_rhb_label = tk.Label(
+            self.park_factors_frame, text='Avg RHB: ', font=fonts.basic_font)
         self.avg_rhb_label.grid(column=column, row=1, sticky='nsew')
         column += 1
 
-        self.avg_rhb_stat_label = tk.Label(self.park_factors_frame, textvariable=self.avg_rhb_var, font=fonts.basic_font)
+        self.avg_rhb_stat_label = tk.Label(
+            self.park_factors_frame, textvariable=self.avg_rhb_var,
+            font=fonts.basic_font)
         self.avg_rhb_stat_label.grid(column=column, row=1, sticky='nsew')
         column += 1
 
-        self.hr_lhb_label = tk.Label(self.park_factors_frame, text='HR LHB: ', font=fonts.basic_font)
+        self.hr_lhb_label = tk.Label(
+            self.park_factors_frame, text='HR LHB: ', font=fonts.basic_font)
         self.hr_lhb_label.grid(column=column, row=1, sticky='nsew')
         column += 1
 
-        self.hr_lhb_stat_label = tk.Label(self.park_factors_frame, textvariable=self.hr_lhb_var, font=fonts.basic_font)
+        self.hr_lhb_stat_label = tk.Label(
+            self.park_factors_frame, textvariable=self.hr_lhb_var,
+            font=fonts.basic_font)
         self.hr_lhb_stat_label.grid(column=column, row=1, sticky='nsew')
         column += 1
 
-        self.hr_rhb_label = tk.Label(self.park_factors_frame, text='HR RHB: ', font=fonts.basic_font)
+        self.hr_rhb_label = tk.Label(
+            self.park_factors_frame, text='HR RHB: ', font=fonts.basic_font)
         self.hr_rhb_label.grid(column=column, row=1, sticky='nsew')
         column += 1
 
-        self.hr_rhb_stat_label = tk.Label(self.park_factors_frame, textvariable=self.hr_rhb_var, font=fonts.basic_font)
+        self.hr_rhb_stat_label = tk.Label(
+            self.park_factors_frame, textvariable=self.hr_rhb_var,
+            font=fonts.basic_font)
         self.hr_rhb_stat_label.grid(column=column, row=1, sticky='nsew')
         column += 1
 
-        self.double_lh_label = tk.Label(self.park_factors_frame, text='2B LH: ', font=fonts.basic_font)
+        self.double_lh_label = tk.Label(
+            self.park_factors_frame, text='2B LH: ', font=fonts.basic_font)
         self.double_lh_label.grid(column=column, row=1, sticky='nsew')
         column += 1
 
-        self.double_lh_stat_label = tk.Label(self.park_factors_frame, textvariable=self.doubles_lh_var, font=fonts.basic_font)
+        self.double_lh_stat_label = tk.Label(
+            self.park_factors_frame, textvariable=self.doubles_lh_var,
+            font=fonts.basic_font)
         self.double_lh_stat_label.grid(column=column, row=1, sticky='nsew')
         column += 1
 
-        self.triples_lh_label = tk.Label(self.park_factors_frame, text='3B: ', font=fonts.basic_font)
+        self.triples_lh_label = tk.Label(
+            self.park_factors_frame, text='3B: ', font=fonts.basic_font)
         self.triples_lh_label.grid(column=column, row=1, sticky='nsew')
         column += 1
 
-        self.triples_lh_stat_label = tk.Label(self.park_factors_frame, textvariable=self.triples_lh_var, font=fonts.basic_font)
+        self.triples_lh_stat_label = tk.Label(
+            self.park_factors_frame, textvariable=self.triples_lh_var,
+            font=fonts.basic_font)
         self.triples_lh_stat_label.grid(column=column, row=1, sticky='nsew')
-
-
 
     def get_run_environment_factors(self):
         try:
-            avg_lhb_calc = round(float(self.babip_var.get()) * float(self.avg_lhb_var.get()), 3)
+            avg_lhb_calc = round(
+                float(self.babip_var.get()) * float(self.avg_lhb_var.get()), 3)
         except ValueError:
             avg_lhb_calc = 1.0
 
         try:
-            avg_rhb_calc = round(float(self.babip_var.get()) * float(self.avg_rhb_var.get()), 3)
+            avg_rhb_calc = round(
+                float(self.babip_var.get()) * float(self.avg_rhb_var.get()), 3)
         except ValueError:
             avg_rhb_calc = 1.0
 
         try:
-            hr_lhb_calc = round(float(self.hrrate_var.get()) * float(self.hr_lhb_var.get()), 3)
+            hr_lhb_calc = round(
+                float(self.hrrate_var.get()) * float(self.hr_lhb_var.get()), 3)
         except ValueError:
             hr_lhb_calc = 1.0
 
         try:
-            hr_rhb_calc = round(float(self.hrrate_var.get()) * float(self.hr_rhb_var.get()), 3)
+            hr_rhb_calc = round(
+                float(self.hrrate_var.get()) * float(self.hr_rhb_var.get()), 3)
         except ValueError:
             hr_rhb_calc = 1.0
 
         try:
-            doubles_lhb_calc = round(float(self.xbhrate_var.get()) * float(self.doubles_lh_var.get()), 3)
+            doubles_lhb_calc = round(
+                float(self.xbhrate_var.get()) *
+                float(self.doubles_lh_var.get()), 3)
         except ValueError:
             doubles_lhb_calc = 1.0
 
         try:
-            doubles_rhb_calc = round(float(self.xbhrate_var.get()) * float(self.doubles_rh_var.get()), 3)
+            doubles_rhb_calc = round(
+                float(self.xbhrate_var.get()) *
+                float(self.doubles_rh_var.get()), 3)
         except ValueError:
             doubles_rhb_calc = 1.0
 
         try:
-            triples_lhb_calc = round(float(self.xbhrate_var.get()) * float(self.triples_lh_var.get()), 3)
+            triples_lhb_calc = round(
+                float(self.xbhrate_var.get()) *
+                float(self.triples_lh_var.get()), 3)
         except ValueError:
             triples_lhb_calc = 1.0
 
         try:
-            triples_rhb_calc = round(float(self.xbhrate_var.get()) * float(self.triples_rh_var.get()), 3)
+            triples_rhb_calc = round(
+                float(self.xbhrate_var.get()) *
+                float(self.triples_rh_var.get()), 3)
         except ValueError:
             triples_rhb_calc = 1.0
 
@@ -287,4 +347,3 @@ class RunEnvironmentFrame(tk.Frame):
             'triples_rhb': triples_rhb_calc,
         }
         return run_env_factors
-

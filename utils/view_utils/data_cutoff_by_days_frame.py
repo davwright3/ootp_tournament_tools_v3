@@ -1,5 +1,4 @@
 import tkinter as tk
-from utils.view_utils import program_fonts as fonts
 
 
 class DataCutoffByDaysFrame(tk.Frame):

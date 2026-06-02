@@ -1,5 +1,4 @@
 import tkinter as tk
-from utils.view_utils import program_fonts as fonts
 from utils.view_utils.color_rating_code_label import ColorRatingLabel
 from utils.view_utils import program_fonts as fonts
 
@@ -102,7 +101,6 @@ class PlayerCardPitcherRatingsFrame(tk.Frame):
                 self, font=fonts.basic_font, rating=df.iloc[0]['Control vR']))
         self.control_vr_rating_label.grid(row=5, column=3, sticky='nsew')
 
-
     def update_frame(self, player_df):
         self.stuff_overall_rating_label.update_label(
             player_df.iloc[0]['Stuff'],
@@ -152,4 +150,3 @@ class PlayerCardPitcherRatingsFrame(tk.Frame):
             player_df.iloc[0]['Control vR'],
             font=fonts.basic_font
         )
-

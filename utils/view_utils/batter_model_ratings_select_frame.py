@@ -11,12 +11,11 @@ class BatterModelRatingsSelectFrame(tk.Frame):
         self.label = tk.Label(self, text="Ratings Select")
         self.label.grid(row=0, column=0, padx=10, pady=10, columnspan=7)
 
-        self.batter_ratings_list = ['BABIP', 'BABIP vL', 'BABIP vR', 'Avoid Ks',
-                               'Avoid K vL', 'Avoid K vR', 'Gap', 'Gap vL',
-                               'Gap vR', 'Power', 'Power vL', 'Power vR',
-                               'Eye', 'Eye vL', 'Eye vR', 'Speed',
-                                'Baserunning', 'Steal Rate', 'Stealing'
-                               ]
+        self.batter_ratings_list = [
+            'BABIP', 'BABIP vL', 'BABIP vR', 'Avoid Ks', 'Avoid K vL',
+            'Avoid K vR', 'Gap', 'Gap vL', 'Gap vR', 'Power', 'Power vL',
+            'Power vR', 'Eye', 'Eye vL', 'Eye vR', 'Speed', 'Baserunning',
+            'Steal Rate', 'Stealing']
 
         self.selected_ratings = []
         self.use_batted_ball_type = tk.BooleanVar(value=False)
@@ -59,4 +58,3 @@ class BatterModelRatingsSelectFrame(tk.Frame):
 
     def get_use_bbt(self):
         return self.use_batted_ball_type.get()
-

@@ -8,8 +8,8 @@ class PitcherModelRatingsFrame(tk.Frame):
         super().__init__(parent)
 
         self.ratings_list = ['Stuff', 'Stuff vL', 'Stuff vR', 'pHR', 'pHR vL',
-                        'pHR vR', 'pBABIP', 'pBABIP vL', 'pBABIP vR',
-                        'Control', 'Control vL', 'Control vR']
+                             'pHR vR', 'pBABIP', 'pBABIP vL', 'pBABIP vR',
+                             'Control', 'Control vL', 'Control vR']
 
         self.selected_ratings_list = []
 
@@ -38,4 +38,3 @@ class PitcherModelRatingsFrame(tk.Frame):
 
     def get_active_ratings(self):
         return self.selected_ratings_list
-

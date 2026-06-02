@@ -1,5 +1,4 @@
 from tkinter import ttk
-from tkinter import font as tkfont
 from typing import Dict, Callable, List, Optional
 import pandas as pd
 import logging
@@ -85,10 +84,11 @@ class DataFrameTableFrame(ttk.Frame):
             self.tree.heading(
                 col, text=col, command=lambda c=col: self._on_heading_click(c))
             if col == 'Title':
-                self.tree.column(col, width=700, minwidth=200, stretch=True, anchor='w')
+                self.tree.column(
+                    col, width=700, minwidth=200, stretch=True, anchor='w')
             else:
-                self.tree.column(col, width=50, minwidth=30, stretch=False, anchor='w')
-
+                self.tree.column(
+                    col, width=50, minwidth=30, stretch=False, anchor='w')
 
         self._refresh_all()
 

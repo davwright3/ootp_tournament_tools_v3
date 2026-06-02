@@ -162,22 +162,35 @@ class BatterRatingFrame(tk.Frame):
         self.eye_vR_rating_label.grid(column=3, row=7, sticky='nsew')
 
     def update_frame(self, df):
-        self.babip_rating_label.update_label(df.iloc[0]['BABIP'], fonts.basic_font)
-        self.babip_vR_rating_label.update_label(df.iloc[0]['BABIP vR'], fonts.basic_font)
-        self.babip_vL_rating_label.update_label(df.iloc[0]['BABIP vL'], fonts.basic_font)
+        self.babip_rating_label.update_label(df.iloc[0]['BABIP'],
+                                             fonts.basic_font)
+        self.babip_vR_rating_label.update_label(df.iloc[0]['BABIP vR'],
+                                                fonts.basic_font)
+        self.babip_vL_rating_label.update_label(df.iloc[0]['BABIP vL'],
+                                                fonts.basic_font)
 
-        self.avoid_k_rating_label.update_label(df.iloc[0]['Avoid Ks'], fonts.basic_font)
-        self.avoid_k_vR_rating_label.update_label(df.iloc[0]['Avoid K vR'], fonts.basic_font)
-        self.avoid_k_vL_rating_label.update_label(df.iloc[0]['Avoid K vL'], fonts.basic_font)
+        self.avoid_k_rating_label.update_label(df.iloc[0]['Avoid Ks'],
+                                               fonts.basic_font)
+        self.avoid_k_vR_rating_label.update_label(df.iloc[0]['Avoid K vR'],
+                                                  fonts.basic_font)
+        self.avoid_k_vL_rating_label.update_label(df.iloc[0]['Avoid K vL'],
+                                                  fonts.basic_font)
 
         self.gap_rating_label.update_label(df.iloc[0]['Gap'], fonts.basic_font)
-        self.gap_vR_rating_label.update_label(df.iloc[0]['Gap vR'], fonts.basic_font)
-        self.gap_vL_rating_label.update_label(df.iloc[0]['Gap vL'], fonts.basic_font)
+        self.gap_vR_rating_label.update_label(df.iloc[0]['Gap vR'],
+                                              fonts.basic_font)
+        self.gap_vL_rating_label.update_label(df.iloc[0]['Gap vL'],
+                                              fonts.basic_font)
 
-        self.power_rating_label.update_label(df.iloc[0]['Power'], fonts.basic_font)
-        self.power_vR_rating_label.update_label(df.iloc[0]['Power vR'], fonts.basic_font)
-        self.power_vL_rating_label.update_label(df.iloc[0]['Power vL'], fonts.basic_font)
+        self.power_rating_label.update_label(df.iloc[0]['Power'],
+                                             fonts.basic_font)
+        self.power_vR_rating_label.update_label(df.iloc[0]['Power vR'],
+                                                fonts.basic_font)
+        self.power_vL_rating_label.update_label(df.iloc[0]['Power vL'],
+                                                fonts.basic_font)
 
         self.eye_rating_label.update_label(df.iloc[0]['Eye'], fonts.basic_font)
-        self.eye_vR_rating_label.update_label(df.iloc[0]['Eye vR'], fonts.basic_font)
-        self.eye_vL_rating_label.update_label(df.iloc[0]['Eye vL'], fonts.basic_font)
+        self.eye_vR_rating_label.update_label(df.iloc[0]['Eye vR'],
+                                              fonts.basic_font)
+        self.eye_vL_rating_label.update_label(df.iloc[0]['Eye vL'],
+                                              fonts.basic_font)

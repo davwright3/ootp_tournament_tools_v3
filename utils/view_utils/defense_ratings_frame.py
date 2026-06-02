@@ -108,15 +108,34 @@ class DefenseRatingsFrame(tk.Frame):
         self.outfield_arm_rating_label.grid(row=4, column=3, sticky='ew')
 
     def update_frame(self, df):
-        self.catch_abil_rating_label.update_label(font=fonts.basic_font, rating=df.iloc[0]['CatcherAbil'])
-        self.catch_frame_rating_label.update_label(font=fonts.basic_font, rating=df.iloc[0]['CatcherFrame'])
-        self.catch_arm_rating_label.update_label(font=fonts.basic_font, rating=df.iloc[0]['Catcher Arm'])
+        self.catch_abil_rating_label.update_label(font=fonts.basic_font,
+                                                  rating=df.iloc[0][
+                                                      'CatcherAbil'])
+        self.catch_frame_rating_label.update_label(font=fonts.basic_font,
+                                                   rating=df.iloc[0][
+                                                       'CatcherFrame'])
+        self.catch_arm_rating_label.update_label(font=fonts.basic_font,
+                                                 rating=df.iloc[0][
+                                                     'Catcher Arm'])
 
-        self.infield_range_rating_label.update_label(font=fonts.basic_font, rating=df.iloc[0]['Infield Range'])
-        self.infield_error_rating_label.update_label(font=fonts.basic_font, rating=df.iloc[0]['Infield Error'])
-        self.infield_arm_rating_label.update_label(font=fonts.basic_font, rating=df.iloc[0]['Infield Arm'])
-        self.turn_dp_rating_label.update_label(font=fonts.basic_font, rating=df.iloc[0]['DP'])
+        self.infield_range_rating_label.update_label(font=fonts.basic_font,
+                                                     rating=df.iloc[0][
+                                                         'Infield Range'])
+        self.infield_error_rating_label.update_label(font=fonts.basic_font,
+                                                     rating=df.iloc[0][
+                                                         'Infield Error'])
+        self.infield_arm_rating_label.update_label(font=fonts.basic_font,
+                                                   rating=df.iloc[0][
+                                                       'Infield Arm'])
+        self.turn_dp_rating_label.update_label(font=fonts.basic_font,
+                                               rating=df.iloc[0]['DP'])
 
-        self.outfield_range_rating_label.update_label(font=fonts.basic_font, rating=df.iloc[0]['OF Range'])
-        self.outfield_error_rating_label.update_label(font=fonts.basic_font, rating=df.iloc[0]['OF Error'])
-        self.outfield_arm_rating_label.update_label(font=fonts.basic_font, rating=df.iloc[0]['OF Arm'])
+        self.outfield_range_rating_label.update_label(font=fonts.basic_font,
+                                                      rating=df.iloc[0][
+                                                          'OF Range'])
+        self.outfield_error_rating_label.update_label(font=fonts.basic_font,
+                                                      rating=df.iloc[0][
+                                                          'OF Error'])
+        self.outfield_arm_rating_label.update_label(font=fonts.basic_font,
+                                                    rating=df.iloc[0][
+                                                        'OF Arm'])
