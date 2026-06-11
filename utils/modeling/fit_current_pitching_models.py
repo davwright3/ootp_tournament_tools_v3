@@ -1,6 +1,8 @@
 """Module for fitting the current pitching models to the card list."""
 from utils.data_utils.card_list_store import card_list_store
 from utils.modeling.fit_model import fit_model
+from datetime import datetime, timedelta
+import pandas as pd
 
 
 def fit_current_pitching_models(
@@ -15,8 +17,15 @@ def fit_current_pitching_models(
         collection_only=False,
         view_batters=False,
         pitcher_type=None,
+        lookback_days=None
         ):
     cards = card_list_store.get_card_list().copy()
+    cards = cards[cards['Card Value'].between(min_value, max_value)]
+    cards = cards[cards['Year'].between(min_year, max_year)]
+    if lookback_days:
+        cutoff_date = datetime.today() - timedelta(days=lookback_days)
+        cards['date'] = pd.to_datetime(cards['date'], format='%Y-%m-%d')
+        cards = cards[cards['date'] >= cutoff_date]
     cards = cards[cards['Card Value'].between(min_value, max_value)]
     cards = cards[cards['Year'].between(min_year, max_year)]
 

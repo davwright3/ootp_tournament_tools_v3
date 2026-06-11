@@ -15,6 +15,9 @@ from utils.view_utils.select_in_collection_frame import SelectInCollectionFrame
 from utils.view_utils.view_batters_frame import ViewBattersFrame
 from utils.view_utils.search_frame import SearchFrame
 from utils.view_utils.pitcher_side_select_frame import PitcherSideSelectFrame
+from utils.view_utils.select_release_date_lookback_frame import (
+    SelectReleaseDateFrame)
+from utils.view_utils.pitcher_role_select_frame import PitcherRoleSelectFrame
 
 
 class PitcherModelDisplayFrame(tk.Frame):
@@ -100,6 +103,12 @@ class PitcherModelDisplayFrame(tk.Frame):
             self.model_options_frame,
         )
         self.collection_frame.grid(row=row, column=0, sticky='nsew')
+        row += 1
+
+        self.select_release_window_frame = SelectReleaseDateFrame(
+            self.model_options_frame,
+        )
+        self.select_release_window_frame.grid(row=row, column=0, sticky='nsew')
         row += 1
 
         # Frame for model info
@@ -257,6 +266,8 @@ class PitcherModelDisplayFrame(tk.Frame):
         selected_collection_only = (
             self.collection_frame.get_collection_only_value())
         view_batters_bool = self.view_batters_frame.get_use_batters()
+        selected_release_window = (
+            self.select_release_window_frame.get_lookback_days())
 
         df = fit_current_pitching_models(
             min_value=min_value,
@@ -269,6 +280,7 @@ class PitcherModelDisplayFrame(tk.Frame):
             card_type_select=selected_card_types,
             collection_only=selected_collection_only,
             view_batters=view_batters_bool,
-            pitcher_type=None
+            pitcher_type=None,
+            lookback_days=selected_release_window,
         )
         self.model_display_frame.set_dataframe(df)

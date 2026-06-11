@@ -4,6 +4,9 @@ from utils.data_utils.data_store import data_store
 from utils.data_utils.card_list_store import card_list_store
 from utils.stats_utils.cull_teams import cull_teams
 from utils.stats_utils.calc_batting_stats import calc_batting_stats
+import logging
+
+logger = logging.getLogger('apps.basic_stats_app')
 
 
 def build_lineup_from_stats(player_list=None):

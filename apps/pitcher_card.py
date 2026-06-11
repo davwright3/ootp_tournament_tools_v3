@@ -12,6 +12,7 @@ from utils.view_utils.player_card_pitching_stats_frame import (
     PlayerCardPitchingStatsFrame)
 from utils.view_utils.player_card_league_stats_frame import (
     PlayerCardLeagueStatsFrame)
+from utils.view_utils.card_art_frame import CardArtFrame
 from utils.stats_utils.set_pitcher_card_data import set_pitcher_card_data
 
 
@@ -69,3 +70,10 @@ class PitcherCard(tk.Toplevel):
 
         self.league_stats_frame = PlayerCardLeagueStatsFrame(self.main_frame)
         self.league_stats_frame.grid(row=0, column=3, sticky='nsew', rowspan=2)
+
+
+        self.art_frame = CardArtFrame(
+            self.main_frame,
+            selected_card_id=card_id,
+        )
+        self.art_frame.grid(row=0, column=4, sticky='nsew', rowspan=2)

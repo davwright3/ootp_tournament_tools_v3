@@ -35,6 +35,8 @@ class BattingStatsApp(tk.Toplevel):
     def __init__(self, selected_team=None):
         super().__init__()
 
+        print('LOADING BATTING STATS')
+
         self.geometry('1920x1080')
         self.title('Batting Stats')
         self.selected_team = selected_team
@@ -100,7 +102,6 @@ class BattingStatsApp(tk.Toplevel):
         inner_frame.rowconfigure(3, weight=1)
 
         item = 0
-        print(data_store.get_tournament_type())
         if (data_store.get_tournament_type() == 'daily' or
                 data_store.get_tournament_type() == 'quick'):
             self.days_cutoff_frame = DataCutoffByDaysFrame(

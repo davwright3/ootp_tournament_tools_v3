@@ -1,4 +1,5 @@
 """Version 2 of Angered Unicorn's OOTP Tournament Utilities."""
+import threading
 import tkinter as tk
 import os
 import logging
@@ -23,6 +24,36 @@ from utils.log_utils.tk_handler import TkTextHandler
 from apps.file_processing_app import FileProcessingApp
 from apps.basic_stats_app import BasicStatsApp
 from apps.modeling_home import ModelingHome
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("app.log"),
+    ]
+)
+logger = logging.getLogger(__name__)
+
+def handle_exception(exc_type, exc_value, exc_traceback):
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+    logger.critical(
+        "Uncaught exception",
+        exc_info=(exc_type, exc_value, exc_traceback))
+
+def  handle_thread_exception(args):
+    logger.critical(
+        "Uncaught thread exception",
+        exc_info=(args.exc_type, args.exc_value, args.exc_traceback))
+
+def handle_tk_exception(exc_type, exc_value, exc_traceback):
+    logger.critical(
+        "Uncaught tkinter exception",
+        exc_info=(exc_type, exc_value, exc_traceback))
+
+sys.excepthook = handle_exception
+threading.excepthook = handle_thread_exception
 
 root = logging.getLogger()
 root.setLevel(logging.INFO)
@@ -402,10 +433,10 @@ class MainApp(tk.Tk):
 
         ui_handler.addFilter(ExcludeNamespaces(
             "apps.fileproc",
-            'apps.basic_stats_app'
             )
         )
         root_logger.addHandler(ui_handler)
+        self.report_callback_exception = handle_tk_exception
 
         BOOTSTRAP_MEM.setTarget(ui_handler)
         BOOTSTRAP_MEM.flush()

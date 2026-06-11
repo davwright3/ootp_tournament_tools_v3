@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from utils.view_utils import program_fonts as fonts
 from utils.view_utils.open_bref import open_bref
+from utils.view_utils.card_art_frame import CardArtFrame
 
 LABEL_PADX = 5
 LABEL_PADY = 5
@@ -13,10 +14,10 @@ class BatterSlideshowStatsFrame(tk.Frame):
     def __init__(self, parent, batter_df, quals=0):
         super().__init__(parent, relief='groove', bd=5)
 
-        self.columnconfigure(1, minsize=400)
-        self.columnconfigure(3, minsize=400)
-        self.columnconfigure(5, minsize=400)
-        self.columnconfigure(7, minsize=400)
+        self.columnconfigure(1, minsize=300)
+        self.columnconfigure(3, minsize=300)
+        self.columnconfigure(5, minsize=300)
+        self.columnconfigure(7, minsize=300)
 
         self.rowconfigure(0, weight=0)
         self.rowconfigure(1, weight=0)
@@ -202,22 +203,22 @@ class BatterSlideshowStatsFrame(tk.Frame):
             padx=SEP_PADX
         )
 
-        self.catch_label = tk.Label(self, text="Catch:",
+        self.catch_label = tk.Label(self, text="Catch D:",
                                     font=fonts.slideshow_label_font)
         self.catch_label.grid(row=0, column=7, sticky=LABEL_STICKY,
                               pady=LABEL_PADY, padx=LABEL_PADX)
 
-        self.infield_label = tk.Label(self, text="INFIELD:",
+        self.infield_label = tk.Label(self, text="IF D:",
                                       font=fonts.slideshow_label_font)
         self.infield_label.grid(row=1, column=7, sticky=LABEL_STICKY,
                                 pady=LABEL_PADY, padx=LABEL_PADX)
 
-        self.outfield_label = tk.Label(self, text="OUTFIELD:",
+        self.outfield_label = tk.Label(self, text="OF D:",
                                        font=fonts.slideshow_label_font)
         self.outfield_label.grid(row=2, column=7, sticky=LABEL_STICKY,
                                  pady=LABEL_PADY, padx=LABEL_PADX)
 
-        self.baserunning_label = tk.Label(self, text="Baserunning:",
+        self.baserunning_label = tk.Label(self, text="BSR:",
                                           font=fonts.slideshow_label_font)
         self.baserunning_label.grid(row=3, column=7, sticky=LABEL_STICKY,
                                     pady=LABEL_PADY, padx=LABEL_PADX)
@@ -237,6 +238,10 @@ class BatterSlideshowStatsFrame(tk.Frame):
                                          self.bref_id.get()))
         self.bref_button.grid(row=0, column=8, sticky=LABEL_STICKY,
                               pady=LABEL_PADY, padx=LABEL_PADX)
+
+        self.art_frame = CardArtFrame(self)
+        self.art_frame.grid(row=1, column=8, sticky='nsew', rowspan=5,)
+
 
         self.update_batter(batter_df, quals)
 
@@ -293,16 +298,17 @@ class BatterSlideshowStatsFrame(tk.Frame):
             text=f"Catch: {batter_df.iloc[0]['catch_score']} ("
                  f" {batter_df.iloc[0]['catch_rank']} )")
         self.infield_label.configure(
-            text=f"Infield: {batter_df.iloc[0]['infield_score']} ("
+            text=f"IF D: {batter_df.iloc[0]['infield_score']} ("
                  f" {batter_df.iloc[0]['infield_rank']} )")
         self.outfield_label.configure(
-            text=f"Outfield: {batter_df.iloc[0]['outfield_score']} ("
+            text=f"OF D: {batter_df.iloc[0]['outfield_score']} ("
                  f" {batter_df.iloc[0]['outfield_rank']} )")
         self.baserunning_label.configure(
-            text=f"Baserunning: {batter_df.iloc[0]['baserunning_score']} ("
+            text=f"BSR: {batter_df.iloc[0]['baserunning_score']} ("
                  f" {batter_df.iloc[0]['baserunning_rank']} )")
         self.total_label.configure(
-            text=f"Total: {batter_df.iloc[0]['total_score']} ("
+            text=f"TOT: {batter_df.iloc[0]['total_score']} ("
                  f" {batter_df.iloc[0]['total_rank']} )")
         self.quals_label.configure(text=f"Qualifed: {quals}")
         self.bref_id.set(batter_df.iloc[0]['brefid'])
+        self.art_frame.update_frame(batter_df.iloc[0]['CID'], 200)

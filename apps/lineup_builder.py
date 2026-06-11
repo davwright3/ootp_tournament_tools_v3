@@ -4,6 +4,9 @@ from utils.view_utils.header_frame import Header
 from utils.view_utils.footer_frame import Footer
 from utils.stats_utils.build_lineup_from_stats import build_lineup_from_stats
 from utils.view_utils.dataframe_table_frame import DataFrameTableFrame
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class LineupBuilder(tk.Toplevel):
@@ -147,7 +150,7 @@ class LineupBuilder(tk.Toplevel):
         setup_lineup_frames()
 
     def build_lineups(self):
-        print('Generating lineups')
+        logger.info('Generating lineups')
         # TODO Get the list of players (right and left)
         # TODO Send the list to build lineups method
         # TODO Get a dataframe back that fills in the lineups dynamically

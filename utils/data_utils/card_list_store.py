@@ -5,7 +5,9 @@ target_card_list path.
 from utils.config_utils.load_save_settings import settings
 import pandas as pd
 import os
+import logging
 
+logger = logging.getLogger('apps.basic_stats_app')
 
 class CardListStore:
     """
@@ -38,6 +40,7 @@ class CardListStore:
         filepath = os.path.normpath(filepath)
 
         if not filepath or not os.path.isfile(filepath):
+            logger.error(f'{filepath} not found')
             raise FileNotFoundError(
                 f'File {filepath} not found.'
             )

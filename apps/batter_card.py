@@ -5,6 +5,7 @@ from utils.view_utils.player_card_bat_ratings_frame import BatterRatingFrame
 from utils.view_utils.baserunning_profile_frame import BaserunningProfileFrame
 from utils.view_utils.player_card_batting_stats_frame import (
     PlayerBattingStatsFrame)
+from utils.view_utils.card_art_frame import CardArtFrame
 from utils.view_utils.batter_profile_frame import BatterProfileFrame
 from utils.view_utils.player_card_league_stats_frame import (
     PlayerCardLeagueStatsFrame)
@@ -68,6 +69,12 @@ class BatterCard(tk.Toplevel):
         )
         self.player_batting_stats_frame.grid(
             row=0, column=3, rowspan=2, sticky='nsew')
+
+        self.card_art_frame = CardArtFrame(
+            self.main_frame,
+            selected_card_id=int(card_id),
+        )
+        self.card_art_frame.grid(row=0, column=5, sticky='nsew', rowspan=2)
 
         self.league_stats_frame = PlayerCardLeagueStatsFrame(self.main_frame)
         self.league_stats_frame.grid(row=0, column=4, rowspan=2, sticky='nsew')

@@ -26,6 +26,7 @@ from utils.view_utils.select_release_date_lookback_frame import (
     SelectReleaseDateFrame)
 from utils.view_utils.run_env_frame import RunEnvironmentFrame
 from utils.view_utils.search_frame import SearchFrame
+from utils.view_utils.pitcher_role_select_frame import PitcherRoleSelectFrame
 
 
 class RatingsComparisonApp(tk.Toplevel):
@@ -134,6 +135,10 @@ class RatingsComparisonApp(tk.Toplevel):
         self.position_select_frame.grid(column=0, row=row, sticky='nsew')
         row += 1
 
+        self.pitcher_role_frame = PitcherRoleSelectFrame(inner_frame)
+        self.pitcher_role_frame.grid(column=0, row=row, sticky='nsew')
+        row += 1
+
         self.general_info_select_frame = GeneralInfoFrame(inner_frame)
         self.general_info_select_frame.grid(column=0, row=row, sticky='nsew')
         row += 1
@@ -180,6 +185,8 @@ class RatingsComparisonApp(tk.Toplevel):
         selected_baserunning_weights = (
             self.baserunning_weight_frame.get_baserunning_weights())
         selected_position = self.position_select_frame.get_position_select()
+        selected_pitcher_role, selected_min_stamina = (
+            self.pitcher_role_frame.get_pitcher_role())
         selected_in_collection_only = (
             self.in_collection_frame.get_collection_only_value())
         selected_theme_team_only = (
@@ -208,6 +215,8 @@ class RatingsComparisonApp(tk.Toplevel):
             defense_weights=selected_defense_weights,
             baserunning_weights=selected_baserunning_weights,
             selected_position=selected_position,
+            pitcher_role=selected_pitcher_role,
+            min_stamina=selected_min_stamina,
             collection_only=selected_in_collection_only,
             theme_team_only=selected_theme_team_only,
             selected_card_types=selected_card_types,

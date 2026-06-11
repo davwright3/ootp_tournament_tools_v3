@@ -19,6 +19,8 @@ def generate_ratings_df(
         defense_weights=None,
         baserunning_weights=None,
         selected_position=None,
+        pitcher_role=None,
+        min_stamina=None,
         collection_only=False,
         theme_team_only=False,
         lookback_days=None,
@@ -42,6 +44,16 @@ def generate_ratings_df(
         cutoff_date = datetime.today() - timedelta(days=lookback_days)
         card_df['date'] = pd.to_datetime(card_df['date'], format='%Y-%m-%d')
         card_df = card_df[card_df['date'] >= cutoff_date]
+
+    if selected_position == 'Pitcher Role':
+        if pitcher_role == 'SP':
+            card_df = card_df[card_df['Pitcher Role'] == 11]
+        elif pitcher_role == 'RP':
+            roles = [12, 13]
+            card_df = card_df[card_df['Pitcher Role'].isin(roles)]
+
+    if min_stamina:
+        card_df = card_df[card_df['Stamina'] >= min_stamina]
 
     if theme_team_only:
         mask = ((card_df['FirstName'].str[0].str.lower() ==

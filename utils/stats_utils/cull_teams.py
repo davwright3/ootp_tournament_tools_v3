@@ -20,15 +20,10 @@ def cull_teams(df, run_cutoff=8):
     df_filtered = df.merge(teams_ok, on=['ORG', 'Trny'], how='inner')
     removed_count = len(df) - len(df_filtered)
     removed_pct = (removed_count / len(df))
-    if removed_pct > .35:
+    if removed_pct > .20:
         logger.warning(f'''
         Removed {removed_count} out of {len(df)} rows.
         This is a {round(removed_pct, 2) * 100}% removal rate.
         Please check data set for valid data.
-        ''')
-    else:
-        logger.info(f'''
-        Removed {removed_count} out of {len(df)} rows of data.
-        This is a {round(removed_pct, 2) * 100}% removal rate..
         ''')
     return df_filtered
