@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from utils.view_utils.open_bref import open_bref
 from utils.view_utils import program_fonts as fonts
+from utils.view_utils.card_art_frame import CardArtFrame
 
 
 class PitcherSlideshowStatsFrame(tk.Frame):
@@ -104,6 +105,9 @@ class PitcherSlideshowStatsFrame(tk.Frame):
             self, text="B-Ref", command=lambda: open_bref(self.bref_id.get()))
         self.bref_button.grid(row=0, column=5, sticky='w')
 
+        self.art_frame = CardArtFrame(self)
+        self.art_frame.grid(row=1, column=5, sticky='nsew', rowspan=6)
+
         self.update_frame(player_df, num_quals=numquals)
 
     def update_frame(self, player_df, num_quals):
@@ -161,3 +165,4 @@ class PitcherSlideshowStatsFrame(tk.Frame):
         self.variant_label.configure(
             text=f"Variant: {player_df.iloc[0]['VLvl']}")
         self.bref_id.set(player_df.iloc[0]['brefid'])
+        self.art_frame.update_frame(player_df.iloc[0]['CID'], 200)
